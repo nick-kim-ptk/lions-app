@@ -84,7 +84,7 @@ export function AllMenuScreen() {
             { label: '독점 콘텐츠', path: '/lounge/exclusive' },
             { label: '디지털 굿즈', path: '/lounge/digital-goods' },
             { label: '나의 승리 운세', path: '/lounge/fortune' },
-            { label: '삼팬 SNS', path: '/lounge/sns' },
+            { label: '삼팬 인플루언서 1기', path: '/lounge/sns' },
           ],
         },
         {

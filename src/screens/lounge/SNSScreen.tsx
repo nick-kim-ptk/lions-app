@@ -1,26 +1,31 @@
 import { PHCircle, PHImage } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
-import { SNS_POSTS } from '@/data/lounge'
+import { INFLUENCERS, SNS_POSTS } from '@/data/lounge'
 
-// 027(029)-SL-LG-12 삼팬 SNS
+// 027(029)-SL-LG-12 삼팬 인플루언서 1기
 export function SNSScreen() {
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-4">
-      <Header title="삼팬 SNS" />
+      <Header title="삼팬 인플루언서 1기" />
 
-      {/* Hashtag guide banner */}
-      <div className="px-4 pt-4 mb-4">
-        <div className="bg-gradient-to-r from-[#EBF0FF] to-[#F5F7FB] rounded-2xl border border-[#1B5BF0]/20 p-4">
-          <p className="text-[13px] font-semibold text-[#111827] mb-1.5">
-            아래 해시태그를 붙여서 인스타 피드를 올려주시면<br />실시간으로 확인할 수 있어요 📸
-          </p>
-          <div className="flex flex-wrap gap-2 mt-3">
-            {['#삼성라이온즈', '#SamsungLions', '#삼팬', '#라이온즈파크', '#직관'].map((tag) => (
-              <span key={tag} className="text-[12px] font-semibold text-[#1B5BF0] bg-[#1B5BF0]/10 rounded-full px-3 py-1">
-                {tag}
-              </span>
-            ))}
-          </div>
+      {/* 1기 인플루언서 — 좌우로 드래그하는 프로필 카드 */}
+      <div className="pt-4 mb-4">
+        <p className="px-4 text-[13px] font-semibold text-[#111827] mb-3">1기 인플루언서로 선정되신 분들입니다</p>
+        <div className="flex gap-3 overflow-x-auto px-4 pb-1 snap-x snap-mandatory" style={{ scrollbarWidth: 'none' }}>
+          {INFLUENCERS.map((inf) => (
+            <div key={inf.handle} className="snap-start shrink-0 w-[148px] bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-4 flex flex-col items-center text-center">
+              <PHCircle className="w-16 h-16" />
+              <p className="mt-3 text-[13px] font-bold text-[#111827]">{inf.name}</p>
+              <p className="text-[11px] text-[#9CA3AF] truncate w-full">@{inf.handle}</p>
+              <p className="mt-1 text-[10px] text-[#64748B] truncate w-full">{inf.desc}</p>
+              <button
+                onClick={() => window.open(`https://www.instagram.com/${inf.handle}/`, '_blank', 'noopener,noreferrer')}
+                className="mt-3 h-8 w-full rounded-lg bg-[#1B5BF0] text-white text-[11px] font-bold"
+              >
+                인스타 이동
+              </button>
+            </div>
+          ))}
         </div>
       </div>
 

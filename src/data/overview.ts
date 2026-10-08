@@ -51,7 +51,7 @@ export const SCREENS: ScreenMeta[] = [
   { id: '025-SL-LG-06', name: '나의 승리 운세', path: '/lounge/fortune', group: '라운지', layout: 'splash' },
   { id: '026-SL-LG-07', name: '디지털 굿즈', path: '/lounge/digital-goods', group: '라운지', layout: 'grid' },
   { id: '027-SL-LG-08', name: '사용 방법', path: '/lounge/digital-guide', group: '라운지', layout: 'detail' },
-  { id: '029-SL-LG-12', name: '삼팬 SNS', path: '/lounge/sns', group: '라운지', layout: 'grid' },
+  { id: '029-SL-LG-12', name: '삼팬 인플루언서 1기', path: '/lounge/sns', group: '라운지', layout: 'grid' },
   { id: '098-SL-LG-10', name: '블루 시그널', path: '/lounge/blue-signal', group: '라운지', layout: 'list' },
   { id: '100-SL-LG-13', name: '블루 시그널 등록', path: '/lounge/blue-signal', group: '라운지', layout: 'modal', variant: true },
   // MY
@@ -196,7 +196,7 @@ export const IA_TREE: { group: Group; screens: IATreeNode[] }[] = [
         { id: '025-SL-LG-06', name: '나의 승리 운세', path: '/lounge/fortune' },
         { id: '026-SL-LG-07', name: '디지털 굿즈', path: '/lounge/digital-goods' },
         { id: '027-SL-LG-08', name: '사용 방법', path: '/lounge/digital-guide' },
-        { id: '029-SL-LG-12', name: '삼팬 SNS', path: '/lounge/sns' },
+        { id: '029-SL-LG-12', name: '삼팬 인플루언서 1기', path: '/lounge/sns' },
         { id: '098-SL-LG-10', name: '블루 시그널', path: '/lounge/blue-signal', children: [
           { id: '100-SL-LG-13', name: '블루 시그널 등록', path: '/lounge/blue-signal' },
         ]},

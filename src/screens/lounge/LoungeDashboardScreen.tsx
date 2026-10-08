@@ -53,7 +53,7 @@ export function LoungeDashboardScreen() {
               { label: '디지털 피켓', path: '/lounge/cheer-board', emoji: '📣' },
               { label: '승리 운세', path: '/lounge/fortune', emoji: '🔮' },
               { label: '디지털 굿즈', path: '/lounge/digital-goods', emoji: '🎁' },
-              { label: '삼팬 SNS', path: '/lounge/sns', emoji: '📸' },
+              { label: '삼팬 인플루언서 1기', path: '/lounge/sns', emoji: '📸' },
               { label: '블루 시그널', path: '/lounge/blue-signal', emoji: '📍' },
             ].map((item) => (
               <button
@@ -386,21 +386,13 @@ export function LoungeDashboardScreen() {
         </div>
       </div>
 
-      {/* ── 삼팬 SNS preview ── */}
+      {/* ── 삼팬 인플루언서 1기 preview ── */}
       <div className="px-4">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-[14px] font-bold text-[#111827]">삼팬 SNS</span>
+          <span className="text-[14px] font-bold text-[#111827]">삼팬 인플루언서 1기</span>
           <button onClick={() => navigate('/lounge/sns')} className="text-[11px] text-[#9CA3AF]">전체보기 ›</button>
         </div>
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-3">
-          <div className="bg-gradient-to-r from-[#EBF0FF] to-[#F5F7FB] rounded-xl border border-[#1B5BF0]/20 px-3 py-2.5 mb-3">
-            <p className="text-[11px] text-[#111827] font-semibold">아래 해시태그로 인스타 피드를 올려주시면 실시간으로 확인할 수 있어요 📸</p>
-            <div className="flex flex-wrap gap-1.5 mt-1.5">
-              {['#삼성라이온즈', '#삼팬', '#라이온즈파크'].map((tag) => (
-                <span key={tag} className="text-[10px] font-semibold text-[#1B5BF0] bg-[#1B5BF0]/10 rounded-full px-2 py-0.5">{tag}</span>
-              ))}
-            </div>
-          </div>
           <div className="grid grid-cols-3 gap-1.5">
             {['from-[#1B5BF0] to-[#6EC6FF]','from-[#F0A500] to-[#FFD966]','from-[#E53935] to-[#FF8A65]','from-[#4ADE80] to-[#A7F3D0]','from-[#0E1A40] to-[#1B5BF0]','from-[#9333EA] to-[#C084FC]'].map((c, i) => (
               <div key={i} className={`aspect-square rounded-xl bg-gradient-to-br ${c} flex items-center justify-center`}>

@@ -68,8 +68,8 @@ export const PLAYERS: Player[] = [
   { id: 'park-byung-ho', name: '박병호', no: 52, group: '내야수', pos: 'DH', handed: '우투우타' },
   { id: 'kim-young-woong', name: '김영웅', no: 5, group: '내야수', pos: '3B', handed: '우투좌타', kind: '신입단' },
   { id: 'ryu-ji-hyuk', name: '류지혁', no: 16, group: '내야수', pos: '2B', handed: '우투좌타' },
-  { id: 'lee-seong-gyu', name: '이성규', no: 36, group: '내야수', pos: '3B', handed: '우투우타' },
-  { id: 'park-gye-beom', name: '박계범', no: 37, group: '내야수', pos: '2B', handed: '우투우타' },
+  { id: 'lee-seong-gyu', name: '이성규', no: 36, group: '내야수', pos: '3B', handed: '우투우타', kind: '신입단' },
+  { id: 'park-gye-beom', name: '박계범', no: 37, group: '내야수', pos: '2B', handed: '우투우타', kind: '군입대' },
   { id: 'oh-jae-il', name: '오재일', no: 10, group: '내야수', pos: '1B', handed: '우투좌타', tier: '2군' },
   // 외야수
   { id: 'koo-ja-wook', name: '구자욱', no: 9, group: '외야수', pos: 'LF', handed: '우투좌타' },

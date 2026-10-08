@@ -157,8 +157,18 @@ export const PAST_MANAGERS = [
 ]
 
 // 065-SL-AL-09 선수단 소개 — 감독/코치 탭 (마스킹 예시)
+export const MANAGER = { name: '박진만', role: '감독' }
+
+/** 선수단 소개 > 소개 탭: 감독·주장·대표 타자·대표 투수 (사진은 더미 영역) */
+export const TEAM_INTRO = [
+  { label: 'MANAGER PARK JIN MAN', name: '박진만', role: '감독', message: '매 경기 굳건한 마음으로\n최선을 다하겠습니다.\n많은 성원과 격려 부탁드립니다.' },
+  { label: 'LIONS BEST CAPTAIN', name: '구자욱', role: '주장', message: '작년 한 해 많은 응원 감사합니다.\n올 시즌도 많은 응원 부탁드립니다.' },
+  { label: 'LIONS BEST BATTER', name: '강민호', role: '타자', message: '선수단이 하나로 뭉쳐\n최고의 성적을 낼 수 있도록\n앞장서겠습니다.' },
+  { label: 'LIONS BEST PITCHER', name: '원태인', role: '투수', message: '마운드에서 누구보다 강하게\n팀을 위해 묵묵히 던지는\n투수가 되겠습니다.' },
+]
+
+/** 코칭스텝 (마스킹 예시) — 감독은 MANAGER */
 export const COACHING_STAFF = [
-  { name: '○○○', role: '감독' },
   { name: '○○○', role: '수석코치' },
   { name: '○○○', role: '투수코치' },
   { name: '○○○', role: '타격코치' },

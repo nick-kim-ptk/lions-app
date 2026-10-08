@@ -2,18 +2,25 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PH } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
-import { PLAYERS, playerStatus, type PlayerGroup } from '@/data/mock'
-import { PlayerStatusBadge } from '@/components/PlayerStatusBadge'
-import { COACHING_STAFF } from '@/data/club'
+import { PLAYERS, playerStatus } from '@/data/mock'
+import { COACHING_STAFF, MANAGER, TEAM_INTRO } from '@/data/club'
 
-const TABS = ['감독/코치', '투수', '포수', '내야수', '외야수'] as const
+const TABS = ['소개', '감독', '코칭스텝', '투수', '타자', '군입대', '신입단'] as const
 type Tab = (typeof TABS)[number]
 
 // 063(065)-SL-AL-09 선수단 소개
 export function PlayersScreen() {
   const navigate = useNavigate()
-  const [tab, setTab] = useState<Tab>('투수')
-  const list = tab === '감독/코치' ? [] : PLAYERS.filter((p) => p.group === (tab as PlayerGroup)).sort((a, b) => a.no - b.no)
+  const [tab, setTab] = useState<Tab>('소개')
+
+  const byNo = (a: { no: number }, b: { no: number }) => a.no - b.no
+  const list =
+    tab === '투수' ? PLAYERS.filter((p) => p.group === '투수' && playerStatus(p).kind !== '군입대').sort(byNo)
+    : tab === '타자' ? PLAYERS.filter((p) => p.group !== '투수' && playerStatus(p).kind !== '군입대').sort(byNo)
+    : tab === '군입대' ? PLAYERS.filter((p) => playerStatus(p).kind === '군입대').sort(byNo)
+    : tab === '신입단' ? PLAYERS.filter((p) => playerStatus(p).kind === '신입단').sort(byNo)
+    : []
+  const isPlayerTab = tab === '투수' || tab === '타자' || tab === '군입대' || tab === '신입단'
 
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-4">
@@ -29,47 +36,97 @@ export function PlayersScreen() {
           </button>
         ))}
       </div>
+
       <div className="px-4 pt-4">
-        <p className="text-xs text-[#9CA3AF] mb-3">{tab === '감독/코치' ? '코칭스태프' : `${tab}진`}</p>
-        {tab === '감독/코치' ? (
-          <div className="grid grid-cols-3 gap-3">
-            {COACHING_STAFF.map((c, i) => (
-              <div key={i} className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden">
-                <PH className="w-full h-28 rounded-none" />
-                <div className="p-2 flex flex-col gap-0.5">
-                  <span className="text-[12px] font-semibold text-[#111827] truncate">{c.name}</span>
-                  <span className="text-[10px] text-[#9CA3AF]">{c.role}</span>
+        {/* 소개 — 감독·주장·대표 타자·대표 투수 */}
+        {tab === '소개' && (
+          <div className="flex flex-col gap-4">
+            {TEAM_INTRO.map((m) => (
+              <div key={m.label} className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#050B24] to-[#0E1F5C] aspect-[16/10]">
+                <p className="absolute left-4 top-3 text-[11px] font-bold tracking-wide text-white/50">{m.label}</p>
+                {/* 선수 사진 더미 영역 */}
+                <div className="absolute right-0 bottom-0 w-[48%] h-[88%]">
+                  <PH className="w-full h-full rounded-none bg-white/10" />
+                </div>
+                <div className="absolute left-4 top-10 w-[55%]">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-white text-[26px] font-black leading-none">{m.name}</span>
+                    <span className="text-white/70 text-[12px]">{m.role}</span>
+                  </div>
+                  <div className="h-px bg-white/30 my-3" />
+                  <p className="text-white/80 text-[11px] leading-relaxed whitespace-pre-line">{m.message}</p>
                 </div>
               </div>
             ))}
           </div>
-        ) : (
-          <div className="grid grid-cols-3 gap-3">
-            {list.map((p) => {
-              const st = playerStatus(p)
-              return (
-              <button
-                key={p.id}
-                onClick={() => navigate(`/all/player-detail?id=${p.id}`)}
-                className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden text-left"
-              >
-                <PH className="w-full h-28 rounded-none" />
-                <div className="p-2 flex flex-col gap-0.5">
-                  <div className="flex items-center gap-1">
-                    <span className="text-[#1B5BF0] text-[10px] font-bold">{p.no}</span>
-                    <span className="text-[12px] font-semibold text-[#111827] truncate">{p.name}</span>
-                    {p.foreign && <span className="text-[8px] font-bold text-[#64748B] bg-[#E8EBF4] rounded px-1">외국인</span>}
-                  </div>
-                  <span className="text-[10px] text-[#9CA3AF]">{p.pos} · {p.handed}</span>
-                  <div className="flex items-center gap-1 flex-wrap">
-                    <PlayerStatusBadge kind={st.kind} tier={st.tier} />
-                    {st.tier === '부상' && st.kind !== '군입대' && st.injury && <span className="text-[9px] text-[#EF4444] truncate">{st.injury}</span>}
-                  </div>
-                </div>
-              </button>
-              )
-            })}
+        )}
+
+        {/* 감독 */}
+        {tab === '감독' && (
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden">
+              <PH className="w-full aspect-[9/16] rounded-none" />
+              <div className="p-2.5 flex flex-col gap-0.5">
+                <span className="text-[13px] font-semibold text-[#111827]">{MANAGER.name}</span>
+                <span className="text-[11px] text-[#9CA3AF]">{MANAGER.role}</span>
+              </div>
+            </div>
           </div>
+        )}
+
+        {/* 코칭스텝 */}
+        {tab === '코칭스텝' && (
+          <div className="grid grid-cols-2 gap-3">
+            {COACHING_STAFF.filter((c) => c.role !== '감독').map((c, i) => (
+              <div key={i} className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden">
+                <PH className="w-full aspect-[9/16] rounded-none" />
+                <div className="p-2.5 flex flex-col gap-0.5">
+                  <span className="text-[13px] font-semibold text-[#111827] truncate">{c.name}</span>
+                  <span className="text-[11px] text-[#9CA3AF]">{c.role}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* 선수 — 9:16 카드, 한 줄 2명 */}
+        {isPlayerTab && (
+          <>
+            {list.length === 0 && <p className="text-center text-sm text-[#9CA3AF] py-16">해당하는 선수가 없어요</p>}
+            <div className="grid grid-cols-2 gap-3">
+              {list.map((p) => {
+                const st = playerStatus(p)
+                return (
+                  <button
+                    key={p.id}
+                    onClick={() => navigate(`/all/player-detail?id=${p.id}`)}
+                    className="relative bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden text-left"
+                  >
+                    <PH className="w-full aspect-[9/16] rounded-none" />
+                    {/* 1군 / 2군 / 부상 배지 — 군입대 선수는 표시 안 함 */}
+                    {tab !== '군입대' && (
+                      <span className={`absolute left-2 top-2 text-[10px] font-bold rounded-full px-2 py-0.5 ${
+                        st.tier === '부상' ? 'bg-[#EF4444] text-white' : st.tier === '2군' ? 'bg-[#E8EBF4] text-[#64748B]' : 'bg-[#1B5BF0] text-white'
+                      }`}>
+                        {st.tier}
+                      </span>
+                    )}
+                    <div className="absolute left-0 right-0 bottom-0 p-2.5 bg-gradient-to-t from-black/60 to-transparent">
+                      <div className="flex items-center gap-1">
+                        <span className="text-[#F0A500] text-[11px] font-bold">{p.no}</span>
+                        <span className="text-[13px] font-semibold text-white truncate">{p.name}</span>
+                        {p.foreign && <span className="text-[8px] font-bold text-white/80 bg-white/20 rounded px-1">외국인</span>}
+                      </div>
+                      <span className="text-[10px] text-white/70">{p.pos} · {p.handed}</span>
+                      {tab !== '군입대' && st.tier === '부상' && st.injury && (
+                        <p className="text-[10px] text-[#FCA5A5] truncate">부상 : {st.injury}</p>
+                      )}
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+          </>
         )}
       </div>
     </div>

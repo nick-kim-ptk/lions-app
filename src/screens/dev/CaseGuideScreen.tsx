@@ -4,10 +4,10 @@ import { Header } from '@/components/Layout'
 import { isPostseason, setMatchState, setSeasonPhase, useCaseState } from '@/data/caseStore'
 import {
   DECISIONS, EMPTY_STATES, GLOSSARY, GUIDE_INTRO, MATCH_GUIDE, OFF_SEASON, OPEN_ITEMS, PENDING_LINKS,
-  ROUTE_TABLE, SCREEN_LINKS, SEASON_GUIDE, SYSTEM_GUIDE, type SystemGuide,
+  NOTIFICATION_PLAN, ROUTE_TABLE, SCREEN_LINKS, SEASON_GUIDE, SYSTEM_GUIDE, TOAST_PLAN, type SystemGuide,
 } from '@/data/caseGuide'
 
-const TABS = ['개요', '시즌 단계', '경기 상태', '공통 시스템 상태', '화면 연동', '정의 필요', '용어'] as const
+const TABS = ['개요', '시즌 단계', '경기 상태', '공통 시스템 상태', '화면 연동', '알림·토스트', '정의 필요', '용어'] as const
 type Tab = (typeof TABS)[number]
 
 const KIND_STYLE = {
@@ -308,6 +308,50 @@ export function CaseGuideScreen() {
                 <div key={p.screen} className="flex items-start justify-between gap-3 py-1.5">
                   <span className="text-[12px] text-[#0E1A40]">{p.screen}</span>
                   <span className="text-right text-[11px] text-[#64748B]">{p.plan}</span>
+                </div>
+              ))}
+            </Card>
+          </>
+        )}
+
+        {tab === '알림·토스트' && (
+          <>
+            <Card>
+              <H>예상 알림 (필수 / 선택)</H>
+              <p className="mb-3 text-[11px] leading-relaxed text-[#64748B]">필수는 설정에서 끌 수 없고 항상 발송, 선택은 설정 항목으로 켜고 끕니다. 문구·시점은 예시입니다.</p>
+              {Array.from(new Set(NOTIFICATION_PLAN.map((n) => n.group))).map((g) => (
+                <div key={g} className="mb-4 last:mb-0">
+                  <p className="mb-2 text-[12px] font-bold text-[#0E1A40]">{g}</p>
+                  <div className="flex flex-col gap-2">
+                    {NOTIFICATION_PLAN.filter((n) => n.group === g).map((n) => (
+                      <div key={n.title} className="rounded-xl bg-[#F8F9FC] p-3">
+                        <div className="flex items-center gap-1.5">
+                          <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${n.type === '필수' ? 'bg-[#FEF2F2] text-[#DC2626]' : 'bg-[#EBF0FF] text-[#1B5BF0]'}`}>{n.type}</span>
+                          <span className="text-[12px] font-bold text-[#111827]">{n.title}</span>
+                        </div>
+                        <p className="mt-1 text-[11px] text-[#64748B]">시점 · {n.when}</p>
+                        <p className="mt-0.5 text-[11px] text-[#374151]">“{n.example}”</p>
+                        <p className="mt-0.5 text-[10px] text-[#9CA3AF]">설정 · {n.setting} / 이동 · {n.link}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </Card>
+            <Card>
+              <H>예상 토스트 메시지</H>
+              <p className="mb-3 text-[11px] leading-relaxed text-[#64748B]">짧은 결과·오류 안내입니다. 문구는 예시입니다.</p>
+              {Array.from(new Set(TOAST_PLAN.map((t) => t.group))).map((g) => (
+                <div key={g} className="mb-4 last:mb-0">
+                  <p className="mb-2 text-[12px] font-bold text-[#0E1A40]">{g}</p>
+                  <div className="flex flex-col gap-1.5">
+                    {TOAST_PLAN.filter((t) => t.group === g).map((t) => (
+                      <div key={t.trigger} className="rounded-xl bg-[#F8F9FC] px-3 py-2">
+                        <p className="text-[10px] text-[#9CA3AF]">{t.trigger}</p>
+                        <p className="text-[12px] text-[#111827]">{t.message}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </Card>

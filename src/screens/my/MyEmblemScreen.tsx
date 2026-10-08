@@ -57,6 +57,7 @@ export function MyEmblemScreen() {
                 <div className="min-w-0">
                   <p className="text-[13px] font-bold text-[#111827] leading-tight">{em.name}</p>
                   <p className="mt-0.5 text-[12px] text-[#6B7280] leading-snug">{em.desc}</p>
+                  <p className="mt-1 text-[11px] text-[#1B5BF0] leading-snug">획득 조건 · {em.cond}</p>
                 </div>
               </div>
             ))}

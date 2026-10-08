@@ -1,5 +1,5 @@
 import ticketKv from '@/assets/images/ticket-kv.png'
-import { KBO_TEAM_NAMES, NOW_MINUTES, SMART_TICKET_BOOKINGS, TEAMS, fmtDotMDW, fmtMDW, gameOf, seatText, toMinutes } from '@/data/mock'
+import { KBO_TEAM_NAMES, NOW_MINUTES, bookableHomeGames, SMART_TICKET_BOOKINGS, TEAMS, fmtDotMDW, fmtMDW, gameOf, seatText, toMinutes } from '@/data/mock'
 
 // 029(031)-SL-MY-02 설정
 // 211x61 PNG — 아이콘 3개 가로 배열: 카카오(0~70), 네이버(70~140), 구글(140~211)
@@ -42,6 +42,22 @@ export const MOBILE_TICKETS = [...SMART_TICKET_BOOKINGS]
     barcodeOpenLabel: `${fmtMDW(g.date)} ${String(Number(g.time.slice(0, 2)) - 2).padStart(2, '0')}:${g.time.slice(3)}`,
   }))
 }).map((t, i) => ({ id: i + 1, ...t }))
+
+// 시즌권 스마트 티켓 — 시즌권 회원은 본인 고정석으로 홈경기마다 자동 발급 (경기 1건 = 카드 1장)
+export const SEASON_PASS = { name: '2027 프리미엄 블루 시즌권', memberNo: 'SL-2027-PRE-07', zone: '1루 프리미엄석', seat: 'A블록 12열 7번', gate: '1루 프리미엄 게이트' }
+export const SEASON_PASS_TICKETS = bookableHomeGames().slice(0, 4).map((g, i) => ({
+  id: 101 + i,
+  opponent: TEAMS[g.opp].name,
+  date: `${fmtDotMDW(g.date)} ${g.time}`,
+  gate: SEASON_PASS.gate,
+  zone: SEASON_PASS.zone,
+  seat: SEASON_PASS.seat,
+  ticketNo: SEASON_PASS.memberNo,
+  barcode: `SP-${g.date}-${SEASON_PASS.memberNo}`,
+  kvImage: ticketKv,
+  barcodeOpen: NOW_MINUTES >= toMinutes(g.date, g.time) - 120,
+  barcodeOpenLabel: `${fmtMDW(g.date)} ${String(Number(g.time.slice(0, 2)) - 2).padStart(2, '0')}:${g.time.slice(3)}`,
+}))
 
 // 046-SL-MY-17 예매 안내
 export const BOOKING_GUIDE_TABS = ['예매 일정', '예매 방법', '취소/환불', '주의사항'] as const

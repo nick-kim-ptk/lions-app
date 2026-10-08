@@ -4,11 +4,11 @@ import { useCaseState, seasonLabel, isSeasonEndPhase } from '@/data/caseStore'
 import { CaseSelect } from '@/components/CaseSelect'
 import mobileTicketQr from '@/assets/images/mobile-ticket-qr-sample.png'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { MOBILE_TICKETS } from '@/data/my'
+import { MOBILE_TICKETS, SEASON_PASS, SEASON_PASS_TICKETS } from '@/data/my'
 import { MOCK_TIME, MOCK_TODAY, addDays, fmtMDW } from '@/data/mock'
 
-type TicketMode = '스마트 티켓' | 'QR 오픈 전' | '선물 받은 티켓' | '선물 전'
-const TICKET_MODES = ['스마트 티켓', 'QR 오픈 전', '선물 받은 티켓', '선물 전'] as const
+type TicketMode = '스마트 티켓' | '시즌권 티켓' | 'QR 오픈 전' | '선물 받은 티켓' | '선물 전'
+const TICKET_MODES = ['스마트 티켓', '시즌권 티켓', 'QR 오픈 전', '선물 받은 티켓', '선물 전'] as const
 
 export function MobileTicketQRScreen() {
   const navigate = useNavigate()
@@ -24,7 +24,9 @@ export function MobileTicketQRScreen() {
   const [qrSeconds, setQrSeconds] = useState(59)
   const [isQrModalOpen, setIsQrModalOpen] = useState(false)
   const touchStartX = useRef(0)
-  const ticket = MOBILE_TICKETS[current]
+  const isPass = ticketMode === '시즌권 티켓'
+  const tickets = isPass ? SEASON_PASS_TICKETS : MOBILE_TICKETS
+  const ticket = tickets[Math.min(current, tickets.length - 1)]
   const { phase } = useCaseState()
 
   useEffect(() => {
@@ -65,7 +67,7 @@ export function MobileTicketQRScreen() {
         </div>
         <div className="flex items-center gap-2">
           {/* 토글 — 빨간 닷 감싸기 */}
-          <CaseSelect variant="dark" value={ticketMode} options={TICKET_MODES} onChange={setTicketMode} />
+          <CaseSelect variant="dark" value={ticketMode} options={TICKET_MODES} onChange={(m) => { setTicketMode(m); setCurrent(0) }} />
           <button
             onClick={() => navigate(-1)}
             className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"
@@ -81,7 +83,7 @@ export function MobileTicketQRScreen() {
 
       {/* 티켓 카운터 — 경기 날짜순, 숫자 표기 */}
       <div className="flex items-center justify-between px-5 mb-3">
-        <span className="text-white text-[12px] font-bold tabular-nums">{current + 1} <span className="text-white/40 font-medium">/ {MOBILE_TICKETS.length}장</span></span>
+        <span className="text-white text-[12px] font-bold tabular-nums">{current + 1} <span className="text-white/40 font-medium">/ {tickets.length}장</span></span>
         <span className="text-white/40 text-[11px]">경기 날짜순 · 좌우로 넘겨보세요</span>
       </div>
 
@@ -91,11 +93,11 @@ export function MobileTicketQRScreen() {
         onTouchStart={e => { touchStartX.current = e.touches[0].clientX; setDragging(true) }}
         onTouchMove={e => {
           const dx = e.touches[0].clientX - touchStartX.current
-          const atEdge = (current === 0 && dx > 0) || (current === MOBILE_TICKETS.length - 1 && dx < 0)
+          const atEdge = (current === 0 && dx > 0) || (current === tickets.length - 1 && dx < 0)
           setDrag(atEdge ? dx * 0.25 : dx)
         }}
         onTouchEnd={() => {
-          if (drag < -60) setCurrent(i => Math.min(i + 1, MOBILE_TICKETS.length - 1))
+          if (drag < -60) setCurrent(i => Math.min(i + 1, tickets.length - 1))
           if (drag > 60) setCurrent(i => Math.max(i - 1, 0))
           setDrag(0)
           setDragging(false)
@@ -108,7 +110,7 @@ export function MobileTicketQRScreen() {
             transition: dragging ? 'none' : 'transform 0.3s ease',
           }}
         >
-          {MOBILE_TICKETS.map((ticket) => (
+          {tickets.map((ticket) => (
             <div key={ticket.id} className="w-full shrink-0 px-5">
               <div className="bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col">
         {/* ── KV 이미지 영역 ── */}
@@ -127,7 +129,7 @@ export function MobileTicketQRScreen() {
 
           {/* 상단 eyebrow */}
           <div className="px-5 pt-4 relative z-10">
-            <span className="text-white/70 text-[9px] font-bold tracking-[0.2em] uppercase drop-shadow">Samsung Lions · 2027 KBO</span>
+            <span className="text-white/70 text-[9px] font-bold tracking-[0.2em] uppercase drop-shadow">Samsung Lions · {isPass ? '2027 SEASON PASS' : '2027 KBO'}</span>
           </div>
 
           {/* 빈 중앙 — 선수 이미지 공간 */}
@@ -172,6 +174,12 @@ export function MobileTicketQRScreen() {
         {/* ── 하단 콘텐츠 — 모드 분기 ── */}
         {ticketMode !== '선물 전' ? (
           <div className="flex flex-col px-5 py-4 gap-3">
+            {isPass && (
+              <div className="flex items-center justify-between rounded-xl bg-[#FFF8E1] px-3 py-2">
+                <span className="text-[11px] font-bold text-[#92400E]">🎫 {SEASON_PASS.name}</span>
+                <span className="text-[10px] text-[#9CA3AF]">회원 고정석</span>
+              </div>
+            )}
             {ticketMode === '선물 받은 티켓' && (
               <div className="flex items-center justify-between rounded-xl bg-[#FFF1F0] px-3 py-2">
                 <span className="text-[11px] font-bold text-[#E53935]">🎁 선물 받은 티켓</span>
@@ -318,6 +326,11 @@ export function MobileTicketQRScreen() {
       </div>
 
       {/* 하단 버튼 영역 */}
+      {isPass && (
+        <div className="px-5 pt-4 pb-10 text-center text-[11px] leading-relaxed text-white/50">
+          시즌권 티켓은 회원 본인 좌석으로 홈경기마다 자동 발급돼요.<br />경기 시작 2시간 전부터 QR이 표시돼요.
+        </div>
+      )}
       {ticketMode === '스마트 티켓' && (
         <div className="px-5 pt-4 pb-10">
           <button

@@ -1,6 +1,33 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PH, PHCircle } from '@/components/Placeholder'
+import { CaseSelect } from '@/components/CaseSelect'
+import { joinInfo, type JoinKind } from '@/data/mock/membership'
+
+const CARD_COUNT = 5
+
+// 가입 기간 외 카드 (가입하기 비활성) — 매년 초 특정 기간에만 가입 접수
+function JoinClosedCard({ kind, title, tone }: { kind: JoinKind; title: string; tone: 'blue' | 'gold' }) {
+  const { schedule, dday } = joinInfo(kind)
+  const bg = tone === 'blue' ? 'from-[#64748B] to-[#334155]' : 'from-[#B8A27A] to-[#8A7650]'
+  return (
+    <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${bg} p-5`}>
+      <div className="absolute -right-6 -top-6 w-32 h-32 rounded-full bg-white/10 pointer-events-none" />
+      <div className="flex items-start justify-between mb-3">
+        <div>
+          <p className="text-white/70 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
+          <p className="text-white text-[16px] font-bold">{title}</p>
+        </div>
+        <span className="text-[11px] font-bold text-white bg-white/20 border border-white/30 rounded-full px-2.5 py-0.5">{dday}</span>
+      </div>
+      <p className="text-white/70 text-[9px] mb-0.5">가입 일정</p>
+      <p className="text-white text-[13px] font-semibold mb-3">{schedule}</p>
+      <button disabled className="w-full h-9 rounded-xl bg-white/25 text-white/60 text-[13px] font-bold cursor-not-allowed">
+        가입하기
+      </button>
+    </div>
+  )
+}
 
 // 028(030)-SL-MY-01 MY (마이페이지)
 export function MyHomeScreen() {
@@ -43,6 +70,16 @@ export function MyHomeScreen() {
   }
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-8">
+      {/* 케이스 전환 (와이어프레임 전용) */}
+      <div className="flex items-center gap-2 px-4 py-2 bg-white border-b border-[#DDE1EC]">
+        <span className="text-[10px] text-[#EF4444] font-bold">케이스 전환</span>
+        <CaseSelect
+          value={'로그인 상태' as '로그인 상태' | '비로그인'}
+          options={['로그인 상태', { value: '비로그인', label: '비로그인 → 로그인 페이지' }]}
+          onChange={(v) => { if (v === '비로그인') navigate('/login') }}
+        />
+        <span className="text-[10px] text-[#64748B]">카드 5종은 좌우로 넘겨 확인</span>
+      </div>
       {/* Player theme hero banner — GNB 포함 */}
       <div className="relative w-full h-[270px] bg-gradient-to-br from-[#1B5BF0] to-[#0E2F80] overflow-hidden mb-4">
         {/* Floating GNB */}
@@ -112,7 +149,7 @@ export function MyHomeScreen() {
         onTouchStart={e => { touchStartX.current = e.touches[0].clientX }}
         onTouchEnd={e => {
           const dx = e.changedTouches[0].clientX - touchStartX.current
-          if (dx < -40) setCardIndex(i => Math.min(i + 1, 2))
+          if (dx < -40) setCardIndex(i => Math.min(i + 1, CARD_COUNT - 1))
           if (dx > 40)  setCardIndex(i => Math.max(i - 1, 0))
         }}
       >
@@ -173,7 +210,7 @@ export function MyHomeScreen() {
           </div>
 
           {/* 카드 3 — 어린이 멤버십 */}
-          <div className="shrink-0 pl-2 pr-4" style={{ width: '88%' }}>
+          <div className="shrink-0 pl-2 pr-2" style={{ width: '88%' }}>
             <div onClick={() => navigate('/my/membership')} className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#F0A500] to-[#D48B00] p-5 cursor-pointer active:opacity-90">
               <div className="absolute -right-6 -top-6 w-32 h-32 rounded-full bg-white/10 pointer-events-none" />
               <div className="absolute -right-2 top-8 w-20 h-20 rounded-full bg-white/10 pointer-events-none" />
@@ -191,11 +228,21 @@ export function MyHomeScreen() {
               </div>
             </div>
           </div>
+
+          {/* 카드 4 — 멤버십 가입 기간 외 */}
+          <div className="shrink-0 pl-2 pr-2" style={{ width: '88%' }}>
+            <JoinClosedCard kind="member" title="블루멤버십 가입" tone="blue" />
+          </div>
+
+          {/* 카드 5 — 어린이 멤버십 가입 기간 외 */}
+          <div className="shrink-0 pl-2 pr-4" style={{ width: '88%' }}>
+            <JoinClosedCard kind="child" title="어린이 멤버십 가입" tone="gold" />
+          </div>
         </div>
 
         {/* 도트 인디케이터 */}
         <div className="flex justify-center gap-1.5 mt-3">
-          {[0, 1, 2].map(i => (
+          {Array.from({ length: CARD_COUNT }, (_, i) => i).map(i => (
             <button key={i} onClick={() => setCardIndex(i)}
               className={`rounded-full transition-all ${i === cardIndex ? 'w-4 h-1.5 bg-[#1B5BF0]' : 'w-1.5 h-1.5 bg-[#DDE1EC]'}`}
             />

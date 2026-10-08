@@ -112,13 +112,30 @@ export function MobileTicketQRScreen() {
         >
           {tickets.map((ticket) => (
             <div key={ticket.id} className="w-full shrink-0 px-5">
-              <div className="bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col">
+              <div className={`bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col ${isPass ? 'ring-2 ring-[#F0A500]/70' : ''}`}>
         {/* ── KV 이미지 영역 ── */}
         <div className="relative h-[440px] overflow-hidden flex flex-col justify-between">
           {/* 폴백 배경 — 항상 깔림 */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#0A1A4E] via-[#1B5BF0] to-[#0E2F80]" />
+          {isPass && (
+            <>
+              {/* 시즌권 전용 고정 디자인 — 시즌 내내 동일(테마 KV 미적용) */}
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(165deg,#050D26 0%,#0A1A4E 45%,#0E2F80 100%)' }} />
+              <div className="absolute inset-0 opacity-30" style={{ background: 'repeating-linear-gradient(135deg, transparent 0 22px, rgba(240,165,0,0.35) 22px 23px)' }} />
+              <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full" style={{ background: 'radial-gradient(circle, rgba(240,165,0,0.45) 0%, transparent 65%)' }} />
+              <div className="absolute -left-20 bottom-24 h-56 w-56 rounded-full" style={{ background: 'radial-gradient(circle, rgba(27,91,240,0.5) 0%, transparent 70%)' }} />
+              <span className="absolute left-1/2 top-[88px] -translate-x-1/2 select-none text-[120px] font-black leading-none tracking-tighter text-white/[0.06]">2027</span>
+              <div className="absolute left-1/2 top-[120px] z-10 flex -translate-x-1/2 flex-col items-center gap-2">
+                <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-[#F0A500] bg-[#0A1A4E]/70 shadow-[0_0_28px_rgba(240,165,0,0.45)]">
+                  <span className="text-[38px]">🦁</span>
+                </div>
+                <span className="text-[#F0A500] text-[11px] font-black tracking-[0.35em]">PREMIUM BLUE</span>
+                <span className="text-white text-[22px] font-black leading-none tracking-[0.12em]">SEASON PASS</span>
+              </div>
+            </>
+          )}
           {/* 교체 가능한 KV 이미지 — 중앙 정렬 */}
-          {ticket.kvImage && (
+          {!isPass && ticket.kvImage && (
             <div
               className="absolute inset-0 bg-center bg-cover"
               style={{ backgroundImage: `url(${ticket.kvImage})`, backgroundSize: 'cover', backgroundPosition: 'center top' }}
@@ -155,9 +172,9 @@ export function MobileTicketQRScreen() {
             >
               {Array.from({ length: 16 }).map((_, i) => (
                 <div key={i} className="flex items-center gap-3 shrink-0">
-                  <span className="w-1 h-1 rounded-full bg-[#4ADE80] inline-block" />
-                  <span className="text-[#4ADE80] text-[9px] font-bold tracking-[0.18em]">캡처·촬영 시 입장 제한됩니다</span>
-                  <span className="text-white/30 text-[9px] font-bold tracking-[0.18em]">VALID TICKET</span>
+                  <span className={`w-1 h-1 rounded-full inline-block ${isPass ? 'bg-[#F0A500]' : 'bg-[#4ADE80]'}`} />
+                  <span className={`text-[9px] font-bold tracking-[0.18em] ${isPass ? 'text-[#F0A500]' : 'text-[#4ADE80]'}`}>캡처·촬영 시 입장 제한됩니다</span>
+                  <span className="text-white/30 text-[9px] font-bold tracking-[0.18em]">{isPass ? 'SEASON PASS MEMBER' : 'VALID TICKET'}</span>
                 </div>
               ))}
             </div>
@@ -175,9 +192,15 @@ export function MobileTicketQRScreen() {
         {ticketMode !== '선물 전' ? (
           <div className="flex flex-col px-5 py-4 gap-3">
             {isPass && (
-              <div className="flex items-center justify-between rounded-xl bg-[#FFF8E1] px-3 py-2">
-                <span className="text-[11px] font-bold text-[#92400E]">🎫 {SEASON_PASS.name}</span>
-                <span className="text-[10px] text-[#9CA3AF]">회원 고정석</span>
+              <div className="flex items-center justify-between rounded-xl px-3.5 py-3" style={{ background: 'linear-gradient(90deg,#0A1A4E,#0E2F80)' }}>
+                <div>
+                  <p className="text-[#F0A500] text-[9px] font-bold tracking-[0.2em]">SEASON PASS MEMBER</p>
+                  <p className="mt-0.5 text-white text-[15px] font-black leading-none">{SEASON_PASS.holder}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-white/50 text-[9px]">{SEASON_PASS.name}</p>
+                  <p className="mt-0.5 text-white text-[11px] font-semibold">유효기간 · 27.12.31</p>
+                </div>
               </div>
             )}
             {ticketMode === '선물 받은 티켓' && (
@@ -189,11 +212,11 @@ export function MobileTicketQRScreen() {
             {/* 티켓 정보 */}
             <div className="grid grid-cols-[1fr_auto] gap-x-8 gap-y-4">
               <div className="col-span-2">
-                <p className="text-[10px] text-[#9CA3AF] mb-0.5">티켓 번호</p>
+                <p className="text-[10px] text-[#9CA3AF] mb-0.5">{isPass ? '시즌권 회원번호' : '티켓 번호'}</p>
                 <p className="text-[17px] font-mono font-black leading-none tracking-tight text-[#111827]">{ticket.ticketNo}</p>
               </div>
               <div>
-                <p className="text-[10px] text-[#9CA3AF] mb-0.5">좌석 정보</p>
+                <p className="text-[10px] text-[#9CA3AF] mb-0.5">{isPass ? '좌석 정보 · 고정석' : '좌석 정보'}</p>
                 <div className="flex items-baseline gap-2">
                   <p className="text-[#111827] text-[16px] font-black leading-tight">{ticket.zone}</p>
                   <p className="text-[#1B5BF0] text-[13px] font-bold leading-tight">{ticket.seat}</p>

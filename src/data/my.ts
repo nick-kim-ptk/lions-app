@@ -44,7 +44,7 @@ export const MOBILE_TICKETS = [...SMART_TICKET_BOOKINGS]
 }).map((t, i) => ({ id: i + 1, ...t }))
 
 // 시즌권 스마트 티켓 — 시즌권 회원은 본인 고정석으로 홈경기마다 자동 발급 (경기 1건 = 카드 1장)
-export const SEASON_PASS = { name: '2027 프리미엄 블루 시즌권', memberNo: 'SL-2027-PRE-07', zone: '1루 프리미엄석', seat: 'A블록 12열 7번', gate: '1루 프리미엄 게이트' }
+export const SEASON_PASS = { name: '2027 프리미엄 블루 시즌권', memberNo: 'SL-2027-PRE-07', holder: '홍 길 동', zone: '1루 프리미엄석', seat: 'A블록 12열 7번', gate: '1루 프리미엄 게이트' }
 export const SEASON_PASS_TICKETS = bookableHomeGames().slice(0, 4).map((g, i) => ({
   id: 101 + i,
   opponent: TEAMS[g.opp].name,

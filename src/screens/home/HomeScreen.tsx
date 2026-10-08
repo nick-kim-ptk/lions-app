@@ -152,16 +152,16 @@ export function HomeScreen() {
             phase === '우승 확정' ? (
               /* 우승 확정: 우승 축하 카드 (수치는 예시) */
               <div className="rounded-2xl bg-gradient-to-br from-[#7C5C00] via-[#F0A500] to-[#FFD966] p-5 text-[#0E1A40]">
-                <span className="rounded-full bg-[#0E1A40] px-2.5 py-0.5 text-[10px] font-bold text-[#F0A500]">2026 한국시리즈 우승</span>
-                <p className="mt-3 text-[18px] font-black">🏆 우승을 축하합니다!</p>
-                <p className="mt-0.5 text-[11px] font-semibold text-[#0E1A40]/70">한국시리즈 4승 2패 (예시) · 함께해 주셔서 감사합니다</p>
+                <span className="rounded-full bg-[#0E1A40] px-2.5 py-0.5 text-[10px] font-bold text-[#F0A500]">2026 한국시리즈 우승 · V9</span>
+                <p className="mt-3 text-[18px] font-black">V9, 우리가 해냈다! 🏆</p>
+                <p className="mt-0.5 text-[11px] font-semibold text-[#0E1A40]/70">통산 9번째 우승, 푸른 피로 함께 만든 순간이에요 💙 (한국시리즈 4승 2패 · 예시)</p>
                 <div className="mt-4 flex items-center justify-between rounded-xl bg-[#0E1A40]/15 px-3 py-2.5">
-                  <span className="text-[11px] font-semibold">2027 시즌 개막까지</span>
+                  <span className="text-[11px] font-semibold">V10을 향한 2027 개막까지</span>
                   <span className="text-[16px] font-black">D-146</span>
                 </div>
                 <div className="mt-3 flex gap-2">
-                  <button onClick={() => window.open('https://www.youtube.com/@lionstv1982', '_blank', 'noopener,noreferrer')} className="h-10 flex-1 rounded-xl bg-[#0E1A40] text-[12px] font-bold text-white">공식 유튜브</button>
-                  <button onClick={() => window.open('https://www.instagram.com/samsunglions_baseballclub/', '_blank', 'noopener,noreferrer')} className="h-10 flex-1 rounded-xl border border-[#0E1A40]/40 text-[12px] font-bold">공식 인스타그램</button>
+                  <button onClick={() => window.open('https://www.youtube.com/@lionstv1982', '_blank', 'noopener,noreferrer')} className="h-10 flex-1 rounded-xl bg-[#0E1A40] text-[12px] font-bold text-white">우승의 순간 보기</button>
+                  <button onClick={() => window.open('https://www.instagram.com/samsunglions_baseballclub/', '_blank', 'noopener,noreferrer')} className="h-10 flex-1 rounded-xl border border-[#0E1A40]/40 text-[12px] font-bold">함께 축하하기</button>
                 </div>
               </div>
             ) : phase === '비시즌' || phase === '가을야구 탈락' ? (

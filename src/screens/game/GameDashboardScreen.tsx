@@ -65,7 +65,7 @@ export function GameDashboardScreen() {
             <span className="rounded-full bg-white/15 px-2.5 py-0.5 text-[10px] font-bold">2026 시즌 종료</span>
             <p className="mt-3 text-[15px] font-black">2026 시즌 최종 결과</p>
             <p className="mt-0.5 text-[11px] text-white/60">
-              {phase === '우승 확정' ? '정규시즌 2위 · 한국시리즈 우승 🏆 (예시)' : phase === '가을야구 탈락' ? '정규시즌 2위 · 준플레이오프 탈락 (예시)' : '정규시즌 2위 (예시)'}
+              {phase === '우승 확정' ? '정규시즌 2위 · 한국시리즈 우승 · V9 달성 🏆 (예시)' : phase === '가을야구 탈락' ? '정규시즌 2위 · 준플레이오프 탈락 (예시)' : '정규시즌 2위 (예시)'}
             </p>
             <div className="mt-4 grid grid-cols-4 gap-2 text-center">
               {[

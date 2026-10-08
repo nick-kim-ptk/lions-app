@@ -1,10 +1,7 @@
-import { useNavigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import samsungImg from '@/assets/images/v9-team-photo.jpg'
+import { useState } from 'react'
 import { Header, useScreenIdOverride } from '@/components/Layout'
 import { EmptyState } from '@/components/EmptyState'
 import { ListCaseBar, type ListCase } from '@/components/ListCaseBar'
-import { SEASON_GRID_EMPTY, DiaryRecord, INITIAL_DIARIES } from '@/data/lounge'
 
 function DiaryFeedCard({ watchMode, player, date, match, text, result, onEdit }: {
   watchMode: '직관' | '집관' | '원정';
@@ -86,10 +83,6 @@ function DiaryFeedCard({ watchMode, player, date, match, text, result, onEdit }:
 }
 
 export function DiaryScreen() {
-  const navigate = useNavigate()
-  const [recordState] = useState<'after' | 'before'>('after')
-  const [analysisTab, setAnalysisTab] = useState<'상대팀별'|'야구장별'|'요일별'>('상대팀별')
-  const [sheetOpen, setSheetOpen] = useState(false)
   const [filterMode, setFilterMode] = useState<'전체' | '직관' | '집관' | '원정'>('전체')
   const [listCase, setListCase] = useState<ListCase>('목록 있음')
   const [showWriteModal, setShowWriteModal] = useState(false)
@@ -139,49 +132,6 @@ export function DiaryScreen() {
     }
     closeModal()
   }
-  const [selectedFeedIdx, setSelectedFeedIdx] = useState<number | null>(null)
-  const [diaries, setDiaries] = useState<DiaryRecord[]>(() => {
-    try {
-      const saved = localStorage.getItem('sl_diaries')
-      if (saved) return JSON.parse(saved)
-    } catch (e) {
-      console.error(e)
-    }
-    return INITIAL_DIARIES
-  })
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('sl_diaries', JSON.stringify(diaries))
-    } catch (e) {
-      console.error(e)
-    }
-  }, [diaries])
-
-  // 상대팀별 직관 데이터
-  const opponentStats = [
-    { team: '롯데 자이언츠', count: 4, win: '3승 1패', max: 4 },
-    { team: 'LG 트윈스', count: 3, win: '2승 1패', max: 4 },
-    { team: 'KIA 타이거즈', count: 2, win: '1승 1패', max: 4 },
-    { team: '두산 베어스', count: 1, win: '1승 0패', max: 4 },
-    { team: '한화 이글스', count: 1, win: '1승 0패', max: 4 },
-  ]
-
-  // 야구장별 직관 데이터
-  const stadiumStats = [
-    { stadium: '대구 삼성 라이온즈 파크', count: 9, max: 9 },
-    { stadium: '잠실 야구장', count: 2, max: 9 },
-    { stadium: '사직 야구장', count: 1, max: 9 },
-  ]
-
-  // 요일별 직관 데이터
-  const dayStats = [
-    { day: '토요일', count: 5, max: 5 },
-    { day: '일요일', count: 4, max: 5 },
-    { day: '금요일', count: 2, max: 5 },
-    { day: '수요일', count: 1, max: 5 },
-  ]
-
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-44">
       <Header title="함께 만드는 V9" />
@@ -254,157 +204,6 @@ export function DiaryScreen() {
             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
-      </div>
-
-      {/* Bottom Sheet 오버레이 */}
-      {sheetOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/40"
-          onClick={() => setSheetOpen(false)}
-        />
-      )}
-
-      {/* Bottom Sheet */}
-      <div
-        className="fixed left-0 right-0 bottom-0 z-50 bg-[#F5F7FB] rounded-t-3xl overflow-hidden flex flex-col"
-        style={{
-          maxHeight: '85vh',
-          transform: sheetOpen ? 'translateY(0)' : 'translateY(100%)',
-          transition: 'transform 0.35s cubic-bezier(0.32, 0.72, 0, 1)',
-        }}
-      >
-        {/* 핸들 */}
-        <div className="flex flex-col items-center pt-3 pb-2 shrink-0">
-          <div className="w-10 h-1 rounded-full bg-[#DDE1EC] mb-2" />
-          <div className="flex items-center justify-between w-full px-5 pb-1">
-            <span className="text-[15px] font-bold text-[#111827]">나의 시즌 기록</span>
-            <button onClick={() => setSheetOpen(false)} className="w-8 h-8 rounded-full bg-[#E8EBF4] flex items-center justify-center">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                <path d="M18 6L6 18M6 6l12 12" stroke="#64748B" strokeWidth="2" strokeLinecap="round"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        {/* 스크롤 콘텐츠 */}
-        <div className="overflow-y-auto flex-1 pb-8">
-          {/* 3. 시즌 기록 */}
-          <div className="px-4 pt-2 mb-5">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm text-[#111827] font-bold">2026 시즌 기록</span>
-              <span className="text-xs text-[#64748B]">20/144 경기</span>
-            </div>
-            <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-3">
-              <div className="grid gap-0.5" style={{ gridTemplateColumns: 'repeat(12, 1fr)' }}>
-                {Array.from({length: 144}).map((_, i) => {
-                  const row = Math.floor(i / 12)
-                  const col = i % 12
-                  const posX = (col / 11) * 100
-                  const posY = (row / 11) * 100
-                  const isEmpty = SEASON_GRID_EMPTY.has(i)
-                  return (
-                    <div
-                      key={i}
-                      className="aspect-square rounded-sm"
-                      style={isEmpty ? { backgroundColor: '#FFFFFF' } : {
-                        backgroundImage: `url(${samsungImg})`,
-                        backgroundSize: '1200% 1200%',
-                        backgroundPosition: `${posX}% ${posY}%`,
-                      }}
-                    />
-                  )
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* 핵심 지표 */}
-          <div className="px-4 mb-5">
-            <div className="grid grid-cols-3 gap-2.5">
-              <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-3 text-center flex flex-col justify-center">
-                <p className="text-[#111827] text-2xl font-bold leading-tight">{diaries.length + 9}</p>
-                <span className="text-[11px] font-medium text-[#64748B] mt-0.5">직관 기록</span>
-              </div>
-              <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-3 text-center flex flex-col justify-center">
-                <p className="text-[#111827] text-2xl font-bold leading-tight">66.7%</p>
-                <span className="text-[11px] font-medium text-[#64748B] mt-0.5">직관 승률</span>
-                <span className="text-[10px] text-[#1B5BF0] font-semibold">8승 4패</span>
-              </div>
-              <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-3 text-center flex flex-col justify-center">
-                <p className="text-[#111827] text-2xl font-bold leading-tight">롯데</p>
-                <span className="text-[11px] font-medium text-[#64748B] mt-0.5">최다 직관 상대</span>
-                <span className="text-[10px] text-[#64748B]">4경기</span>
-              </div>
-            </div>
-          </div>
-
-          {/* 나의 직관 분석 */}
-          <div className="px-4 mb-5">
-            <span className="text-sm text-[#111827] font-bold block mb-3">나의 직관 분석</span>
-            <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-4">
-              <div className="flex bg-[#F5F7FB] p-1 rounded-xl mb-4">
-                {(['상대팀별', '야구장별', '요일별'] as const).map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setAnalysisTab(tab)}
-                    className={`flex-1 py-1.5 text-[12px] font-semibold rounded-lg transition-all ${
-                      analysisTab === tab
-                        ? 'bg-white text-[#111827] shadow-sm'
-                        : 'text-[#64748B] hover:text-[#111827]'
-                    }`}
-                  >
-                    {tab}
-                  </button>
-                ))}
-              </div>
-              {analysisTab === '상대팀별' && (
-                <div className="flex flex-col gap-3">
-                  {opponentStats.map((item) => (
-                    <div key={item.team} className="flex flex-col gap-1">
-                      <div className="flex justify-between items-center text-[12px]">
-                        <span className="font-semibold text-[#111827]">{item.team}</span>
-                        <span className="font-bold text-[#1B5BF0]">{item.count}경기 <span className="text-[10px] text-[#64748B] font-normal ml-1">({item.win})</span></span>
-                      </div>
-                      <div className="w-full bg-[#F5F7FB] h-2 rounded-full overflow-hidden">
-                        <div className="bg-[#1B5BF0] h-full rounded-full transition-all duration-300" style={{ width: `${(item.count / item.max) * 100}%` }} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-              {analysisTab === '야구장별' && (
-                <div className="flex flex-col gap-3">
-                  {stadiumStats.map((item) => (
-                    <div key={item.stadium} className="flex flex-col gap-1">
-                      <div className="flex justify-between items-center text-[12px]">
-                        <span className="font-semibold text-[#111827]">{item.stadium}</span>
-                        <span className="font-bold text-[#1B5BF0]">{item.count}경기</span>
-                      </div>
-                      <div className="w-full bg-[#F5F7FB] h-2 rounded-full overflow-hidden">
-                        <div className="bg-[#1B5BF0] h-full rounded-full transition-all duration-300" style={{ width: `${(item.count / item.max) * 100}%` }} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-              {analysisTab === '요일별' && (
-                <div className="flex flex-col gap-3">
-                  {dayStats.map((item) => (
-                    <div key={item.day} className="flex flex-col gap-1">
-                      <div className="flex justify-between items-center text-[12px]">
-                        <span className="font-semibold text-[#111827]">{item.day}</span>
-                        <span className="font-bold text-[#1B5BF0]">{item.count}경기</span>
-                      </div>
-                      <div className="w-full bg-[#F5F7FB] h-2 rounded-full overflow-hidden">
-                        <div className="bg-[#1B5BF0] h-full rounded-full transition-all duration-300" style={{ width: `${(item.count / item.max) * 100}%` }} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* 기록 작성 모달 (098-SL-LG-10 인증하기 모달 폼 복제) */}

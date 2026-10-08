@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CaseSelect } from '@/components/CaseSelect'
 import { useNavigate } from 'react-router-dom'
 import { Header } from '@/components/Layout'
 import {
@@ -102,22 +103,7 @@ export function BookingDetailScreen() {
       <Header
         title="예매 확인/취소"
         rightSlot={
-          <div className="rounded-full border border-dashed border-red-400 p-0.5">
-            <div className="flex gap-0.5 rounded-full bg-[#E8EBF4] p-0.5">
-              {(['예매 확인', '예매 취소'] as const).map(tab => (
-                <button
-                  type="button"
-                  key={tab}
-                  onClick={() => setDetailTab(tab)}
-                  className={`rounded-full px-2.5 py-1 text-[10px] font-semibold transition-colors ${
-                    detailTab === tab ? 'bg-white text-[#0E1A40] shadow-sm' : 'text-[#9CA3AF]'
-                  }`}
-                >
-                  {tab}
-                </button>
-              ))}
-            </div>
-          </div>
+          <CaseSelect value={detailTab} options={['예매 확인', '예매 취소'] as const} onChange={setDetailTab} />
         }
       />
 
@@ -156,27 +142,7 @@ export function BookingDetailScreen() {
           <div className="mb-2 flex items-center justify-between gap-3">
             <p className="text-[12px] font-semibold text-[#64748B]">티켓 예매내역</p>
             {!isCancelled && (
-              <div className="rounded-full border border-dashed border-red-400 p-0.5">
-                <div className="flex gap-0.5 rounded-full bg-[#E8EBF4] p-0.5">
-                  {(['취소 가능', '취소 불가'] as const).map(status => (
-                    <button
-                      type="button"
-                      key={status}
-                      onClick={() => {
-                        setCancelAvailability(status)
-                        if (status === '취소 불가') setSelectedDetailTickets([])
-                      }}
-                      className={`rounded-full px-2.5 py-1 text-[10px] font-semibold transition-colors ${
-                        cancelAvailability === status
-                          ? 'bg-white text-[#0E1A40] shadow-sm'
-                          : 'text-[#9CA3AF]'
-                      }`}
-                    >
-                      {status}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              <CaseSelect value={cancelAvailability} options={['취소 가능', '취소 불가'] as const} onChange={(status) => { setCancelAvailability(status); if (status === '취소 불가') setSelectedDetailTickets([]) }} />
             )}
           </div>
           <div className="overflow-x-auto rounded-2xl border border-[#DDE1EC] bg-white">

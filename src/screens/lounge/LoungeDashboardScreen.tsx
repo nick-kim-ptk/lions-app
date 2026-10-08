@@ -1,4 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom'
+import { CaseSelect } from '@/components/CaseSelect'
 import { useState, useEffect, useRef } from 'react'
 import { Header } from '@/components/Layout'
 
@@ -88,21 +89,7 @@ export function LoungeDashboardScreen() {
         <div className="flex items-center justify-between mb-3">
           <span className="text-[14px] font-bold text-[#111827]">엘도라도 ZONE</span>
           {/* 케이스 베리에이션용 토글 */}
-          <div className="border border-dashed border-red-400 rounded-full p-0.5">
-          <div className="flex gap-0.5 bg-[#E8EBF4] p-0.5 rounded-full">
-            {(['경기 전', '경기 중', '미 운영'] as const).map((type) => (
-              <button
-                key={type}
-                onClick={() => setEldoradoMatch(type)}
-                className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-colors ${
-                  eldoradoMatch === type ? 'bg-[#1B5BF0] text-white shadow-sm' : 'text-[#64748B]'
-                }`}
-              >
-                {type}
-              </button>
-            ))}
-          </div>
-          </div>
+          <CaseSelect value={eldoradoMatch} options={['경기 전', '경기 중', '미 운영'] as const} onChange={setEldoradoMatch} />
         </div>
         {/* 미 운영 — 클릭 비활성 */}
         {eldoradoMatch === '미 운영' ? (
@@ -169,16 +156,7 @@ export function LoungeDashboardScreen() {
         <div className="flex items-center justify-between mb-3">
           <span className="text-[14px] font-bold text-[#111827]">블루 시그널</span>
           {/* 케이스 베리에이션용 토글 */}
-          <div className="border border-dashed border-red-400 rounded-full p-0.5">
-            <div className="flex bg-[#E8EBF4] rounded-full p-0.5 gap-0.5">
-              {(['직관용', '원정용', '전체용', '종료 시'] as ('직관용'|'원정용'|'전체용'|'종료 시')[]).map((t) => (
-                <button key={t} onClick={() => setBlueSignalMode(t)}
-                  className={`px-2 py-0.5 rounded-full text-[10px] font-bold transition-colors ${blueSignalMode === t ? 'bg-[#1B5BF0] text-white shadow-sm' : 'text-[#64748B]'}`}>
-                  {t}
-                </button>
-              ))}
-            </div>
-          </div>
+          <CaseSelect value={blueSignalMode} options={['직관용', '원정용', '전체용', '종료 시'] as const} onChange={setBlueSignalMode} />
         </div>
         <div onClick={() => navigate('/lounge/blue-signal')} className="w-full cursor-pointer">
           <div className="bg-gradient-to-br from-[#0D1117] to-[#1A2A5E] rounded-2xl p-4 relative overflow-hidden">
@@ -307,16 +285,7 @@ export function LoungeDashboardScreen() {
       <div ref={missionRef} id="mission" className="px-4 mb-5">
         <div className="flex items-center justify-between mb-3">
           <span className="text-[14px] font-bold text-[#111827]">오늘의 미션</span>
-          <div className="border border-dashed border-red-400 rounded-full p-0.5">
-            <div className="flex bg-[#E8EBF4] rounded-full p-0.5 gap-0.5">
-              {(['사지선다', 'OX퀴즈', 'VS선택', '예측형'] as const).map((t) => (
-                <button key={t} onClick={() => { setMissionType(t); setIsSubmitted(false); setSelectedPlayer('') }}
-                  className={`text-[10px] font-semibold px-2.5 py-1 rounded-full transition-colors ${missionType === t ? 'bg-white text-[#0E1A40] shadow-sm' : 'text-[#9CA3AF]'}`}>
-                  {t}
-                </button>
-              ))}
-            </div>
-          </div>
+          <CaseSelect value={missionType} options={['사지선다', 'OX퀴즈', 'VS선택', '예측형'] as const} onChange={(t) => { setMissionType(t); setIsSubmitted(false); setSelectedPlayer('') }} />
         </div>
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden">
           <div className="bg-gradient-to-r from-[#0D1117] to-[#1A2035] px-4 py-3 flex items-center justify-between">

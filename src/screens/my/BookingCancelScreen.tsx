@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CaseSelect } from '@/components/CaseSelect'
 import { useNavigate } from 'react-router-dom'
 import { Header } from '@/components/Layout'
 import {
@@ -40,25 +41,7 @@ export function BookingCancelScreen() {
       <Header
         title="예매 취소"
         rightSlot={
-          <div className="rounded-full border border-dashed border-red-400 p-0.5">
-            <div className="flex gap-0.5 rounded-full bg-[#E8EBF4] p-0.5">
-              {(['부분 취소', '전체 취소'] as const).map(mode => (
-                <button
-                  type="button"
-                  key={mode}
-                  onClick={() => {
-                    setCancelMode(mode)
-                    setAgreed(false)
-                  }}
-                  className={`rounded-full px-2.5 py-1 text-[10px] font-semibold transition-colors ${
-                    cancelMode === mode ? 'bg-white text-[#0E1A40] shadow-sm' : 'text-[#9CA3AF]'
-                  }`}
-                >
-                  {mode}
-                </button>
-              ))}
-            </div>
-          </div>
+          <CaseSelect value={cancelMode} options={['부분 취소', '전체 취소'] as const} onChange={(mode) => { setCancelMode(mode); setAgreed(false) }} />
         }
       />
       <div className="px-4 pt-4 flex flex-col gap-4">

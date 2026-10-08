@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { CaseSelect } from '@/components/CaseSelect'
 import { useState, useEffect } from 'react'
 import { PHCircle } from '@/components/Placeholder'
 import { LIVE_REACTIONS } from '@/data/lounge'
@@ -26,19 +27,7 @@ export function EldoradoScreen() {
         </div>
         <div className="flex items-center gap-2">
           {/* 경기 / 경기 전 / 제재시 토글 */}
-          <div className="flex gap-0.5 bg-white/10 p-0.5 rounded-full border border-white/10">
-            {(['경기', '경기 전', '제재시'] as const).map((type) => (
-              <button
-                key={type}
-                onClick={() => setHasMatch(type)}
-                className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-colors ${
-                  hasMatch === type ? 'bg-white text-[#0D1117]' : 'text-white/50'
-                }`}
-              >
-                {type}
-              </button>
-            ))}
-          </div>
+          <CaseSelect variant="dark" value={hasMatch} options={['경기', '경기 전', '제재시'] as const} onChange={setHasMatch} />
           <button onClick={() => navigate(-1)}
             className="w-9 h-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">

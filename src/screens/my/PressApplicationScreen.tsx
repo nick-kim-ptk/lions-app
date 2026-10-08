@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CaseSelect } from '@/components/CaseSelect'
 import { Header } from '@/components/Layout'
 
 // 099-SL-MY-28 PRESS 신청
@@ -25,24 +26,7 @@ export function PressApplicationScreen() {
       <Header
         title="PRESS 신청"
         rightSlot={
-          <div className="rounded-full border border-dashed border-red-400 p-0.5">
-            <div className="flex gap-0.5 rounded-full bg-[#E8EBF4] p-0.5">
-              {(['신청 전', '신청 대기 중', '신청 후'] as const).map(status => (
-                <button
-                  type="button"
-                  key={status}
-                  onClick={() => setPressStatus(status)}
-                  className={`whitespace-nowrap rounded-full px-2 py-1 text-[9px] font-semibold transition-colors ${
-                    pressStatus === status
-                      ? 'bg-white text-[#0E1A40] shadow-sm'
-                      : 'text-[#9CA3AF]'
-                  }`}
-                >
-                  {status}
-                </button>
-              ))}
-            </div>
-          </div>
+          <CaseSelect value={pressStatus} options={['신청 전', '신청 대기 중', '신청 후'] as const} onChange={setPressStatus} />
         }
       />
 

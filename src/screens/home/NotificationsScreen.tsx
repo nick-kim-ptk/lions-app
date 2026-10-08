@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { CaseSelect } from '@/components/CaseSelect'
 import { useState, useEffect } from 'react'
 import { NOTIF_DATA } from '@/data/home'
 import { markAllNotifRead } from '@/data/notifStore'
@@ -36,16 +37,7 @@ export function NotificationsScreen() {
           </svg>
         </button>
         {/* 토글 */}
-        <div className="border border-dashed border-red-400 rounded-full p-0.5">
-          <div className="flex bg-[#E8EBF4] rounded-full p-0.5 gap-0.5">
-            {(['알림', '알림 없음'] as const).map((s) => (
-              <button key={s} onClick={() => setTab(s)}
-                className={`text-[10px] font-semibold px-2.5 py-1 rounded-full transition-colors whitespace-nowrap ${tab === s ? 'bg-white text-[#0E1A40] shadow-sm' : 'text-[#9CA3AF]'}`}>
-                {s}
-              </button>
-            ))}
-          </div>
-        </div>
+        <CaseSelect value={tab} options={['알림', '알림 없음'] as const} onChange={setTab} />
         <SettingsIcon />
       </div>
 

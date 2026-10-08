@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CaseSelect } from '@/components/CaseSelect'
 import { Header } from '@/components/Layout'
 import {
   BATTER_STATS, MOCK_TODAY, MY_TEAM, PLAYER_BY_ID, TEAMS, TODAY_GAME, TODAY_LINEUP,
@@ -47,19 +48,7 @@ export function LineupScreen() {
         <span className="text-[13px] font-semibold text-[#111827]">{MOCK_TODAY.slice(0, 4)}년 {fmtMDW(MOCK_TODAY)}</span>
         <span className="text-[12px] text-[#64748B]">{MY_TEAM.short} vs {opp.short} · {game.time}</span>
         {/* 상태 토글 — 케이스 베리에이션용 */}
-        <div className="ml-auto border border-dashed border-red-400 rounded-full p-0.5">
-          <div className="flex bg-[#E8EBF4] rounded-full p-0.5 gap-0.5">
-            {[true, false].map((v) => (
-              <button
-                key={String(v)}
-                onClick={() => setAnnounced(v)}
-                className={`text-[10px] font-semibold px-2 py-1 rounded-full transition-colors ${announced === v ? 'bg-white text-[#0E1A40] shadow-sm' : 'text-[#9CA3AF]'}`}
-              >
-                {v ? '발표 후' : '발표 전'}
-              </button>
-            ))}
-          </div>
-        </div>
+        <CaseSelect className="ml-auto" value={announced ? '발표 후' : '발표 전'} options={['발표 후', '발표 전'] as const} onChange={(v) => setAnnounced(v === '발표 후')} />
       </div>
 
       {/* Match header */}

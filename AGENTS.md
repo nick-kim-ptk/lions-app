@@ -14,3 +14,4 @@ React 19 + Vite + Tailwind CSS v4 + react-router-dom(HashRouter). 모든 데이�
 - 목업 기준일은 `src/data/mock/clock.ts`의 `MOCK_TODAY`. `new Date()`로 화면 날짜를 만들지 않는다.
 - KBO 규칙(월요일 휴식, 경기 시작 시각, 예매 오픈, 취소 마감)은 `mock/games.ts`, `mock/bookings.ts`에 있다.
 - 경로 별칭 `@` = `src`. 점검: `pnpm typecheck`, 빌드: `pnpm build`.
+- 케이스(상태) 전환 컨트롤은 `components/CaseSelect`(빨간 점선 드롭다운)만 사용한다. 탭·필터 등 실제 UI와 구분하기 위함.

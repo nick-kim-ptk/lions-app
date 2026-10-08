@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { CaseSelect } from '@/components/CaseSelect'
 import { useState, useRef, useSyncExternalStore } from 'react'
 import { PH, PHCircle, PHSection } from '@/components/Placeholder'
 import { subscribeNotif, getHasUnread } from '@/data/notifStore'
@@ -132,16 +133,7 @@ export function HomeScreen() {
         <div className="flex items-center justify-between px-4 mb-3">
           <span className="text-sm font-bold text-[#111827]">오늘의 경기</span>
           {/* 상태 탭 — 케이스 베리에이션용 토글 */}
-          <div className="border border-dashed border-red-400 rounded-full p-0.5">
-          <div className="flex bg-[#E8EBF4] rounded-full p-0.5 gap-0.5">
-            {MATCH_STATES.map((s) => (
-              <button key={s} onClick={() => setMatchState(s)}
-                className={`text-[10px] font-semibold px-2 py-1 rounded-full transition-colors whitespace-nowrap ${matchState === s ? 'bg-white text-[#0E1A40] shadow-sm' : 'text-[#9CA3AF]'}`}>
-                {s}
-              </button>
-            ))}
-          </div>
-          </div>
+          <CaseSelect value={matchState} options={MATCH_STATES} onChange={setMatchState} />
         </div>
 
         {/* 카드 캐러셀 */}

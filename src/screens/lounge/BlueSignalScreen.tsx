@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CaseSelect } from '@/components/CaseSelect'
 import { Header, useScreenIdOverride } from '@/components/Layout'
 
 // 098-SL-LG-10 블루 시그널
@@ -91,16 +92,7 @@ export function BlueSignalScreen() {
 
       {/* 케이스 베리에이션 토글 */}
       <div className="px-4 pt-4 flex justify-end mb-2">
-        <div className="border border-dashed border-red-400 rounded-full p-0.5">
-          <div className="flex bg-[#E8EBF4] rounded-full p-0.5 gap-0.5">
-            {(['직관용', '원정용', '전체용', '종료 시'] as ('직관용'|'원정용'|'전체용'|'종료 시')[]).map((m) => (
-              <button key={m} onClick={() => setSignalMode(m)}
-                className={`px-2.5 py-1 rounded-full text-[10px] font-bold transition-colors ${signalMode === m ? 'bg-[#1B5BF0] text-white shadow-sm' : 'text-[#64748B]'}`}>
-                {m}
-              </button>
-            ))}
-          </div>
-        </div>
+        <CaseSelect value={signalMode} options={['직관용', '원정용', '전체용', '종료 시'] as const} onChange={setSignalMode} />
       </div>
 
       {/* 인증 배너 */}

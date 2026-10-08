@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CaseSelect } from '@/components/CaseSelect'
 import { useNavigate } from 'react-router-dom'
 import { Header } from '@/components/Layout'
 
@@ -22,21 +23,7 @@ export function EventDetailScreen() {
       <div className="sticky bottom-0 bg-white border-t border-[#DDE1EC] px-4 pt-4 pb-6">
         {/* 앰블럼 / 일반참여 토글 */}
         <div className="flex items-center justify-end mb-4">
-          <div className="border border-dashed border-red-400 rounded-full p-0.5">
-            <div className="flex bg-[#E8EBF4] rounded-full p-0.5 gap-0.5">
-              {(['앰블럼', '일반'] as const).map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setMode(tab)}
-                  className={`text-[10px] font-semibold px-2.5 py-1 rounded-full transition-colors ${
-                    mode === tab ? 'bg-white text-[#0E1A40] shadow-sm' : 'text-[#9CA3AF]'
-                  }`}
-                >
-                  {tab} 참여
-                </button>
-              ))}
-            </div>
-          </div>
+          <CaseSelect dropUp value={mode} options={[{ value: '앰블럼', label: '앰블럼 참여' }, { value: '일반', label: '일반 참여' }] as const} onChange={setMode} />
         </div>
 
         {mode === '앰블럼' ? (

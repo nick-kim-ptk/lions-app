@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { CaseSelect } from '@/components/CaseSelect'
 import { useState } from 'react'
 import { PH, PHCircle, PHSection } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
@@ -41,23 +42,7 @@ export function GameDashboardScreen() {
             </div>
           </div>
           {/* 홈 / 원정 / 미경기 칩 — 케이스 베리에이션용 토글 */}
-          <div className="border border-dashed border-red-400 rounded-full p-0.5">
-          <div className="flex gap-1 bg-[#E8EBF4] p-0.5 rounded-full">
-            {(['home', 'away', 'none'] as const).map((type) => (
-              <button
-                key={type}
-                onClick={() => setMatchType(type)}
-                className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-colors ${
-                  matchType === type
-                    ? 'bg-[#1B5BF0] text-white shadow-sm'
-                    : 'text-[#64748B]'
-                }`}
-              >
-                {type === 'home' ? '홈' : type === 'away' ? '원정' : '미경기'}
-              </button>
-            ))}
-          </div>
-          </div>
+          <CaseSelect value={matchType} options={[{ value: 'home', label: '홈 경기' }, { value: 'away', label: '원정 경기' }, { value: 'none', label: '미경기' }] as const} onChange={setMatchType} />
         </div>
 
         {matchType !== 'none' && (

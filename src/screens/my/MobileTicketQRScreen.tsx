@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { CaseSelect } from '@/components/CaseSelect'
 import mobileTicketQr from '@/assets/images/mobile-ticket-qr-sample.png'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { MOBILE_TICKETS } from '@/data/my'
@@ -36,19 +37,7 @@ export function MobileTicketQRScreen() {
         </div>
         <div className="flex items-center gap-2">
           {/* 토글 — 빨간 닷 감싸기 */}
-          <div className="border border-dashed border-[#E53935] rounded-full p-0.5">
-            <div className="flex bg-white/10 rounded-full p-0.5 gap-0.5">
-              {(['스마트 티켓', '선물 전'] as const).map((mode) => (
-                <button
-                  key={mode}
-                  onClick={() => setTicketMode(mode)}
-                  className={`h-7 px-3 rounded-full text-[11px] font-bold transition-all ${ticketMode === mode ? 'bg-white text-[#0E1A40]' : 'text-white/60'}`}
-                >
-                  {mode}
-                </button>
-              ))}
-            </div>
-          </div>
+          <CaseSelect variant="dark" value={ticketMode} options={['스마트 티켓', '선물 전'] as const} onChange={setTicketMode} />
           <button
             onClick={() => navigate(-1)}
             className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"

@@ -4,7 +4,7 @@ import { PH, PHCircle, PHSection } from '@/components/Placeholder'
 import { useCaseState, setMatchState } from '@/data/caseStore'
 import { GameCaseBar, PostseasonFrame } from '@/components/GameCaseBar'
 import { subscribeNotif, getHasUnread } from '@/data/notifStore'
-import { KV_SLIDES, MATCH_STATES, MAGAZINE_ITEMS, LIONS_TV_ITEMS, LIVE_SNAPSHOT, FINAL_SNAPSHOT, MY_SEAT } from '@/data/home'
+import { KV_SLIDES, MATCH_STATES, MAGAZINE_ITEMS, LIONS_TV_ITEMS, LIVE_SNAPSHOT, FINAL_SNAPSHOT, SUSPENDED_SNAPSHOT, DOUBLEHEADER, MY_SEAT } from '@/data/home'
 import { MY_TEAM, TEAMS, TODAY_GAME, TODAY_LINEUP, fmtKoTime, fmtSlashMDW, nextGame, ticketStateOf } from '@/data/mock'
 
 
@@ -310,6 +310,89 @@ export function HomeScreen() {
                       경기 일정
                     </button>
                   </div>
+                </div>
+              )}
+
+              {/* 경기 연기 */}
+              {matchState === '경기 연기' && (
+                <div className="bg-white rounded-2xl border border-[#DDE1EC] p-4">
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="text-[10px] font-bold bg-[#FDECEC] text-[#E53935] rounded-full px-2.5 py-0.5">경기 연기</span>
+                    <span className="text-[11px] text-[#9CA3AF]">{fmtSlashMDW(game.date)} · {venueShort}</span>
+                  </div>
+                  <div className="flex items-center justify-between mb-4 opacity-60">
+                    <TeamBadge name={MY_TEAM.short} />
+                    <span className="text-[22px] font-black text-[#DDE1EC]">VS</span>
+                    <TeamBadge name={opp.short} />
+                  </div>
+                  <div className="rounded-xl bg-[#F5F7FB] px-3 py-2.5 mb-3">
+                    <p className="text-[12px] font-semibold text-[#0E1A40]">오늘 경기가 연기됐어요</p>
+                    <p className="mt-0.5 text-[11px] leading-relaxed text-[#64748B]">재편성 일정은 확정되는 대로 알림으로 알려드려요. 예매하신 티켓의 처리 방법도 함께 안내드려요.</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button onClick={() => navigate('/my/booking-history')}
+                      className="flex-1 h-11 rounded-xl bg-[#0E1A40] text-white text-[13px] font-bold">
+                      예매 내역 확인
+                    </button>
+                    <button onClick={() => navigate('/game/schedule')}
+                      className="flex-1 h-11 rounded-xl bg-[#F5F7FB] border border-[#DDE1EC] text-[#64748B] text-[13px] font-bold">
+                      경기 일정
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* 서스펜디드 */}
+              {matchState === '서스펜디드' && (
+                <div className="bg-white rounded-2xl border border-[#DDE1EC] p-4">
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="text-[10px] font-bold bg-[#F3E8FF] text-[#7E22CE] rounded-full px-2.5 py-0.5">서스펜디드</span>
+                    <span className="text-[11px] text-[#9CA3AF]">{SUSPENDED_SNAPSHOT.inning} · {venueShort}</span>
+                  </div>
+                  <div className="flex items-center justify-between mb-4">
+                    <TeamBadge name={MY_TEAM.short} score={SUSPENDED_SNAPSHOT.us} />
+                    <div className="flex flex-col items-center gap-1">
+                      <span className="text-[11px] font-bold text-[#7E22CE]">경기 중단</span>
+                      <span className="text-[16px] font-black text-[#DDE1EC]">:</span>
+                    </div>
+                    <TeamBadge name={opp.short} score={SUSPENDED_SNAPSHOT.them} />
+                  </div>
+                  <div className="rounded-xl bg-[#F8F2FF] px-3 py-2.5 mb-3">
+                    <p className="text-[12px] font-semibold text-[#5B1A99]">경기가 {SUSPENDED_SNAPSHOT.inning}됐어요</p>
+                    <p className="mt-0.5 text-[11px] leading-relaxed text-[#5B1A99]/80">서스펜디드 경기는 추후 중단 시점부터 이어서 진행돼요. 속개 일정은 확정 후 알림으로 알려드려요.</p>
+                  </div>
+                  <SeatRow onTicket={() => navigate('/my/ticket-qr')} />
+                  <button onClick={() => navigate('/game/schedule')}
+                    className="w-full h-11 rounded-xl bg-[#F5F7FB] border border-[#DDE1EC] text-[#64748B] text-[13px] font-bold">
+                    경기 일정
+                  </button>
+                </div>
+              )}
+
+              {/* 더블헤더 */}
+              {matchState === '더블헤더' && (
+                <div className="bg-white rounded-2xl border border-[#DDE1EC] p-4">
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="text-[10px] font-bold bg-[#0E1A40] text-white rounded-full px-2.5 py-0.5">더블헤더</span>
+                    <span className="text-[11px] text-[#9CA3AF]">{fmtSlashMDW(game.date)} · {venueShort}</span>
+                  </div>
+                  <div className="flex flex-col gap-2 mb-4">
+                    {[
+                      { n: '1차전', t: fmtKoTime(DOUBLEHEADER.first) },
+                      { n: '2차전', t: DOUBLEHEADER.second },
+                    ].map((r) => (
+                      <div key={r.n} className="flex items-center gap-3 rounded-xl bg-[#F5F7FB] px-3 py-3">
+                        <span className="text-[11px] font-bold text-[#1B5BF0] w-10">{r.n}</span>
+                        <span className="text-[13px] font-bold text-[#0E1A40] flex-1">{MY_TEAM.short} vs {opp.short}</span>
+                        <span className="text-[11px] text-[#64748B]">{r.t}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <SeatRow onTicket={() => navigate('/my/ticket-qr')} />
+                  <button onClick={() => navigate('/game/lineup')}
+                    className="w-full h-11 rounded-xl bg-[#1B5BF0] text-white text-[13px] font-bold">
+                    1차전 라인업 보기
+                  </button>
                 </div>
               )}
             </PostseasonFrame>

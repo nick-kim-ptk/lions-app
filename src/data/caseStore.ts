@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react'
-import { MATCH_STATES, FINAL_SNAPSHOT } from '@/data/home'
+import { MATCH_STATES, FINAL_SNAPSHOT, SUSPENDED_SNAPSHOT, DOUBLEHEADER } from '@/data/home'
 import { MOCK_TODAY, type Game, type GameStatus } from '@/data/mock'
 
 /**
@@ -36,11 +36,26 @@ const STATUS_OF: Record<MatchState, GameStatus> = {
   '경기 후': 'final',
   '우천 지연': 'delayed',
   '우천 취소': 'cancelled',
+  '경기 연기': 'postponed',
+  '서스펜디드': 'suspended',
+  '더블헤더': 'scheduled',
 }
 
 /** 오늘 경기에 전역 케이스를 덮어씌운다 (일정 등 목록 화면용) */
 export function withCaseState(g: Game): Game {
   if (g.date !== MOCK_TODAY) return g
   const status = STATUS_OF[state.match]
-  return status === 'final' ? { ...g, status, score: { us: FINAL_SNAPSHOT.us, them: FINAL_SNAPSHOT.them } } : { ...g, status }
+  if (status === 'final') return { ...g, status, score: { us: FINAL_SNAPSHOT.us, them: FINAL_SNAPSHOT.them } }
+  if (state.match === '서스펜디드') return { ...g, status, note: SUSPENDED_SNAPSHOT.inning }
+  if (state.match === '경기 연기') return { ...g, status, note: '재편성 미정' }
+  return { ...g, status }
+}
+
+/** 더블헤더는 오늘 경기를 1·2차전 두 경기로 나눠 보여준다 */
+export function withCaseGames(g: Game): Game[] {
+  if (g.date !== MOCK_TODAY || state.match !== '더블헤더') return [withCaseState(g)]
+  return [
+    { ...g, time: DOUBLEHEADER.first, note: '더블헤더 1차전' },
+    { ...g, id: `${g.id}-2`, time: '1차전 후', note: '더블헤더 2차전' },
+  ]
 }

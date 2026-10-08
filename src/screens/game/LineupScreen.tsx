@@ -15,7 +15,7 @@ export function LineupScreen() {
   const { match } = useCaseState()
   const [announcedLocal, setAnnounced] = useState(true)
   // 경기 전에는 발표 전/후 토글로 확인하고, 그 외 상태는 전역 케이스를 따른다
-  const announced = match === '경기 전' ? announcedLocal : match !== '우천 취소'
+  const announced = match === '경기 전' ? announcedLocal : match !== '우천 취소' && match !== '경기 연기'
   const [side, setSide] = useState<'us' | 'them'>('us')
 
   if (!game) {
@@ -30,14 +30,14 @@ export function LineupScreen() {
     )
   }
 
-  if (match === '우천 취소') {
+  if (match === '우천 취소' || match === '경기 연기') {
     return (
       <div className="min-h-full bg-[#F5F7FB] pb-4">
         <Header title="오늘의 라인업" />
         <GameStateNotice context="lineup" />
         <div className="px-4 pt-10 text-center">
-          <p className="text-[14px] font-semibold text-[#111827]">오늘 경기가 우천 취소되어 라인업이 없어요</p>
-          <p className="mt-1 text-[12px] text-[#9CA3AF]">순연 경기가 확정되면 라인업이 다시 발표돼요.</p>
+          <p className="text-[14px] font-semibold text-[#111827]">{match === '우천 취소' ? '오늘 경기가 우천 취소되어 라인업이 없어요' : '오늘 경기가 연기되어 라인업이 없어요'}</p>
+          <p className="mt-1 text-[12px] text-[#9CA3AF]">{match === '우천 취소' ? '순연 경기가 확정되면 라인업이 다시 발표돼요.' : '재편성 경기가 확정되면 라인업이 다시 발표돼요.'}</p>
         </div>
       </div>
     )

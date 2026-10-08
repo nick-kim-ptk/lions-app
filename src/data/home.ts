@@ -58,7 +58,7 @@ export const KV_SLIDES = [
  *  - 우천 지연: 강우로 경기 개시·진행이 지연되는 중 (취소 여부는 심판 판단 후 확정)
  *  - 우천 취소: 경기 취소 확정 (예매 티켓 자동 환불, 순연 편성)
  */
-export const MATCH_STATES = ['경기 전', '경기 중', '경기 후', '우천 지연', '우천 취소'] as const
+export const MATCH_STATES = ['경기 전', '경기 중', '경기 후', '우천 지연', '우천 취소', '경기 연기', '서스펜디드', '더블헤더'] as const
 
 export const MAGAZINE_ITEMS = [
   { id: 0, issue: 'Vol.23', title: '여름의 끝, 라이온즈의 시작', date: '2026.08.04' },
@@ -76,6 +76,12 @@ export const LIONS_TV_ITEMS = [
 
 /** 경기 중 카드 스냅샷 (더미) */
 export const LIVE_SNAPSHOT = { inning: '7회초', us: 3, them: 1 }
+
+/** 서스펜디드(경기 중단) 카드 스냅샷 (더미) */
+export const SUSPENDED_SNAPSHOT = { inning: '6회초 중단', us: 3, them: 3 }
+
+/** 더블헤더 카드 (더미) — 2차전은 1차전 종료 후 개시 */
+export const DOUBLEHEADER = { first: '16:00', second: '1차전 종료 30분 후' }
 
 /** 경기 후 카드 스냅샷 (더미) */
 export const FINAL_SNAPSHOT = { us: 5, them: 2, summary: '구자욱 2홈런 · 원태인 7이닝 1실점' }

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { GameStateNotice } from '@/components/GameCaseBar'
-import { withCaseState } from '@/data/caseStore'
+import { withCaseGames } from '@/data/caseStore'
 import { PHCircle } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
 import {
@@ -26,7 +26,7 @@ export function ScheduleScreen() {
 
   const isFutures = league === '퓨처스'
   const source = isFutures ? FUTURES_GAMES : GAMES
-  const games = gamesInMonth(YEAR, month, source).map((g) => (isFutures ? g : withCaseState(g)))
+  const games = gamesInMonth(YEAR, month, source).flatMap((g) => (isFutures ? [g] : withCaseGames(g)))
   const gameByDay = new Map(games.map((g) => [Number(g.date.slice(8)), g]))
   const todayDay = MOCK_TODAY.startsWith(`${YEAR}-${String(month).padStart(2, '0')}`) ? Number(MOCK_TODAY.slice(8)) : -1
   const { first, days, rows } = monthMatrix(YEAR, month)
@@ -205,6 +205,8 @@ export function ScheduleScreen() {
                       </span>
                     ) : g.status === 'delayed' ? (
                       <span className="text-[12px] font-bold text-[#B7791F]">우천 지연</span>
+                    ) : g.status === 'suspended' ? (
+                      <span className="text-[12px] font-bold text-[#7E22CE]">서스펜디드</span>
                     ) : g.status === 'live' ? (
                       <span className="text-[12px] font-bold text-[#E53935]">LIVE</span>
                     ) : off ? (

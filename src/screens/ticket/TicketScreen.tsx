@@ -213,10 +213,7 @@ export function TicketScreen() {
         {homeGames.length === 0 && (
           <div className="rounded-2xl border border-[#DDE1EC] bg-white p-6 text-center">
             <p className="text-[13px] font-bold text-[#0E1A40]">예매 가능한 경기가 없어요</p>
-            <p className="mt-1 text-[11px] text-[#9CA3AF]">다음 시즌 일정이 공개되면 안내드려요. 시즌권은 멤버십에서 확인할 수 있어요.</p>
-            <button onClick={() => navigate('/my/membership')} className="mt-3 h-9 rounded-xl border border-[#1B5BF0] px-4 text-[12px] font-bold text-[#1B5BF0]">
-              시즌권 안내 보기
-            </button>
+            <p className="mt-1 text-[11px] text-[#9CA3AF]">다음 시즌 일정이 공개되면 안내드려요.</p>
           </div>
         )}
         <div className="flex flex-col gap-3">
@@ -289,24 +286,6 @@ export function TicketScreen() {
             </button>
           </div>
         )}
-      </div>
-
-      {/* Parking reservation banner */}
-      <div className="px-4 mb-6">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0E1A40] to-[#1B5BF0] px-5 py-4">
-          <div className="absolute -right-5 -top-8 h-24 w-24 rounded-full bg-white/10" />
-          <div className="relative flex items-center gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/15">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M7 20V4h6.25a4.75 4.75 0 0 1 0 9.5H7" stroke="white" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-            <div>
-              <span className="text-[11px] font-semibold text-white/60">승리를 보러 가는 길, 주차부터 준비하세요!</span>
-              <p className="mt-0.5 text-[16px] font-bold text-white">전설로 주차장 사전 예약</p>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Authentic Shop preview */}

@@ -198,22 +198,6 @@ export function BookingHistoryScreen() {
             </p>
           </div>
         )}
-        {tab === '예매 확인' && (
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0E1A40] to-[#1B5BF0] px-5 py-4">
-            <div className="absolute -right-5 -top-8 h-24 w-24 rounded-full bg-white/10" />
-            <div className="relative flex items-center gap-3">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/15">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M7 20V4h6.25a4.75 4.75 0 0 1 0 9.5H7" stroke="white" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-              <div>
-                <span className="text-[11px] font-semibold text-white/60">승리를 보러 가는 길, 주차부터 준비하세요!</span>
-                <p className="mt-0.5 text-[16px] font-bold text-white">전설로 주차장 사전 예약</p>
-              </div>
-            </div>
-          </div>
-        )}
         {tab === '예매 확인' && <PeriodFilter />}
         {tab === '예매 확인' && UPCOMING.map((item) => <UpcomingBookingCard key={item.no} {...item} />)}
 

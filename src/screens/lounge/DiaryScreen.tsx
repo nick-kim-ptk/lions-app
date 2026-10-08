@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import samsungImg from '@/assets/images/v9-team-photo.jpg'
-import { Header } from '@/components/Layout'
+import { Header, useScreenIdOverride } from '@/components/Layout'
 import { SEASON_GRID_EMPTY, DiaryRecord, INITIAL_DIARIES } from '@/data/lounge'
 
 function DiaryFeedCard({ watchMode, player, date, match, text, result, onEdit }: {
@@ -92,6 +92,7 @@ export function DiaryScreen() {
   const [showWriteModal, setShowWriteModal] = useState(false)
   const [editingPostId, setEditingPostId] = useState<number | null>(null)
   const [writePhoto, setWritePhoto] = useState(false)
+  useScreenIdOverride(showWriteModal ? '101-SL-MY-26' : null)
   const [writeText, setWriteText] = useState('')
   const [writeWatchMode, setWriteWatchMode] = useState<'직관' | '집관' | '원정'>('직관')
   const [writePlayer, setWritePlayer] = useState<string>('구자욱')

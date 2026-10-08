@@ -61,7 +61,6 @@ export function AllMenuScreen() {
           items: [
             { label: '라이온즈 뉴스', path: '/game/news' },
             { label: '라이온즈 매거진', path: '/game/magazine' },
-            { label: '유튜브 콘텐츠', path: '/game/youtube' },
           ],
         },
       ],

@@ -2,12 +2,33 @@ import React from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { SCREENS } from '@/data/overview'
 
-const SCREEN_ID_MAP: Record<string, string> = Object.fromEntries(SCREENS.map((s) => [s.path, s.id]))
+const SCREEN_ID_MAP: Record<string, string> = Object.fromEntries(SCREENS.filter((s) => !s.variant).map((s) => [s.path, s.id]))
+
+// 같은 경로 안에서 팝업·등록 상태가 열릴 때 ID 배지를 해당 화면 ID로 바꾸기 위한 간단한 저장소
+let idOverride: string | null = null
+const idListeners = new Set<() => void>()
+function setIdOverride(id: string | null) {
+  idOverride = id
+  idListeners.forEach((fn) => fn())
+}
+const subscribeId = (fn: () => void) => {
+  idListeners.add(fn)
+  return () => { idListeners.delete(fn) }
+}
+
+/** 팝업/등록 상태가 열려 있는 동안(`id`가 있을 때) 상단 ID 배지를 해당 화면 ID로 표시합니다. */
+export function useScreenIdOverride(id: string | null) {
+  React.useEffect(() => {
+    setIdOverride(id)
+    return () => setIdOverride(null)
+  }, [id])
+}
 
 export function ScreenIdBadge() {
   const { pathname } = useLocation()
   const [copied, setCopied] = React.useState(false)
-  const id = SCREEN_ID_MAP[pathname]
+  const override = React.useSyncExternalStore(subscribeId, () => idOverride)
+  const id = override ?? SCREEN_ID_MAP[pathname]
   if (!id) return null
 
   function handleCopy() {

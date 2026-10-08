@@ -34,7 +34,6 @@ import {
   LionsNewsScreen,
   ScheduleScreen,
   StatsScreen,
-  YoutubeScreen,
   StadiumScreen,
   MagazineScreen,
   AwayScreen,
@@ -160,7 +159,6 @@ export default function App() {
           <Route path="/game/news" element={<LionsNewsScreen />} />
           <Route path="/game/schedule" element={<ScheduleScreen />} />
           <Route path="/game/stats" element={<StatsScreen />} />
-          <Route path="/game/youtube" element={<YoutubeScreen />} />
           <Route path="/game/stadium" element={<StadiumScreen />} />
           <Route path="/game/magazine" element={<MagazineScreen />} />
           <Route path="/game/away" element={<AwayScreen />} />
@@ -236,7 +234,7 @@ export default function App() {
           <Route path="/all/event-history" element={<EventHistoryScreen />} />
           <Route path="/all/preview-list" element={<PreviewListScreen />} />
           <Route path="/all/preview-detail" element={<PreviewDetailScreen />} />
-<Route path="/all/faq" element={<FAQScreen />} />
+          <Route path="/all/faq" element={<FAQScreen />} />
         </Route>
 
         {/* Default redirect */}

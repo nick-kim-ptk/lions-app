@@ -1,26 +1,45 @@
 import { useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { AWAY_STADIUMS, AWAY_TABS } from '@/data/game'
+import { AWAY_STADIUMS, AWAY_TABS, AWAY_INFO } from '@/data/game'
+import { TEAMS, GAMES, resultOf } from '@/data/mock'
+import { PHImage } from '@/components/Placeholder'
+
+const Card = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <div className="bg-white rounded-2xl border border-[#DDE1EC] p-4">
+    <p className="text-[13px] font-bold text-[#0E1A40] mb-3">{title}</p>
+    {children}
+  </div>
+)
 
 // 015-SL-GM-10 라이온즈 원정대
 export function AwayScreen() {
   const location = useLocation()
-  const [selected, setSelected] = useState(location.state?.stadiumIndex ?? 0)
+  const [selected, setSelected] = useState<number>(location.state?.stadiumIndex ?? 0)
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [awayTab, setAwayTab] = useState(location.state?.tab ?? 0)
+  const [awayTab, setAwayTab] = useState<number>(location.state?.tab ?? 0)
+  const [toast, setToast] = useState(false)
 
   useEffect(() => {
-    if (location.state?.tab !== undefined) {
-      setAwayTab(location.state.tab)
-    }
-    if (location.state?.stadiumIndex !== undefined) {
-      setSelected(location.state.stadiumIndex)
-    }
+    if (location.state?.tab !== undefined) setAwayTab(location.state.tab)
+    if (location.state?.stadiumIndex !== undefined) setSelected(location.state.stadiumIndex)
   }, [location.state])
 
+  useEffect(() => {
+    if (!toast) return
+    const t = setTimeout(() => setToast(false), 1800)
+    return () => clearTimeout(t)
+  }, [toast])
+
   const stadium = AWAY_STADIUMS[selected]
+  const info = AWAY_INFO[selected]
+  const copyAddress = () => {
+    try { void navigator.clipboard?.writeText(info.address) } catch { /* 와이어프레임: 복사 실패 무시 */ }
+    setToast(true)
+  }
+  const q = encodeURIComponent(info.address)
+
   return (
-    <div className="min-h-full bg-[#F5F7FB] pb-6">
+    <div className="min-h-full bg-[#F5F7FB] pb-6 relative">
       {/* 구장 이름 드롭다운 헤더 */}
       <div className="sticky top-0 z-20 bg-[#F5F7FB]/95 backdrop-blur-sm border-b border-[#DDE1EC]">
         <div className="flex items-center px-4 h-14 gap-2">
@@ -29,8 +48,7 @@ export function AwayScreen() {
               <path d="M15 19l-7-7 7-7" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
-          <button onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="flex-1 flex items-center gap-1.5">
+          <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex-1 flex items-center gap-1.5">
             <span className="text-[16px] font-bold text-[#111827]">{stadium.name}</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className={`transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}>
               <path d="M6 9l6 6 6-6" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -38,8 +56,6 @@ export function AwayScreen() {
           </button>
           <span className="text-[11px] text-[#9CA3AF]">{stadium.city} · {stadium.team}</span>
         </div>
-
-        {/* 드롭다운 */}
         {dropdownOpen && (
           <div className="absolute top-full left-0 right-0 bg-white border-b border-[#DDE1EC] shadow-lg z-30">
             {AWAY_STADIUMS.map((s, i) => (
@@ -59,129 +75,145 @@ export function AwayScreen() {
       </div>
 
       {/* 구장 이미지 */}
-      <div className="w-full h-52 bg-gradient-to-br from-[#E8EEFF] to-[#C7D4F8] flex items-center justify-center">
-        <span className="text-8xl opacity-20">🏟</span>
-      </div>
+      <PHImage label={`${stadium.name} 전경`} className="w-full h-48" />
 
       {/* 탭 */}
-      <div className="flex border-b border-[#DDE1EC] bg-white overflow-x-auto" style={{scrollbarWidth:'none'}}>
+      <div className="flex border-b border-[#DDE1EC] bg-white overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
         {AWAY_TABS.map((t, i) => (
           <button key={i} onClick={() => setAwayTab(i)}
-            className={`shrink-0 px-4 py-3 text-[13px] font-semibold border-b-2 transition-colors ${awayTab === i ? 'border-[#1B5BF0] text-[#1B5BF0]' : 'border-transparent text-[#9CA3AF]'}`}>
+            className={`shrink-0 flex-1 px-4 py-3 text-[13px] font-semibold border-b-2 transition-colors ${awayTab === i ? 'border-[#1B5BF0] text-[#1B5BF0]' : 'border-transparent text-[#9CA3AF]'}`}>
             {t}
           </button>
         ))}
       </div>
 
-      {/* 탭 콘텐츠 */}
       <div className="px-4 pt-4 pb-6 flex flex-col gap-4">
-
         {/* 구장 소개 */}
         {awayTab === 0 && (
           <>
-            <div className="bg-white rounded-2xl border border-[#DDE1EC] divide-y divide-[#F0F2F5]">
-              {[
-                { label: '홈 구단', value: stadium.team },
-                { label: '위치',    value: stadium.city },
-                { label: '수용 인원', value: '24,000명' },
-                { label: '개장 연도', value: '1982년' },
-                { label: '잔디',    value: '인조잔디' },
-              ].map((row) => (
-                <div key={row.label} className="flex items-center justify-between px-4 py-3">
-                  <span className="text-[12px] text-[#9CA3AF]">{row.label}</span>
-                  <span className="text-[13px] font-semibold text-[#0E1A40]">{row.value}</span>
-                </div>
-              ))}
-            </div>
-            <div className="bg-[#EBF0FF] rounded-2xl p-4">
-              <p className="text-[11px] font-bold text-[#1B5BF0] mb-2">💡 원정 팁</p>
-              <p className="text-[12px] text-[#374151] leading-relaxed">삼성 팬존은 3루 외야 지정석입니다. 원정 응원 시 해당 구역에서 함께해요!</p>
-            </div>
+            <Card title="홈 구단 정보">
+              <div className="flex flex-col gap-3">
+                {stadium.teams.map((code) => {
+                  const t = TEAMS[code]
+                  const played = GAMES.filter((g) => g.opp === code && resultOf(g))
+                  const w = played.filter((g) => resultOf(g) === 'win').length
+                  const l = played.filter((g) => resultOf(g) === 'loss').length
+                  const d = played.filter((g) => resultOf(g) === 'draw').length
+                  return (
+                    <div key={code} className="flex items-center gap-3 bg-[#F8F9FC] rounded-xl px-3 py-3">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-[12px] font-bold" style={{ background: t.color }}>{t.short.slice(0, 2)}</div>
+                      <div className="flex-1">
+                        <p className="text-[13px] font-semibold text-[#0E1A40]">{t.name}</p>
+                        <p className="text-[11px] text-[#9CA3AF]">올 시즌 상대 전적</p>
+                      </div>
+                      <p className="text-[13px] font-bold text-[#1B5BF0]">{w}승 {d}무 {l}패</p>
+                    </div>
+                  )
+                })}
+              </div>
+            </Card>
+
+            <Card title="원정 경기 팁">
+              <PHImage label="구장 좌석 배치도 · 삼성 원정 응원석 표시" className="w-full h-40 mb-3" />
+              <p className="text-[12px] font-semibold text-[#1B5BF0] mb-2">{info.seatNote}</p>
+              <ul className="flex flex-col gap-1.5">
+                {info.tips.map((t) => (
+                  <li key={t} className="text-[12px] text-[#374151] leading-relaxed flex gap-1.5"><span className="text-[#1B5BF0]">•</span>{t}</li>
+                ))}
+              </ul>
+            </Card>
+
+            <Card title="구장 주소">
+              <div className="flex items-center gap-2 mb-3">
+                <p className="flex-1 text-[13px] text-[#0E1A40]">{info.address}</p>
+                <button onClick={copyAddress} className="shrink-0 px-3 py-1.5 rounded-lg border border-[#DDE1EC] text-[11px] font-semibold text-[#64748B]">복사</button>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <a href={`https://map.naver.com/p/search/${q}`} target="_blank" rel="noreferrer"
+                  className="text-center py-2.5 rounded-xl bg-[#03C75A] text-white text-[12px] font-bold">네이버지도</a>
+                <a href={`https://map.kakao.com/?q=${q}`} target="_blank" rel="noreferrer"
+                  className="text-center py-2.5 rounded-xl bg-[#FEE500] text-[#111827] text-[12px] font-bold">카카오맵</a>
+              </div>
+            </Card>
           </>
         )}
 
-        {/* 교통 */}
+        {/* 대중교통 */}
         {awayTab === 1 && (
-          <div className="flex flex-col gap-3">
-            {[
-              { icon: '🚇', title: '지하철', desc: '2호선 삼성역 5번 출구에서 도보 10분' },
-              { icon: '🚌', title: '버스', desc: '간선 146, 360 / 지선 4412 · 야구장 앞 하차' },
-              { icon: '🚕', title: '택시', desc: '구장 정문 앞 택시 승하차 구역 이용' },
-            ].map((item) => (
-              <div key={item.title} className="bg-white rounded-2xl border border-[#DDE1EC] px-4 py-3.5 flex gap-3 items-start">
-                <span className="text-xl shrink-0">{item.icon}</span>
-                <div>
-                  <p className="text-[13px] font-semibold text-[#0E1A40] mb-0.5">{item.title}</p>
-                  <p className="text-[12px] text-[#64748B] leading-snug">{item.desc}</p>
+          <>
+            <Card title="🚇 지하철">
+              {info.subway.length === 0 ? (
+                <p className="text-[12px] text-[#9CA3AF]">구장 인근 지하철 정보가 없어요. 버스·택시·자차를 이용해 주세요.</p>
+              ) : info.subway.map((s) => (
+                <div key={s.line}>
+                  <p className="text-[13px] font-semibold text-[#0E1A40]">{s.line}</p>
+                  <p className="text-[12px] text-[#64748B] mt-0.5">{s.detail}</p>
                 </div>
+              ))}
+            </Card>
+            <Card title="🚌 버스">
+              <div className="flex flex-col gap-2">
+                {info.bus.map((b) => (
+                  <div key={b.type} className="flex items-center gap-3">
+                    <span className="px-2 py-0.5 rounded bg-[#EBF0FF] text-[#1B5BF0] text-[11px] font-bold">{b.type}</span>
+                    <span className="text-[12px] text-[#374151]">{b.numbers}</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </Card>
+            {info.extraTransit && (
+              <Card title={`🚄 ${info.extraTransit.title}`}>
+                <p className="text-[12px] text-[#374151] leading-relaxed">{info.extraTransit.detail}</p>
+              </Card>
+            )}
+          </>
         )}
 
         {/* 주차 */}
         {awayTab === 2 && (
-          <div className="flex flex-col gap-3">
-            {[
-              { icon: '🅿️', title: '공식 주차장', desc: '구장 내 2,000면 운영 · 경기 시작 2시간 전 개방' },
-              { icon: '💰', title: '주차 요금', desc: '최초 1시간 3,000원 / 이후 30분당 1,000원' },
-              { icon: '⚠️', title: '주의사항', desc: '경기 당일 혼잡 예상 · 대중교통 이용 권장' },
-            ].map((item) => (
-              <div key={item.title} className="bg-white rounded-2xl border border-[#DDE1EC] px-4 py-3.5 flex gap-3 items-start">
-                <span className="text-xl shrink-0">{item.icon}</span>
-                <div>
-                  <p className="text-[13px] font-semibold text-[#0E1A40] mb-0.5">{item.title}</p>
-                  <p className="text-[12px] text-[#64748B] leading-snug">{item.desc}</p>
-                </div>
+          <>
+            <Card title="🅿️ 구장 주차장">
+              <div className="divide-y divide-[#F0F2F5]">
+                {[['입차 가능 시간', info.parking.open], ['주차 요금', info.parking.fee], ['사전 예약', info.parking.reserve]].map(([k, v]) => (
+                  <div key={k} className="flex items-start justify-between gap-4 py-2.5 first:pt-0 last:pb-0">
+                    <span className="text-[12px] text-[#9CA3AF] shrink-0">{k}</span>
+                    <span className="text-[12px] font-semibold text-[#0E1A40] text-right">{v}</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </Card>
+            <Card title="인근 공영주차장">
+              {info.parking.nearby.map((p) => (
+                <div key={p.name} className="flex items-center justify-between py-1">
+                  <span className="text-[13px] text-[#0E1A40]">{p.name}</span>
+                  <span className="text-[12px] text-[#64748B]">{p.fee}</span>
+                </div>
+              ))}
+            </Card>
+          </>
         )}
 
         {/* 편의시설 */}
         {awayTab === 3 && (
           <div className="grid grid-cols-2 gap-3">
-            {[
-              { icon: '🛒', title: '매점', desc: '1~3루 각 구역' },
-              { icon: '🚻', title: '화장실', desc: '각 통로 2개소' },
-              { icon: '♿', title: '장애인석', desc: '1루 외야 지정' },
-              { icon: '👶', title: '수유실', desc: '1루 게이트 내' },
-              { icon: '🏧', title: 'ATM', desc: '정문 · 3루 게이트' },
-              { icon: '🏥', title: '응급실', desc: '본관 1층' },
-            ].map((item) => (
-              <div key={item.title} className="bg-white rounded-2xl border border-[#DDE1EC] px-4 py-3.5 flex flex-col gap-1">
-                <span className="text-2xl">{item.icon}</span>
-                <p className="text-[13px] font-semibold text-[#0E1A40]">{item.title}</p>
-                <p className="text-[11px] text-[#9CA3AF]">{item.desc}</p>
+            {info.facilities.map((f) => (
+              <div key={f.title} className="bg-white rounded-2xl border border-[#DDE1EC] p-4 flex flex-col items-center text-center gap-1">
+                <span className="text-2xl">{f.icon}</span>
+                <p className="text-[13px] font-semibold text-[#0E1A40]">{f.title}</p>
+                <p className="text-[11px] text-[#64748B]">{f.desc}</p>
               </div>
             ))}
           </div>
         )}
 
-        {/* 주변 맛집 */}
-        {awayTab === 4 && (
-          <div className="flex flex-col gap-3">
-            {[
-              { name: '삼성역 소고기 명가', category: '한식 · 고기', dist: '도보 3분', price: '1인 25,000원~' },
-              { name: '야구장 앞 분식', category: '분식', dist: '도보 1분', price: '1인 8,000원~' },
-              { name: '코엑스몰 푸드코트', category: '다양', dist: '도보 8분', price: '1인 10,000원~' },
-              { name: '봉은사 순두부', category: '한식', dist: '도보 5분', price: '1인 12,000원~' },
-            ].map((item) => (
-              <div key={item.name} className="bg-white rounded-2xl border border-[#DDE1EC] px-4 py-3.5 flex items-center gap-3">
-                <div className="w-11 h-11 rounded-xl bg-[#F0F2F5] flex items-center justify-center shrink-0">
-                  <span className="text-xl">🍽</span>
-                </div>
-                <div className="flex-1">
-                  <p className="text-[13px] font-semibold text-[#0E1A40]">{item.name}</p>
-                  <p className="text-[11px] text-[#9CA3AF] mt-0.5">{item.category} · {item.dist}</p>
-                </div>
-                <p className="text-[11px] font-semibold text-[#1B5BF0] shrink-0">{item.price}</p>
-              </div>
-            ))}
-          </div>
-        )}
-
+        <p className="text-[10px] text-[#9CA3AF] text-center">※ 교통·주차 세부 수치는 예시이며 실제 정보는 각 구단 공식 안내 기준으로 반영됩니다.</p>
       </div>
+
+      {toast && (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 px-4 py-2.5 rounded-full bg-[#111827]/90 text-white text-[12px] font-medium shadow-lg">
+          주소가 복사되었어요
+        </div>
+      )}
     </div>
   )
 }

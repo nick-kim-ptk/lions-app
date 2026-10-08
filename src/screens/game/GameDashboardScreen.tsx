@@ -352,14 +352,13 @@ export function GameDashboardScreen() {
               <span className="text-4xl opacity-80">🏟️</span>
             </div>
 
-            {/* 5 Menu buttons: 구장 소개 / 교통 / 주차 / 편의시설 / 주변 맛집 */}
-            <div className="grid grid-cols-5 bg-[#F8F9FC]">
+            {/* 4 Menu buttons: 구장 소개 / 대중교통 / 주차 / 편의시설 */}
+            <div className="grid grid-cols-4 bg-[#F8F9FC]">
               {[
                 { icon: '🏟', label: '구장 소개', tabIdx: 0 },
-                { icon: '🚌', label: '교통', tabIdx: 1 },
+                { icon: '🚌', label: '대중교통', tabIdx: 1 },
                 { icon: '🅿️', label: '주차', tabIdx: 2 },
                 { icon: '♿', label: '편의시설', tabIdx: 3 },
-                { icon: '🍽', label: '주변 맛집', tabIdx: 4 },
               ].map((item) => (
                 <button
                   key={item.label}

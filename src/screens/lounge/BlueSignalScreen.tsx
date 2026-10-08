@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Header } from '@/components/Layout'
+import { Header, useScreenIdOverride } from '@/components/Layout'
 
 // 098-SL-LG-10 블루 시그널
 function FeedCard({ item }: { item: { nick: string; time: string; text: string; hasImage: boolean; imgColor: string; avatarColor: string; likes: number } }) {
@@ -68,6 +68,7 @@ export function BlueSignalScreen() {
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authText, setAuthText] = useState('')
   const [authPhoto, setAuthPhoto] = useState(false)
+  useScreenIdOverride(showAuthModal ? '100-SL-LG-13' : null)
   const [signalMode, setSignalMode] = useState<'직관용'|'원정용'|'전체용'|'종료 시'>('직관용')
 
   const feedItems = [

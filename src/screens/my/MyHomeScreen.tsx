@@ -4,19 +4,19 @@ import { PH, PHCircle } from '@/components/Placeholder'
 import { CaseSelect } from '@/components/CaseSelect'
 import { joinInfo, type JoinKind, type JoinState } from '@/data/mock/membership'
 
-const CARD_COUNT = 5
 
 /**
  * 카드 우측 상단 상태 배지 — 멤버십 카드 타입 정리
- *  · 모집 전: 모집 오픈 전 (D-day, 가입하기 비활성)
- *  · 모집 중: 모집 기간 (가입하기 활성)
- *  · 가입 완료: 가입 후 보유 중인 카드 (멤버십·시즌권·어린이)
+ *  · 멤버십 모집 전: 모집 카드 2장 (D-day, 가입하기 비활성)
+ *  · 멤버십 모집 중: 모집 카드 2장 (가입하기 활성)
+ *  · 가입 완료: 가입된 카드 3장만 표시 (멤버십·시즌권·어린이), 모집 카드는 숨김
  */
-type CardState = '모집 전' | '모집 중' | '가입 완료'
+type CardState = '멤버십 모집 전' | '멤버십 모집 중' | '가입 완료'
+type MemberCase = '멤버십 모집 전' | '멤버십 모집 중' | '가입 완료'
 function StateBadge({ state }: { state: CardState }) {
   const cls =
-    state === '모집 전' ? 'bg-white/20 text-white border-white/30'
-    : state === '모집 중' ? 'bg-[#4ADE80] text-[#064E3B] border-[#4ADE80]'
+    state === '멤버십 모집 전' ? 'bg-white/20 text-white border-white/30'
+    : state === '멤버십 모집 중' ? 'bg-[#4ADE80] text-[#064E3B] border-[#4ADE80]'
     : 'bg-white text-[#0E2F80] border-white'
   return <span className={`shrink-0 text-[10px] font-bold border rounded-full px-2.5 py-0.5 ${cls}`}>{state}</span>
 }
@@ -37,7 +37,7 @@ function JoinClosedCard({ kind, title, tone, state, onJoin }: { kind: JoinKind; 
           <p className="text-white/70 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
           <p className="text-white text-[18px] font-bold leading-snug">{title}</p>
         </div>
-        <StateBadge state={state} />
+        <StateBadge state={open ? '멤버십 모집 중' : '멤버십 모집 전'} />
       </div>
       <div className="relative flex flex-col items-center gap-1">
         <span className="text-[28px] font-black text-white">{dday}</span>
@@ -60,7 +60,10 @@ function JoinClosedCard({ kind, title, tone, state, onJoin }: { kind: JoinKind; 
 export function MyHomeScreen() {
   const navigate = useNavigate()
   const [cardIndex, setCardIndex] = useState(0)
-  const [joinState, setJoinState] = useState<JoinState>('모집 전')
+  const [memberCase, setMemberCase] = useState<MemberCase>('가입 완료')
+  const joined = memberCase === '가입 완료'
+  const joinState: JoinState = memberCase === '멤버십 모집 중' ? '모집 중' : '모집 전'
+  const cardCount = joined ? 3 : 2
   const touchStartX = useRef(0)
   const [showDiaryModal, setShowDiaryModal] = useState(false)
   const [diaryPhoto, setDiaryPhoto] = useState(false)
@@ -108,7 +111,7 @@ export function MyHomeScreen() {
             options={['로그인 상태', { value: '비로그인', label: '비로그인' }]}
             onChange={(v) => { if (v === '비로그인') navigate('/login') }}
           />
-          <CaseSelect variant="dark" value={joinState} options={['모집 전', '모집 중'] as const} onChange={setJoinState} />
+          <CaseSelect variant="dark" value={memberCase} options={['멤버십 모집 전', '멤버십 모집 중', '가입 완료'] as const} onChange={(v) => { setMemberCase(v); setCardIndex(0) }} />
         </div>
         {/* Floating GNB */}
         <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-end px-4 h-14 gap-1">
@@ -177,7 +180,7 @@ export function MyHomeScreen() {
         onTouchStart={e => { touchStartX.current = e.touches[0].clientX }}
         onTouchEnd={e => {
           const dx = e.changedTouches[0].clientX - touchStartX.current
-          if (dx < -40) setCardIndex(i => Math.min(i + 1, CARD_COUNT - 1))
+          if (dx < -40) setCardIndex(i => Math.min(i + 1, cardCount - 1))
           if (dx > 40)  setCardIndex(i => Math.max(i - 1, 0))
         }}
       >
@@ -185,6 +188,7 @@ export function MyHomeScreen() {
           className="flex ml-4 transition-transform duration-300 ease-out"
           style={{ transform: `translateX(${-cardIndex * 60}%)` }}
         >
+          {joined && (<>
           {/* 카드 1 — 블루멤버십 */}
           <div className="shrink-0 pr-3" style={{ width: '60%' }}>
             <div onClick={() => navigate('/my/membership')} className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1B5BF0] to-[#0E2F80] p-5 cursor-pointer active:opacity-90 aspect-[9/16] flex flex-col justify-between">
@@ -254,7 +258,10 @@ export function MyHomeScreen() {
             </div>
           </div>
 
-          {/* 카드 4 — 블루멤버십 모집 (모집 기간 외) */}
+          </>)}
+
+          {!joined && (<>
+          {/* 카드 4 — 블루멤버십 모집 */}
           <div className="shrink-0 pr-3" style={{ width: '60%' }}>
             <JoinClosedCard kind="member" title="2027 블루멤버십 모집" tone="blue" state={joinState} onJoin={() => navigate('/my/membership-guide')} />
           </div>
@@ -263,11 +270,12 @@ export function MyHomeScreen() {
           <div className="shrink-0 pr-3" style={{ width: '60%' }}>
             <JoinClosedCard kind="child" title="2027 어린이 회원 모집" tone="gold" state={joinState} onJoin={() => navigate('/my/child-register')} />
           </div>
+          </>)}
         </div>
 
         {/* 도트 인디케이터 */}
         <div className="flex justify-center gap-1.5 mt-3">
-          {Array.from({ length: CARD_COUNT }, (_, i) => i).map(i => (
+          {Array.from({ length: cardCount }, (_, i) => i).map(i => (
             <button key={i} onClick={() => setCardIndex(i)}
               className={`rounded-full transition-all ${i === cardIndex ? 'w-4 h-1.5 bg-[#1B5BF0]' : 'w-1.5 h-1.5 bg-[#DDE1EC]'}`}
             />

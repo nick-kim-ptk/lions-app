@@ -63,7 +63,7 @@ export function HomeScreen() {
       >
         {/* Floating GNB */}
         <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-4 h-14 gap-1">
-          <button onClick={() => navigate('/case-guide')} className="rounded-full border border-dashed border-red-400 bg-black/30 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">케이스 가이드</button>
+          <button onClick={() => navigate('/case-guide')} className="rounded-full border border-dashed border-red-400 bg-black/30 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">가이드</button>
           <div className="flex items-center gap-1">
           <button onClick={() => navigate('/notifications')} className="w-8 h-8 flex items-center justify-center relative">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">

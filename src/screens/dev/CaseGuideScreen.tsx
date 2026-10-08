@@ -4,10 +4,10 @@ import { Header } from '@/components/Layout'
 import { setMatchState, setSeasonPhase, useCaseState } from '@/data/caseStore'
 import {
   GLOSSARY, GUIDE_INTRO, MATCH_GUIDE, OFF_SEASON, OPEN_ITEMS, PENDING_LINKS, ROADMAP,
-  ROUTE_TABLE, SCREEN_LINKS, SEASON_GUIDE,
+  ROUTE_TABLE, SCREEN_LINKS, SEASON_GUIDE, SYSTEM_GUIDE, type SystemGuide,
 } from '@/data/caseGuide'
 
-const TABS = ['개요', '시즌 단계', '경기 상태', '화면 연동', '정의 필요', '용어'] as const
+const TABS = ['개요', '시즌 단계', '경기 상태', '공통 시스템 상태', '화면 연동', '정의 필요', '용어'] as const
 type Tab = (typeof TABS)[number]
 
 const KIND_STYLE = {
@@ -23,7 +23,95 @@ const H = ({ children }: { children: React.ReactNode }) => (
   <p className="px-1 pb-2 pt-1 text-[13px] font-bold text-[#111827]">{children}</p>
 )
 
-// 케이스 가이드 — 시즌 단계·경기 상태 정의서 (와이어프레임 전용 페이지)
+
+/** 공통 시스템 상태 미리보기 (작은 목업) */
+function SystemPreview({ id }: { id: SystemGuide['id'] }) {
+  const box = 'rounded-xl border border-dashed border-[#C4C9D6] bg-[#F8F9FC] p-3'
+  const btn = 'mt-2 inline-block rounded-lg bg-[#1B5BF0] px-3 py-1.5 text-[11px] font-bold text-white'
+  if (id === 'loading')
+    return (
+      <div className={`${box} flex flex-col gap-2`}>
+        <div className="h-3 w-2/3 animate-pulse rounded bg-[#E4E8F5]" />
+        <div className="h-16 w-full animate-pulse rounded-lg bg-[#E4E8F5]" />
+        <div className="h-3 w-1/2 animate-pulse rounded bg-[#E4E8F5]" />
+      </div>
+    )
+  if (id === 'empty')
+    return (
+      <div className={`${box} text-center`}>
+        <p className="text-2xl">🎟</p>
+        <p className="mt-1 text-[12px] font-semibold text-[#0E1A40]">예매 내역이 없어요</p>
+        <span className={btn}>티켓 예매하기</span>
+      </div>
+    )
+  if (id === 'error')
+    return (
+      <div className={`${box} text-center`}>
+        <p className="text-2xl">⚠️</p>
+        <p className="mt-1 text-[12px] font-semibold text-[#0E1A40]">정보를 불러오지 못했어요</p>
+        <p className="text-[11px] text-[#9CA3AF]">잠시 후 다시 시도해 주세요</p>
+        <span className={btn}>다시 시도</span>
+      </div>
+    )
+  if (id === 'offline')
+    return (
+      <div className={box}>
+        <div className="rounded-lg bg-[#111827] px-3 py-2 text-[11px] font-semibold text-white">인터넷 연결을 확인해주세요</div>
+        <div className="mt-2 h-10 rounded-lg bg-[#E4E8F5]" />
+      </div>
+    )
+  if (id === 'maintenance')
+    return (
+      <div className={`${box} text-center`}>
+        <p className="text-2xl">🛠</p>
+        <p className="mt-1 text-[12px] font-semibold text-[#0E1A40]">서버 점검 중이에요</p>
+        <p className="text-[11px] text-[#64748B]">점검 시간 00:00 ~ 06:00 (예시)</p>
+        <span className={btn}>확인</span>
+      </div>
+    )
+  if (id === 'update')
+    return (
+      <div className={box}>
+        <div className="mx-auto w-4/5 rounded-xl bg-white p-3 text-center shadow">
+          <p className="text-[12px] font-semibold text-[#0E1A40]">새 버전이 필요해요</p>
+          <p className="text-[11px] text-[#9CA3AF]">업데이트 후 이용할 수 있어요</p>
+          <span className={btn}>업데이트</span>
+        </div>
+      </div>
+    )
+  if (id === 'session')
+    return (
+      <div className={box}>
+        <div className="mx-auto w-4/5 rounded-xl bg-white p-3 text-center shadow">
+          <p className="text-[12px] font-semibold text-[#0E1A40]">로그인이 만료되었어요</p>
+          <p className="text-[11px] text-[#9CA3AF]">다시 로그인해 주세요</p>
+          <span className={btn}>다시 로그인</span>
+        </div>
+      </div>
+    )
+  if (id === 'login')
+    return (
+      <div className={`${box} pt-8`}>
+        <div className="rounded-t-2xl bg-white p-3 text-center shadow">
+          <p className="text-[12px] font-semibold text-[#0E1A40]">로그인이 필요해요</p>
+          <div className="mt-2 flex gap-2">
+            <span className="flex-1 rounded-lg border border-[#DDE1EC] py-1.5 text-[11px] text-[#64748B]">닫기</span>
+            <span className="flex-1 rounded-lg bg-[#1B5BF0] py-1.5 text-[11px] font-bold text-white">로그인</span>
+          </div>
+        </div>
+      </div>
+    )
+  return (
+    <div className={`${box} text-center`}>
+      <p className="text-2xl">📷</p>
+      <p className="mt-1 text-[12px] font-semibold text-[#0E1A40]">사진 접근 권한이 필요해요</p>
+      <p className="text-[11px] text-[#9CA3AF]">일기에 사진을 올리려면 권한을 허용해 주세요</p>
+      <span className={btn}>설정으로 이동</span>
+    </div>
+  )
+}
+
+// 가이드 — 시즌 단계·경기 상태·공통 시스템 상태 정의서 (와이어프레임 전용 페이지)
 export function CaseGuideScreen() {
   const navigate = useNavigate()
   const [tab, setTab] = useState<Tab>('개요')
@@ -40,7 +128,7 @@ export function CaseGuideScreen() {
 
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-10">
-      <Header title="케이스 가이드" />
+      <Header title="가이드" />
 
       <div className="sticky top-14 z-10 flex gap-1 overflow-x-auto border-b border-[#DDE1EC] bg-[#F5F7FB] px-3 py-2" style={{ scrollbarWidth: 'none' }}>
         {TABS.map((t) => (
@@ -163,6 +251,27 @@ export function CaseGuideScreen() {
                 <button onClick={() => applyMatch(m.state)} className="mt-2 h-9 w-full rounded-xl border border-[#1B5BF0] text-[12px] font-bold text-[#1B5BF0]">
                   홈에서 이 상태 보기
                 </button>
+              </Card>
+            ))}
+          </>
+        )}
+
+        {tab === '공통 시스템 상태' && (
+          <>
+            <p className="px-1 text-[11px] leading-relaxed text-[#64748B]">
+              경기 상태와 상관없이 모든 화면에서 발생할 수 있는 상태 9종입니다. 화면마다 따로 만들지 않고 같은 규칙·같은 모양으로 쓰는 것을 전제로 합니다. 아래 미리보기는 모양 예시입니다.
+            </p>
+            {SYSTEM_GUIDE.map((g) => (
+              <Card key={g.id}>
+                <p className="mb-2 text-[14px] font-black text-[#0E1A40]">{g.name}</p>
+                <SystemPreview id={g.id} />
+                <div className="mt-3 flex flex-col gap-1">
+                  <p className="text-[11px] leading-relaxed text-[#374151]"><span className="font-bold text-[#0E1A40]">발생 조건</span> — {g.when}</p>
+                  <p className="text-[11px] leading-relaxed text-[#374151]"><span className="font-bold text-[#0E1A40]">화면 표시</span> — {g.display}</p>
+                  <p className="text-[11px] leading-relaxed text-[#374151]"><span className="font-bold text-[#0E1A40]">사용자 동작</span> — {g.action}</p>
+                  <p className="text-[11px] leading-relaxed text-[#374151]"><span className="font-bold text-[#0E1A40]">적용 화면</span> — {g.screens}</p>
+                  {g.open && <p className="text-[11px] font-semibold text-[#C2410C]">⚠ 정의 필요: {g.open}</p>}
+                </div>
               </Card>
             ))}
           </>

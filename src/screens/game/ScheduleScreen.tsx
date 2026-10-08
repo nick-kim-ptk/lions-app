@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { GameStateNotice } from '@/components/GameCaseBar'
-import { withCaseGames } from '@/data/caseStore'
+import { withCaseGames, useCaseState, hasGamesInPhase } from '@/data/caseStore'
 import { PHCircle } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
 import {
@@ -22,11 +22,12 @@ function monthMatrix(year: number, month: number) {
 
 export function ScheduleScreen() {
   const [league, setLeague] = useState<'1군' | '퓨처스'>('1군')
+  const { phase } = useCaseState()
   const [month, setMonth] = useState(9)
 
   const isFutures = league === '퓨처스'
   const source = isFutures ? FUTURES_GAMES : GAMES
-  const games = gamesInMonth(YEAR, month, source).flatMap((g) => (isFutures ? [g] : withCaseGames(g)))
+  const games = gamesInMonth(YEAR, month, source).flatMap((g) => (isFutures ? [g] : withCaseGames(g))).filter(() => isFutures || hasGamesInPhase(phase))
   const gameByDay = new Map(games.map((g) => [Number(g.date.slice(8)), g]))
   const todayDay = MOCK_TODAY.startsWith(`${YEAR}-${String(month).padStart(2, '0')}`) ? Number(MOCK_TODAY.slice(8)) : -1
   const { first, days, rows } = monthMatrix(YEAR, month)

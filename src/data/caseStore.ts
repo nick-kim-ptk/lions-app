@@ -1,17 +1,25 @@
 import { useSyncExternalStore } from 'react'
 import { MATCH_STATES, FINAL_SNAPSHOT, SUSPENDED_SNAPSHOT, DOUBLEHEADER } from '@/data/home'
-import { MOCK_TODAY, type Game, type GameStatus } from '@/data/mock'
+import { MOCK_TODAY, TODAY_GAME, type Game, type GameStatus } from '@/data/mock'
 
 /**
  * 와이어프레임용 전역 케이스 상태.
  * 홈 '오늘의 경기' 위 케이스 바에서 바꾸면 홈·경기·일정·라인업·예매내역·스마트 티켓이 같이 바뀐다.
  */
-export const SEASON_PHASES = ['정규시즌', '와일드카드', '준플레이오프', '플레이오프', '한국시리즈'] as const
+export const SEASON_PHASES = ['시범경기', '정규시즌', '올스타 브레이크', '와일드카드', '준플레이오프', '플레이오프', '한국시리즈', '비시즌'] as const
 export type SeasonPhase = (typeof SEASON_PHASES)[number]
 export type MatchState = (typeof MATCH_STATES)[number]
 
 /** 가을야구(포스트시즌) 단계별 더미 정보 */
-export const POSTSEASON_INFO: Record<Exclude<SeasonPhase, '정규시즌'>, { title: string; game: string; format: string; record: string }> = {
+export const POSTSEASON_PHASES = ['와일드카드', '준플레이오프', '플레이오프', '한국시리즈'] as const
+export type PostseasonPhase = (typeof POSTSEASON_PHASES)[number]
+export const isPostseason = (p: SeasonPhase): p is PostseasonPhase => (POSTSEASON_PHASES as readonly string[]).includes(p)
+/** 오늘 경기가 없는 구간 (올스타 브레이크·비시즌) */
+export const isNoGamePhase = (p: SeasonPhase) => p === '올스타 브레이크' || p === '비시즌'
+/** 헤더 등에 쓰는 시즌명 */
+export const seasonLabel = (p: SeasonPhase) => (p === '시범경기' || isPostseason(p) ? p : '정규시즌')
+
+export const POSTSEASON_INFO: Record<PostseasonPhase, { title: string; game: string; format: string; record: string }> = {
   와일드카드: { title: '와일드카드 결정전', game: '1차전', format: '최대 2경기', record: '삼성 0승 0패' },
   준플레이오프: { title: '준플레이오프', game: '3차전', format: '5전 3선승', record: '삼성 1승 1패' },
   플레이오프: { title: '플레이오프', game: '4차전', format: '5전 3선승', record: '삼성 2승 1패' },
@@ -59,3 +67,12 @@ export function withCaseGames(g: Game): Game[] {
     { ...g, id: `${g.id}-2`, time: '1차전 후', note: '더블헤더 2차전' },
   ]
 }
+
+/** 오늘 경기 — 경기가 없는 시즌 구간에서는 없음 */
+export function useTodayGame(): Game | undefined {
+  const { phase } = useCaseState()
+  return isNoGamePhase(phase) ? undefined : TODAY_GAME
+}
+
+/** 일정·예매처럼 경기 목록이 있는 화면에서 비시즌이면 빈 목록 */
+export const hasGamesInPhase = (p: SeasonPhase) => p !== '비시즌'

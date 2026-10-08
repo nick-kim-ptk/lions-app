@@ -13,6 +13,7 @@ export function CaseSelect<T extends string>({
   variant = 'light',
   dropUp = false,
   className = '',
+  disabled = false,
 }: {
   value: T
   options: readonly Option<T>[]
@@ -20,6 +21,7 @@ export function CaseSelect<T extends string>({
   variant?: 'light' | 'dark'
   dropUp?: boolean
   className?: string
+  disabled?: boolean
 }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -45,8 +47,9 @@ export function CaseSelect<T extends string>({
     <div ref={ref} className={`relative inline-block ${className}`}>
       <button
         type="button"
+        disabled={disabled}
         onClick={() => setOpen((v) => !v)}
-        className={`flex items-center gap-1 rounded-full border border-dashed border-red-400 px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap ${tone}`}
+        className={`flex items-center gap-1 rounded-full border border-dashed border-red-400 px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap ${tone} ${disabled ? 'opacity-40' : ''}`}
       >
         <span>{current.label}</span>
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" className={`transition-transform ${open ? 'rotate-180' : ''}`}>

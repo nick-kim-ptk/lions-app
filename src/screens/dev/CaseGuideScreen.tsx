@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Header } from '@/components/Layout'
-import { setMatchState, setSeasonPhase, useCaseState } from '@/data/caseStore'
+import { isPostseason, setMatchState, setSeasonPhase, useCaseState } from '@/data/caseStore'
 import {
   GLOSSARY, GUIDE_INTRO, MATCH_GUIDE, OFF_SEASON, OPEN_ITEMS, PENDING_LINKS, ROADMAP,
   ROUTE_TABLE, SCREEN_LINKS, SEASON_GUIDE, SYSTEM_GUIDE, type SystemGuide,
@@ -193,7 +193,7 @@ export function CaseGuideScreen() {
             {SEASON_GUIDE.map((s) => (
               <Card key={s.phase}>
                 <div className="mb-2 flex items-center justify-between">
-                  <span className="text-[14px] font-black text-[#0E1A40]">{s.phase === '정규시즌' ? s.phase : `🏆 ${s.phase}`}</span>
+                  <span className="text-[14px] font-black text-[#0E1A40]">{isPostseason(s.phase) ? `🏆 ${s.phase}` : s.phase}</span>
                   {phase === s.phase && <span className="rounded-full bg-[#EBF0FF] px-2 py-0.5 text-[10px] font-bold text-[#1B5BF0]">적용 중</span>}
                 </div>
                 <p className="text-[12px] font-semibold text-[#1B5BF0]">{s.who}</p>
@@ -211,7 +211,7 @@ export function CaseGuideScreen() {
               </Card>
             ))}
             <Card>
-              <H>시즌 밖 구간 (제안 2번에서 케이스 추가 예정)</H>
+              <H>참고</H>
               <div className="flex flex-col gap-2">
                 {OFF_SEASON.map((o) => (
                   <div key={o.name}>

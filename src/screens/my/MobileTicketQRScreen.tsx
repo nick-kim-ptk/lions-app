@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { GameStateNotice } from '@/components/GameCaseBar'
-import { useCaseState } from '@/data/caseStore'
+import { useCaseState, seasonLabel } from '@/data/caseStore'
 import { CaseSelect } from '@/components/CaseSelect'
 import mobileTicketQr from '@/assets/images/mobile-ticket-qr-sample.png'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -35,7 +35,7 @@ export function MobileTicketQRScreen() {
       {/* 상단 닫기 */}
       <div className="flex items-center justify-between px-5 pt-12 pb-4">
         <div className="flex flex-col gap-0.5">
-          <span className="text-white/50 text-[11px]">2026 KBO {phase === '정규시즌' ? '정규시즌' : phase}</span>
+          <span className="text-white/50 text-[11px]">2026 KBO {seasonLabel(phase)}</span>
           <span className="text-white font-bold text-base">스마트 티켓</span>
         </div>
         <div className="flex items-center gap-2">

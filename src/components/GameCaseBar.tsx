@@ -1,7 +1,7 @@
 import { CaseSelect } from '@/components/CaseSelect'
 import { MATCH_STATES } from '@/data/home'
 import {
-  POSTSEASON_INFO, SEASON_PHASES, setMatchState, setSeasonPhase, useCaseState,
+  POSTSEASON_INFO, SEASON_PHASES, isNoGamePhase, isPostseason, setMatchState, setSeasonPhase, useCaseState,
 } from '@/data/caseStore'
 
 /** 홈 '오늘의 경기' 위 케이스 바 — 시즌 단계 / 경기 상태를 바꾸면 앱 전체가 연동된다 (와이어프레임 전용) */
@@ -12,7 +12,7 @@ export function GameCaseBar() {
       <span className="text-[10px] font-semibold leading-tight text-red-400">케이스 전환<br />전체 화면 연동</span>
       <div className="flex gap-1.5">
         <CaseSelect value={phase} options={SEASON_PHASES} onChange={setSeasonPhase} />
-        <CaseSelect value={match} options={MATCH_STATES} onChange={setMatchState} />
+        <CaseSelect value={match} options={MATCH_STATES} onChange={setMatchState} disabled={isNoGamePhase(phase)} />
       </div>
     </div>
   )
@@ -21,7 +21,7 @@ export function GameCaseBar() {
 /** 포스트시즌(와일드카드·준PO·PO·KS)일 때 오늘의 경기 카드를 강조하는 프레임 */
 export function PostseasonFrame({ children }: { children: React.ReactNode }) {
   const { phase } = useCaseState()
-  if (phase === '정규시즌') return <>{children}</>
+  if (!isPostseason(phase)) return <>{children}</>
   const info = POSTSEASON_INFO[phase]
   return (
     <div className="rounded-3xl bg-gradient-to-br from-[#0E1A40] via-[#1B3A80] to-[#0E1A40] p-1.5 shadow-lg ring-1 ring-[#F0A500]/60">
@@ -77,12 +77,21 @@ const MESSAGES: Record<Context, Partial<Record<(typeof MATCH_STATES)[number], st
   },
 }
 
+const BREAK_MSG = '올스타 브레이크 기간이에요. 정규 경기는 재개 후 열려요.'
+const OFF_MSG = '시즌이 종료되었어요. 다음 시즌 일정은 공개되면 안내드려요.'
+const PHASE_MESSAGES: Partial<Record<(typeof SEASON_PHASES)[number], Partial<Record<Context, string>>>> = {
+  '올스타 브레이크': { game: BREAK_MSG, schedule: BREAK_MSG, lineup: BREAK_MSG, ticketlist: BREAK_MSG },
+  비시즌: { game: OFF_MSG, schedule: OFF_MSG, lineup: OFF_MSG, ticketlist: OFF_MSG },
+}
+
 /** 전역 케이스(포스트시즌·우천 등)에 따라 각 화면 상단에 보여주는 안내 */
 export function GameStateNotice({ context, dark = false, inset = true }: { context: Context; dark?: boolean; inset?: boolean }) {
   const { phase, match } = useCaseState()
-  const msg = MESSAGES[context][match]
-  const post = phase !== '정규시즌' ? POSTSEASON_INFO[phase] : null
-  if (!msg && !post) return null
+  const msg = isNoGamePhase(phase) ? undefined : MESSAGES[context][match]
+  const post = isPostseason(phase) ? POSTSEASON_INFO[phase] : null
+  const phaseMsg = PHASE_MESSAGES[phase]?.[context]
+  const preseason = phase === '시범경기'
+  if (!msg && !post && !phaseMsg && !preseason) return null
   const warn = match === '우천 취소' || match === '경기 연기'
   const body = (
     <div className="flex flex-col gap-1.5">
@@ -93,6 +102,15 @@ export function GameStateNotice({ context, dark = false, inset = true }: { conte
           <span className="text-[11px] font-semibold text-white">{post.game}</span>
           <span className="ml-auto text-[10px] text-white/70">{post.record}</span>
         </div>
+      )}
+      {preseason && (
+        <div className="flex items-center gap-1.5 rounded-xl bg-[#F0F2F5] px-3 py-2">
+          <span className="rounded-full bg-[#64748B] px-2 py-0.5 text-[10px] font-bold text-white">시범경기</span>
+          <span className="text-[11px] text-[#64748B]">순위에 반영되지 않는 경기예요</span>
+        </div>
+      )}
+      {phaseMsg && (
+        <p className="rounded-xl bg-[#EBF0FF] px-3 py-2.5 text-[12px] font-semibold leading-snug text-[#1B3A80]">{phaseMsg}</p>
       )}
       {msg && (
         <p

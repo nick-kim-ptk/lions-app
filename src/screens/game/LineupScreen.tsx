@@ -1,18 +1,18 @@
 import { useState } from 'react'
 import { GameStateNotice } from '@/components/GameCaseBar'
-import { useCaseState } from '@/data/caseStore'
+import { useCaseState, useTodayGame, isNoGamePhase } from '@/data/caseStore'
 import { CaseSelect } from '@/components/CaseSelect'
 import { Header } from '@/components/Layout'
 import {
-  BATTER_STATS, MOCK_TODAY, MY_TEAM, PLAYER_BY_ID, TEAMS, TODAY_GAME, TODAY_LINEUP,
+  BATTER_STATS, MOCK_TODAY, MY_TEAM, PLAYER_BY_ID, TEAMS, TODAY_LINEUP,
   fmtMDW, type LineupEntry,
 } from '@/data/mock'
 
 // 007-SL-GM-02 오늘의 라인업
 export function LineupScreen() {
-  const game = TODAY_GAME
+  const game = useTodayGame()
   // 케이스 베리에이션용 토글 — 선발 투수는 전날 예고되지만, 타순은 경기 시작 약 1시간 전에 발표됩니다.
-  const { match } = useCaseState()
+  const { match, phase } = useCaseState()
   const [announcedLocal, setAnnounced] = useState(true)
   // 경기 전에는 발표 전/후 토글로 확인하고, 그 외 상태는 전역 케이스를 따른다
   const announced = match === '경기 전' ? announcedLocal : match !== '우천 취소' && match !== '경기 연기'
@@ -22,9 +22,10 @@ export function LineupScreen() {
     return (
       <div className="min-h-full bg-[#F5F7FB] pb-4">
         <Header title="오늘의 라인업" />
+        <GameStateNotice context="lineup" />
         <div className="px-4 pt-10 text-center">
           <p className="text-[14px] font-semibold text-[#111827]">오늘은 경기가 없습니다</p>
-          <p className="mt-1 text-[12px] text-[#9CA3AF]">월요일·휴식일에는 라인업이 제공되지 않아요.</p>
+          <p className="mt-1 text-[12px] text-[#9CA3AF]">{isNoGamePhase(phase) ? '경기가 열리는 기간에 라인업이 제공돼요.' : '월요일·휴식일에는 라인업이 제공되지 않아요.'}</p>
         </div>
       </div>
     )

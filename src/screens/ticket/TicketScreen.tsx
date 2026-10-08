@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { PH, PHCircle, PHSection } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
 import { GameStateNotice } from '@/components/GameCaseBar'
-import { withCaseGames } from '@/data/caseStore'
+import { withCaseGames, useCaseState, hasGamesInPhase } from '@/data/caseStore'
 import { AUTHENTIC_SHOP_ITEMS, BEERYS_SHOP_ITEMS, DURATION } from '@/data/ticket'
 import {
   TEAMS, MY_TEAM, MOCK_TODAY, fmtMD, fmtMDW, fmtSlashMDW,
@@ -42,11 +42,13 @@ export function TicketScreen() {
 
   // 예매 가능한 홈 경기 (오늘 이후). 상태(오픈 전/선예매/매진/마감)는 일정 더미에서 계산
   // 매진·예매 마감은 앱이 파악하지 않는다(예매 화면에서 처리). 전역 케이스(취소·연기·더블헤더)만 오늘 경기에 반영
-  const homeGames = bookableHomeGames().flatMap(withCaseGames).filter((g) => g.status !== 'final')
+  const { phase } = useCaseState()
+  const inSeason = hasGamesInPhase(phase)
+  const homeGames = inSeason ? bookableHomeGames().flatMap(withCaseGames).filter((g) => g.status !== 'final') : []
   const visibleGames = showMoreGames ? homeGames : homeGames.slice(0, 3)
 
   // 예매 오픈 카운트다운/히어로 대상: 아직 열리지 않은 가장 가까운 홈 경기 (없으면 가장 가까운 예매 가능 경기)
-  const openingGame = nextSaleOpeningGame()
+  const openingGame = inSeason ? nextSaleOpeningGame() : undefined
   const heroGame = openingGame ?? homeGames[0]
   const heroSale = heroGame ? ticketSaleOf(heroGame) : null
   const heroOpp = heroGame ? TEAMS[heroGame.opp] : null
@@ -208,6 +210,15 @@ export function TicketScreen() {
             <span>예매 안내</span>
           </button>
         </div>
+        {homeGames.length === 0 && (
+          <div className="rounded-2xl border border-[#DDE1EC] bg-white p-6 text-center">
+            <p className="text-[13px] font-bold text-[#0E1A40]">예매 가능한 경기가 없어요</p>
+            <p className="mt-1 text-[11px] text-[#9CA3AF]">다음 시즌 일정이 공개되면 안내드려요. 시즌권은 멤버십에서 확인할 수 있어요.</p>
+            <button onClick={() => navigate('/my/membership')} className="mt-3 h-9 rounded-xl border border-[#1B5BF0] px-4 text-[12px] font-bold text-[#1B5BF0]">
+              시즌권 안내 보기
+            </button>
+          </div>
+        )}
         <div className="flex flex-col gap-3">
           {visibleGames.map((g) => {
             const opp = TEAMS[g.opp]

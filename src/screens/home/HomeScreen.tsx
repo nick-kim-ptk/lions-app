@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 import { useState, useRef, useSyncExternalStore } from 'react'
 import { PH, PHCircle, PHSection } from '@/components/Placeholder'
-import { useCaseState, setMatchState } from '@/data/caseStore'
+import { useCaseState, setMatchState, useTodayGame } from '@/data/caseStore'
 import { GameCaseBar, PostseasonFrame } from '@/components/GameCaseBar'
 import { subscribeNotif, getHasUnread } from '@/data/notifStore'
 import { KV_SLIDES, MATCH_STATES, MAGAZINE_ITEMS, LIONS_TV_ITEMS, LIVE_SNAPSHOT, FINAL_SNAPSHOT, SUSPENDED_SNAPSHOT, DOUBLEHEADER, MY_SEAT } from '@/data/home'
-import { MY_TEAM, TEAMS, TODAY_GAME, TODAY_LINEUP, fmtKoTime, fmtSlashMDW, nextGame, ticketStateOf } from '@/data/mock'
+import { MY_TEAM, TEAMS, TODAY_LINEUP, fmtKoTime, fmtSlashMDW, nextGame, ticketStateOf } from '@/data/mock'
 
 
 function TeamBadge({ name, score, highlight, dim }: { name: string; score?: number; highlight?: boolean; dim?: boolean }) {
@@ -36,13 +36,13 @@ export function HomeScreen() {
   const navigate = useNavigate()
   const [kvIndex, setKvIndex] = useState(0)
   const touchStartX = useRef(0)
-  const { match: matchState } = useCaseState()
+  const { match: matchState, phase } = useCaseState()
   const [selectedLionsVideo, setSelectedLionsVideo] = useState<(typeof LIONS_TV_ITEMS)[number] | null>(null)
   const matchTouchStartX = useRef(0)
   const matchIndex = MATCH_STATES.indexOf(matchState)
 
   // 오늘의 경기 — 일정 더미(data/mock)에서 읽음. 경기가 없는 날(월요일 등)은 TODAY_GAME 이 없음
-  const game = TODAY_GAME
+  const game = useTodayGame()
   const opp = game ? TEAMS[game.opp] : null
   const venueShort = game ? (game.home ? '라이온즈 파크' : TEAMS[game.opp].stadium) : ''
   const upcoming = nextGame()
@@ -136,6 +136,7 @@ export function HomeScreen() {
       <div className="pb-4 pt-2">
         <div className="flex items-center justify-between px-4 mb-3">
           <span className="text-sm font-bold text-[#111827]">오늘의 경기</span>
+          {phase === '시범경기' && <span className="rounded-full bg-[#64748B] px-2 py-0.5 text-[10px] font-bold text-white">시범경기 · 순위 미반영</span>}
         </div>
 
         {/* 카드 캐러셀 */}
@@ -148,7 +149,33 @@ export function HomeScreen() {
           }}>
 
           {!game || !opp ? (
-            /* 경기 없는 날 (월요일 휴식일·비시즌) */
+            phase === '비시즌' ? (
+              /* 비시즌: 시즌 정리 + 다음 시즌 개막 D-day (수치는 예시) */
+              <div className="rounded-2xl bg-gradient-to-br from-[#0E1A40] to-[#1B3A80] p-5 text-white">
+                <span className="rounded-full bg-white/15 px-2.5 py-0.5 text-[10px] font-bold">2026 시즌 종료</span>
+                <p className="mt-3 text-[15px] font-black">올 시즌도 함께해 주셔서 감사합니다</p>
+                <p className="mt-0.5 text-[11px] text-white/60">정규시즌 2위 · 82승 3무 59패 (예시)</p>
+                <div className="mt-4 flex items-center justify-between rounded-xl bg-white/10 px-3 py-2.5">
+                  <span className="text-[11px] text-white/70">2027 시즌 개막까지</span>
+                  <span className="text-[16px] font-black text-[#F0A500]">D-146</span>
+                </div>
+                <div className="mt-3 flex gap-2">
+                  <button onClick={() => navigate('/my/membership')} className="h-10 flex-1 rounded-xl bg-white text-[12px] font-bold text-[#0E1A40]">시즌권 안내</button>
+                  <button onClick={() => navigate('/game/magazine')} className="h-10 flex-1 rounded-xl border border-white/30 text-[12px] font-bold text-white">시즌 하이라이트</button>
+                </div>
+              </div>
+            ) : phase === '올스타 브레이크' ? (
+              <div className="bg-white rounded-2xl border border-[#DDE1EC] p-5 text-center">
+                <span className="rounded-full bg-[#F3E8FF] px-2.5 py-0.5 text-[10px] font-bold text-[#7E22CE]">올스타 브레이크</span>
+                <p className="mt-3 text-[13px] font-bold text-[#0E1A40]">정규 경기가 쉬는 기간이에요</p>
+                {upcoming && (
+                  <p className="mt-1.5 text-[11px] text-[#9CA3AF]">
+                    재개 경기 · {fmtSlashMDW(upcoming.date)} {fmtKoTime(upcoming.time)} {MY_TEAM.short} vs {TEAMS[upcoming.opp].short}
+                  </p>
+                )}
+              </div>
+            ) : (
+            /* 경기 없는 날 (월요일 휴식일) */
             <div className="bg-white rounded-2xl border border-[#DDE1EC] p-5 text-center">
               <p className="text-[13px] font-bold text-[#0E1A40]">오늘은 경기가 없어요</p>
               {upcoming && (
@@ -157,6 +184,7 @@ export function HomeScreen() {
                 </p>
               )}
             </div>
+            )
           ) : (
             <PostseasonFrame>
               {/* 경기 전 */}
@@ -403,7 +431,7 @@ export function HomeScreen() {
         </div>
 
         {/* 인디케이터 */}
-        <div className="flex justify-center gap-1.5 mt-3">
+        <div className={`flex justify-center gap-1.5 mt-3 ${game ? '' : 'hidden'}`}>
           {MATCH_STATES.map((_, i) => (
             <div key={i} className={`rounded-full transition-all ${i === matchIndex ? 'w-4 h-1.5 bg-[#1B5BF0]' : 'w-1.5 h-1.5 bg-[#DDE1EC]'}`} />
           ))}

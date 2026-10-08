@@ -15,3 +15,4 @@ React 19 + Vite + Tailwind CSS v4 + react-router-dom(HashRouter). 모든 데이�
 - KBO 규칙(월요일 휴식, 경기 시작 시각, 예매 오픈, 취소 마감)은 `mock/games.ts`, `mock/bookings.ts`에 있다.
 - 경로 별칭 `@` = `src`. 점검: `pnpm typecheck`, 빌드: `pnpm build`.
 - 케이스(상태) 전환 컨트롤은 `components/CaseSelect`(빨간 점선 드롭다운)만 사용한다. 탭·필터 등 실제 UI와 구분하기 위함.
+- 시즌 단계·경기 상태 정의는 `src/data/caseGuide.ts`(케이스 가이드 페이지 `/case-guide`)가 단일 출처. 케이스를 추가하면 이 문서도 함께 갱신한다. 전역 케이스 상태는 `src/data/caseStore.ts`.

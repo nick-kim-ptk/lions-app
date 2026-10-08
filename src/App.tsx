@@ -121,7 +121,7 @@ import {
 } from './screens/menu'
 
 // Overview
-import { OverviewScreen } from './screens/dev'
+import { OverviewScreen, CaseGuideScreen } from './screens/dev'
 
 export default function App() {
   return (
@@ -144,6 +144,7 @@ export default function App() {
         <Route path="/set-new-password" element={<SetNewPasswordScreen />} />
         <Route path="/my/withdraw-complete" element={<WithdrawCompleteScreen />} />
         <Route path="/overview" element={<OverviewScreen />} />
+        <Route path="/case-guide" element={<CaseGuideScreen />} />
         <Route path="/all-menu" element={<AllMenuScreen />} />
         <Route path="/lounge/eldorado" element={<EldoradoScreen />} />
 

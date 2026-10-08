@@ -6,20 +6,20 @@ export function EmblemDetailScreen() {
   const [activeTab, setActiveTab] = useState<'획득 내역' | '소진 내역'>('획득 내역')
 
   const earnList = [
-    { id: 6, name: '라이온 킹', location: '홈경기 직관 체크인', date: '2026.09.18', qty: 1 },
-    { id: 5, name: '챔피언십', location: '블루회원 미션 달성', date: '2026.09.15', qty: 1 },
-    { id: 4, name: '홈런왕', location: '이벤트 참여 보상', date: '2026.09.10', qty: 1 },
-    { id: 3, name: '라이온 킹', location: '홈경기 직관 체크인', date: '2026.09.05', qty: 1 },
-    { id: 2, name: '챔피언십', location: '어린이날 클래식 시리즈 직관', date: '2026.08.28', qty: 1 },
-    { id: 1, name: '홈런왕', location: '2026 KBO 리그 홈 개막전 인증', date: '2026.08.20', qty: 1 },
+    { id: 6, name: '사지선다왕', location: '오늘의 미션 퀴즈 정답', date: '2026.09.18', qty: 1 },
+    { id: 5, name: 'OX 감별사', location: '오늘의 미션 OX 퀴즈', date: '2026.09.15', qty: 1 },
+    { id: 4, name: '승부사', location: '이벤트 참여 보상', date: '2026.09.10', qty: 1 },
+    { id: 3, name: '예언가', location: '경기 결과 예측 적중', date: '2026.09.05', qty: 1 },
+    { id: 2, name: '블루 메이트', location: '블루메이트 1기 활동', date: '2026.08.28', qty: 1 },
+    { id: 1, name: '10번째 선수', location: '홈경기 직관 체크인', date: '2026.08.20', qty: 1 },
   ]
 
   const spendList = [
-    { id: 5, name: '라이온 킹', location: '이벤트 응모 차감', date: '2026.09.16', qty: 5 },
-    { id: 4, name: '챔피언십', location: '이벤트 응모 차감', date: '2026.09.08', qty: 3 },
-    { id: 3, name: '홈런왕', location: '이벤트 응모 차감', date: '2026.09.01', qty: 1 },
-    { id: 2, name: '라이온 킹', location: '이벤트 응모 차감', date: '2026.08.25', qty: 3 },
-    { id: 1, name: '챔피언십', location: '이벤트 응모 차감', date: '2026.08.18', qty: 5 },
+    { id: 5, name: '사지선다왕', location: '이벤트 응모 차감', date: '2026.09.16', qty: 5 },
+    { id: 4, name: 'OX 감별사', location: '이벤트 응모 차감', date: '2026.09.08', qty: 3 },
+    { id: 3, name: '승부사', location: '이벤트 응모 차감', date: '2026.09.01', qty: 1 },
+    { id: 2, name: '사지선다왕', location: '이벤트 응모 차감', date: '2026.08.25', qty: 3 },
+    { id: 1, name: 'OX 감별사', location: '이벤트 응모 차감', date: '2026.08.18', qty: 5 },
   ]
 
   const list = activeTab === '획득 내역' ? earnList : spendList

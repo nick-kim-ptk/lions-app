@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Header } from '@/components/Layout'
 import { EmptyState } from '@/components/EmptyState'
 import { ListCaseBar, type ListCase } from '@/components/ListCaseBar'
+import { EMBLEMS, EMBLEM_TOTAL } from '@/data/emblems'
 
 // 038(040)-SL-MY-11 내 앰블럼
 export function MyEmblemScreen() {
@@ -22,7 +23,7 @@ export function MyEmblemScreen() {
       <div className="px-4 pt-4 mb-5">
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-5 flex flex-col items-center gap-1">
           <span className="text-[12px] text-[#9CA3AF]">보유 앰블럼 수</span>
-          <span className="text-[#111827] text-[42px] font-black leading-none">{empty ? 0 : 247}</span>
+          <span className="text-[#111827] text-[42px] font-black leading-none">{empty ? 0 : EMBLEM_TOTAL}</span>
         </div>
       </div>
 
@@ -44,20 +45,19 @@ export function MyEmblemScreen() {
           {empty ? (
             <EmptyState icon="🦁" title="아직 모은 앰블럼이 없어요" desc="경기 관람과 미션 참여로 앰블럼을 모아보세요." actionLabel="블루 시그널 가기" onAction={() => navigate('/lounge/blue-signal')} className="py-8" />
           ) : (
-          <div className="grid grid-cols-3 gap-3">
-            {[
-              { emoji: '🦁', count: 10, color: 'from-[#1B5BF0] to-[#6EC6FF]', name: '라이온 킹' },
-              { emoji: '🏆', count: 3, color: 'from-[#F0A500] to-[#FFD966]', name: '챔피언십' },
-              { emoji: '⚾', count: 5, color: 'from-[#E53935] to-[#FF8A65]', name: '홈런왕' },
-            ].map((em, i) => (
-              <div key={i} className="flex flex-col items-center gap-1.5">
-                <div className={`relative w-full aspect-square rounded-2xl bg-gradient-to-br ${em.color} flex items-center justify-center`}>
-                  <span className="text-2xl">{em.emoji}</span>
-                  <div className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#111827] border-2 border-white flex items-center justify-center">
+          <div className="flex flex-col divide-y divide-[#EEF0F6]">
+            {EMBLEMS.map((em) => (
+              <div key={em.name} className="flex items-center gap-3 py-3 first:pt-0 last:pb-0">
+                <div className={`relative w-12 h-12 shrink-0 rounded-2xl bg-gradient-to-br ${em.color} flex items-center justify-center`}>
+                  <span className="text-xl">{em.emoji}</span>
+                  <div className="absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1 rounded-full bg-[#111827] border-2 border-white flex items-center justify-center">
                     <span className="text-[9px] font-bold text-white">{em.count}</span>
                   </div>
                 </div>
-                <span className="text-[11px] font-medium text-[#374151] text-center leading-tight">{em.name}</span>
+                <div className="min-w-0">
+                  <p className="text-[13px] font-bold text-[#111827] leading-tight">{em.name}</p>
+                  <p className="mt-0.5 text-[12px] text-[#6B7280] leading-snug">{em.desc}</p>
+                </div>
               </div>
             ))}
           </div>

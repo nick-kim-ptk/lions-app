@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { PH, PHCircle } from '@/components/Placeholder'
 import { CaseSelect } from '@/components/CaseSelect'
 import { MemberCard, StateBadge } from '@/components/MemberCard'
-import { joinInfo, type JoinKind, type JoinState } from '@/data/mock/membership'
+import { EMBLEMS, EMBLEM_TOTAL } from '@/data/emblems'
+import { joinInfo,type JoinKind, type JoinState } from '@/data/mock/membership'
 
 
 type MemberCase = '멤버십 모집 전' | '멤버십 모집 중' | '가입 완료'
@@ -153,7 +154,7 @@ export function MyHomeScreen() {
           {[
             { label: '예매 내역', val: '12', path: '/my/booking-history' },
             { label: '쿠폰', val: '3', path: '/my/coupons' },
-            { label: '앰블럼', val: '247', path: '/my/emblem' },
+            { label: '앰블럼', val: String(EMBLEM_TOTAL), path: '/my/emblem' },
           ].map((s, i) => (
             <button key={s.label} onClick={() => navigate(s.path)} className={`flex-1 flex flex-col items-center gap-0.5 py-1 active:bg-[#F5F7FB] transition-colors ${i < 2 ? 'border-r border-[#DDE1EC]' : ''}`}>
               <span className="text-sm font-bold text-[#111827]">{s.val}</span>
@@ -289,11 +290,7 @@ export function MyHomeScreen() {
         </div>
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-4">
           <div className="grid grid-cols-3 gap-3">
-            {[
-              { emoji: '🦁', count: 10, color: 'from-[#1B5BF0] to-[#6EC6FF]', name: '라이온 킹' },
-              { emoji: '🏆', count: 3, color: 'from-[#F0A500] to-[#FFD966]', name: '챔피언십' },
-              { emoji: '⚾', count: 5, color: 'from-[#E53935] to-[#FF8A65]', name: '홈런왕' },
-            ].map((em, i) => (
+            {EMBLEMS.slice(0, 3).map((em, i) => (
               <div key={i} className="flex flex-col items-center gap-1.5">
                 <div className={`relative w-full aspect-square rounded-2xl bg-gradient-to-br ${em.color} flex items-center justify-center`}>
                   <span className="text-2xl">{em.emoji}</span>

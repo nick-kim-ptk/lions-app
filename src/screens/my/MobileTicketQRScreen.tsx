@@ -1,0 +1,323 @@
+import { useState, useRef, useEffect } from 'react'
+import mobileTicketQr from '@/assets/images/mobile-ticket-qr-sample.png'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { MOBILE_TICKETS } from '@/data/my'
+import { MOCK_TIME, MOCK_TODAY, addDays, fmtMDW } from '@/data/mock'
+
+export function MobileTicketQRScreen() {
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const [current, setCurrent] = useState(0)
+  const [ticketMode, setTicketMode] = useState<'스마트 티켓' | '선물 전'>(
+    searchParams.get('mode') === 'gift' ? '선물 전' : '스마트 티켓'
+  )
+  const [qrSeconds, setQrSeconds] = useState(59)
+  const [isQrModalOpen, setIsQrModalOpen] = useState(false)
+  const touchStartX = useRef(0)
+  const ticket = MOBILE_TICKETS[current]
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setQrSeconds(seconds => Math.max(0, seconds - 1))
+    }, 1000)
+    return () => window.clearInterval(timer)
+  }, [])
+
+  // 자동 회수 시각: 기준 시각(mock clock)으로부터 24시간 후
+  const expireStr = `${fmtMDW(addDays(MOCK_TODAY, 1))} ${MOCK_TIME}까지`
+
+  return (
+    <div className="fixed inset-0 z-50 bg-[#0E1A40] flex flex-col overflow-y-auto">
+      {/* 상단 닫기 */}
+      <div className="flex items-center justify-between px-5 pt-12 pb-4">
+        <div className="flex flex-col gap-0.5">
+          <span className="text-white/50 text-[11px]">2026 KBO 정규시즌</span>
+          <span className="text-white font-bold text-base">스마트 티켓</span>
+        </div>
+        <div className="flex items-center gap-2">
+          {/* 토글 — 빨간 닷 감싸기 */}
+          <div className="border border-dashed border-[#E53935] rounded-full p-0.5">
+            <div className="flex bg-white/10 rounded-full p-0.5 gap-0.5">
+              {(['스마트 티켓', '선물 전'] as const).map((mode) => (
+                <button
+                  key={mode}
+                  onClick={() => setTicketMode(mode)}
+                  className={`h-7 px-3 rounded-full text-[11px] font-bold transition-all ${ticketMode === mode ? 'bg-white text-[#0E1A40]' : 'text-white/60'}`}
+                >
+                  {mode}
+                </button>
+              ))}
+            </div>
+          </div>
+          <button
+            onClick={() => navigate(-1)}
+            className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M18 6L6 18M6 6l12 12" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* 티켓 카운터 + 인디케이터 */}
+      <div className="flex items-center justify-between px-5 mb-3">
+        <span className="text-white/50 text-[11px]">{current + 1} / {MOBILE_TICKETS.length}장</span>
+        <div className="flex gap-1.5">
+          {MOBILE_TICKETS.map((_, i) => (
+            <button key={i} onClick={() => setCurrent(i)}
+              className={`h-1.5 rounded-full transition-all ${i === current ? 'w-5 bg-white' : 'w-1.5 bg-white/30'}`}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* 티켓 카드 — 스와이프 */}
+      <div
+        className="mx-5 bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col"
+        onTouchStart={e => { touchStartX.current = e.touches[0].clientX }}
+        onTouchEnd={e => {
+          const dx = e.changedTouches[0].clientX - touchStartX.current
+          if (dx < -40) setCurrent(i => Math.min(i + 1, MOBILE_TICKETS.length - 1))
+          if (dx > 40)  setCurrent(i => Math.max(i - 1, 0))
+        }}
+      >
+        {/* ── KV 이미지 영역 ── */}
+        <div className="relative h-[440px] overflow-hidden flex flex-col justify-between">
+          {/* 폴백 배경 — 항상 깔림 */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#0A1A4E] via-[#1B5BF0] to-[#0E2F80]" />
+          {/* 교체 가능한 KV 이미지 — 중앙 정렬 */}
+          {ticket.kvImage && (
+            <div
+              className="absolute inset-0 bg-center bg-cover"
+              style={{ backgroundImage: `url(${ticket.kvImage})`, backgroundSize: 'cover', backgroundPosition: 'center top' }}
+            />
+          )}
+          {/* 하단 그라데이션 오버레이 — 텍스트 가독성 */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent pointer-events-none" />
+
+          {/* 상단 eyebrow */}
+          <div className="px-5 pt-4 relative z-10">
+            <span className="text-white/70 text-[9px] font-bold tracking-[0.2em] uppercase drop-shadow">Samsung Lions · 2026 KBO</span>
+          </div>
+
+          {/* 빈 중앙 — 선수 이미지 공간 */}
+          <div className="flex-1" />
+
+          {/* 경기 정보 — 하단 정렬 */}
+          <div className="flex items-end justify-between px-5 pb-2 relative z-10">
+            <div className="flex flex-col">
+              <span className="text-white text-[20px] font-black leading-none tracking-tight drop-shadow-md">삼성 라이온즈</span>
+              <span className="text-white/60 text-[11px] font-semibold mt-0.5 drop-shadow">vs {ticket.opponent}</span>
+            </div>
+            <div className="flex flex-col items-end gap-0.5">
+              <span className="text-white text-[12px] font-bold drop-shadow">{ticket.date}</span>
+              <span className="text-white/50 text-[10px] drop-shadow">대구 삼성 라이온즈파크</span>
+            </div>
+          </div>
+
+          {/* 흐르는 띠 — 하단 */}
+          <div className="relative h-7 bg-black/40 overflow-hidden flex items-center z-10">
+            <div
+              className="flex items-center gap-8 whitespace-nowrap absolute h-full"
+              style={{ animation: 'ticketScroll 12s linear infinite' }}
+            >
+              {Array.from({ length: 16 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-3 shrink-0">
+                  <span className="w-1 h-1 rounded-full bg-[#4ADE80] inline-block" />
+                  <span className="text-[#4ADE80] text-[9px] font-bold tracking-[0.18em]">캡처·촬영 시 입장 제한됩니다</span>
+                  <span className="text-white/30 text-[9px] font-bold tracking-[0.18em]">VALID TICKET</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── 티어 라인 ── */}
+        <div className="relative flex items-center bg-white">
+          <div className="w-5 h-5 rounded-full bg-[#0E1A40] -ml-2.5 z-10" />
+          <div className="flex-1 border-t-2 border-dashed border-[#DDE1EC]" />
+          <div className="w-5 h-5 rounded-full bg-[#0E1A40] -mr-2.5 z-10" />
+        </div>
+
+        {/* ── 하단 콘텐츠 — 모드 분기 ── */}
+        {ticketMode === '스마트 티켓' ? (
+          <div className="flex flex-col px-5 py-4 gap-3">
+            {/* 티켓 정보 */}
+            <div className="grid grid-cols-[1fr_auto] gap-x-8 gap-y-4">
+              <div className="col-span-2">
+                <p className="text-[10px] text-[#9CA3AF] mb-0.5">티켓 번호</p>
+                <p className="text-[17px] font-mono font-black leading-none tracking-tight text-[#111827]">{ticket.ticketNo}</p>
+              </div>
+              <div>
+                <p className="text-[10px] text-[#9CA3AF] mb-0.5">좌석 정보</p>
+                <div className="flex items-baseline gap-2">
+                  <p className="text-[#111827] text-[16px] font-black leading-tight">{ticket.zone}</p>
+                  <p className="text-[#1B5BF0] text-[13px] font-bold leading-tight">{ticket.seat}</p>
+                </div>
+              </div>
+              <div>
+                <p className="text-[10px] text-[#9CA3AF] mb-0.5">게이트</p>
+                <p className="text-[#111827] text-[17px] font-black leading-none tracking-tight">{ticket.gate}</p>
+              </div>
+            </div>
+
+            {/* QR */}
+            <div className="flex flex-col items-center border-t border-[#F1F3F8] pt-3">
+              <div className="mb-1 flex items-center justify-center gap-2">
+                <p className="text-center text-[13px] font-semibold text-[#374151]">
+                  입장 시, 직원에게 바코드를 제시해주시기 바랍니다.
+                </p>
+                <button
+                  onClick={() => setIsQrModalOpen(true)}
+                  aria-label="QR 코드 크게 보기"
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-[#DDE1EC] bg-white text-[#64748B]"
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
+                    <path d="M20 20l-4-4M11 8v6M8 11h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                </button>
+              </div>
+              <div className="relative h-44 w-44">
+                <img
+                  src={mobileTicketQr}
+                  alt="입장용 QR 코드"
+                  className={`h-full w-full ${qrSeconds === 0 ? 'opacity-25' : ''}`}
+                />
+                {qrSeconds === 0 && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-white/45">
+                    <span className="rounded-lg bg-[#111827]/80 px-3 py-2 text-center text-[12px] font-bold text-white">
+                      유효하지 않은 QR입니다.
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="relative flex w-44 items-center justify-center">
+                <span className="text-[11px] font-semibold tabular-nums text-[#64748B]">
+                  QR 갱신까지 00:{String(qrSeconds).padStart(2, '0')}
+                </span>
+                <button
+                  onClick={() => setQrSeconds(59)}
+                  aria-label="QR 코드 새로고침"
+                  className="absolute right-0 flex h-7 w-7 items-center justify-center rounded-md border border-[#DDE1EC] bg-white text-[#64748B]"
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                    <path d="M20 6v5h-5M4 18v-5h5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M18.5 9A7 7 0 006.7 6.7L4 11M5.5 15A7 7 0 0017.3 17.3L20 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* 선물 전 모드 */
+          <div className="flex flex-col px-5 py-5 gap-4">
+            {/* 티켓 도착 안내 */}
+            <div className="flex flex-col items-center gap-2 py-2">
+              <div className="w-11 h-11 rounded-full bg-[#E53935]/10 flex items-center justify-center">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M20 12v8a1 1 0 01-1 1H5a1 1 0 01-1-1v-8" stroke="#E53935" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M22 7H2v5h20V7z" stroke="#E53935" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 22V7" stroke="#E53935" strokeWidth="2" strokeLinecap="round"/>
+                  <path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z" stroke="#E53935" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" stroke="#E53935" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <p className="text-[15px] font-black text-[#111827]">티켓이 도착했습니다.</p>
+              <p className="text-[12px] text-[#64748B] text-center leading-relaxed">
+                24시간 내로 선물 받기를 누르지 않으면<br />티켓이 자동으로 회수됩니다.
+              </p>
+            </div>
+
+            {/* 보내는 메시지 */}
+            <div className="w-full bg-[#F5F7FB] border border-[#DDE1EC] rounded-2xl px-4 py-3 flex flex-col gap-1.5">
+              <div className="flex items-center gap-1.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="shrink-0">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" stroke="#9CA3AF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <span className="text-[10px] text-[#9CA3AF] font-semibold">보내는 메시지</span>
+              </div>
+              <p className="text-[13px] text-[#374151] leading-relaxed italic">"생일 축하해! 같이 응원하자 🦁"</p>
+              <p className="text-[10px] text-[#9CA3AF]">보낸 분 · <span className="font-semibold text-[#64748B]">라이온하트</span></p>
+            </div>
+
+            {/* 자동 회수 기간 */}
+            <div className="flex items-center justify-center gap-1.5 bg-[#FFF8E1] border border-[#FBBF24]/40 rounded-xl px-4 py-2.5">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="#F59E0B" strokeWidth="1.8"/>
+                <path d="M12 6v6l4 2" stroke="#F59E0B" strokeWidth="1.8" strokeLinecap="round"/>
+              </svg>
+              <span className="text-[11px] text-[#92400E] font-medium">자동 회수 기간 · {expireStr}</span>
+            </div>
+
+            {/* 선물 받기 / 받지 않기 */}
+            <div className="flex flex-col gap-2">
+              <button className="w-full h-12 rounded-2xl bg-[#E53935] text-white text-[14px] font-black shadow-md shadow-[#E53935]/20">
+                선물 받기
+              </button>
+              <button className="w-full h-10 rounded-2xl bg-[#F3F4F6] text-[#6B7280] text-[13px] font-medium">
+                받지 않기
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* 하단 버튼 영역 */}
+      {ticketMode === '스마트 티켓' && (
+        <div className="px-5 pt-4 pb-10">
+          <button
+            onClick={() => navigate('/my/ticket-gift')}
+            className="w-full h-12 rounded-2xl bg-white/10 border border-white/20 text-white text-sm font-semibold"
+          >
+            티켓 선물하기
+          </button>
+        </div>
+      )}
+      {ticketMode === '선물 전' && <div className="pb-10" />}
+
+      {isQrModalOpen && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 px-6"
+          onClick={() => setIsQrModalOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-sm rounded-3xl bg-white p-6 shadow-2xl"
+            onClick={event => event.stopPropagation()}
+          >
+            <button
+              onClick={() => setIsQrModalOpen(false)}
+              aria-label="QR 코드 크게 보기 닫기"
+              className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-[#F1F3F8] text-[#374151]"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
+            <div className="flex flex-col items-center pt-8">
+              <p className="mb-4 text-[15px] font-bold text-[#111827]">입장용 QR 코드</p>
+              <div className="relative h-72 w-72 max-w-full">
+                <img
+                  src={mobileTicketQr}
+                  alt="확대된 입장용 QR 코드"
+                  className={`h-full w-full ${qrSeconds === 0 ? 'opacity-25' : ''}`}
+                />
+                {qrSeconds === 0 && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-white/45">
+                    <span className="rounded-lg bg-[#111827]/80 px-4 py-3 text-center text-[14px] font-bold text-white">
+                      유효하지 않은 QR입니다.
+                    </span>
+                  </div>
+                )}
+              </div>
+              <span className="mt-3 text-[12px] font-semibold tabular-nums text-[#64748B]">
+                QR 갱신까지 00:{String(qrSeconds).padStart(2, '0')}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}

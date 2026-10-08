@@ -153,15 +153,15 @@ export function HomeScreen() {
               /* 비시즌: 시즌 정리 + 다음 시즌 개막 D-day (수치는 예시) */
               <div className="rounded-2xl bg-gradient-to-br from-[#0E1A40] to-[#1B3A80] p-5 text-white">
                 <span className="rounded-full bg-white/15 px-2.5 py-0.5 text-[10px] font-bold">2026 시즌 종료</span>
-                <p className="mt-3 text-[15px] font-black">올 시즌도 함께해 주셔서 감사합니다</p>
+                <p className="mt-3 text-[15px] font-black">비시즌도 라이온즈와 함께!</p>
                 <p className="mt-0.5 text-[11px] text-white/60">정규시즌 2위 · 82승 3무 59패 (예시)</p>
                 <div className="mt-4 flex items-center justify-between rounded-xl bg-white/10 px-3 py-2.5">
                   <span className="text-[11px] text-white/70">2027 시즌 개막까지</span>
                   <span className="text-[16px] font-black text-[#F0A500]">D-146</span>
                 </div>
                 <div className="mt-3 flex gap-2">
-                  <button onClick={() => navigate('/my/membership')} className="h-10 flex-1 rounded-xl bg-white text-[12px] font-bold text-[#0E1A40]">시즌권 안내</button>
-                  <button onClick={() => navigate('/game/magazine')} className="h-10 flex-1 rounded-xl border border-white/30 text-[12px] font-bold text-white">시즌 하이라이트</button>
+                  <button onClick={() => window.open('https://www.youtube.com/@lionstv1982', '_blank', 'noopener,noreferrer')} className="h-10 flex-1 rounded-xl bg-white text-[12px] font-bold text-[#0E1A40]">공식 유튜브</button>
+                  <button onClick={() => window.open('https://www.instagram.com/samsunglions_baseballclub/', '_blank', 'noopener,noreferrer')} className="h-10 flex-1 rounded-xl border border-white/30 text-[12px] font-bold text-white">공식 인스타그램</button>
                 </div>
               </div>
             ) : phase === '올스타 브레이크' ? (

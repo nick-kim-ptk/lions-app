@@ -1,5 +1,5 @@
 import ticketKv from '@/assets/images/ticket-kv.png'
-import { KBO_TEAM_NAMES, SMART_TICKET_BOOKINGS, TEAMS, fmtDotMDW, gameOf, seatText } from '@/data/mock'
+import { KBO_TEAM_NAMES, NOW_MINUTES, SMART_TICKET_BOOKINGS, TEAMS, fmtDotMDW, fmtMDW, gameOf, seatText, toMinutes } from '@/data/mock'
 
 // 029(031)-SL-MY-02 설정
 // 211x61 PNG — 아이콘 3개 가로 배열: 카카오(0~70), 네이버(70~140), 구글(140~211)
@@ -35,6 +35,9 @@ export const MOBILE_TICKETS = SMART_TICKET_BOOKINGS.flatMap((b) => {
     ticketNo: `TK-${g.date.replace(/-/g, '')}-${b.no.slice(-4)}`,
     barcode: `SL-${g.date}-${b.no.slice(-4)}-S${seat}`,
     kvImage: ticketKv,
+    // 입장 바코드는 경기 시작 2시간 전부터 노출
+    barcodeOpen: NOW_MINUTES >= toMinutes(g.date, g.time) - 120,
+    barcodeOpenLabel: `${fmtMDW(g.date)} ${String(Number(g.time.slice(0, 2)) - 2).padStart(2, '0')}:${g.time.slice(3)}`,
   }))
 }).map((t, i) => ({ id: i + 1, ...t }))
 

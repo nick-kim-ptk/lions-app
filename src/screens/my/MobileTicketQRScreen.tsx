@@ -7,13 +7,20 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { MOBILE_TICKETS } from '@/data/my'
 import { MOCK_TIME, MOCK_TODAY, addDays, fmtMDW } from '@/data/mock'
 
+type TicketMode = '스마트 티켓' | '바코드 오픈 전' | '선물 받은 티켓' | '선물 전'
+const TICKET_MODES = ['스마트 티켓', '바코드 오픈 전', '선물 받은 티켓', '선물 전'] as const
+
 export function MobileTicketQRScreen() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const [current, setCurrent] = useState(0)
-  const [ticketMode, setTicketMode] = useState<'스마트 티켓' | '선물 전'>(
+  const [ticketMode, setTicketMode] = useState<TicketMode>(
     searchParams.get('mode') === 'gift' ? '선물 전' : '스마트 티켓'
   )
+  const [drag, setDrag] = useState(0)
+  const [dragging, setDragging] = useState(false)
+  const [returned, setReturned] = useState<number[]>([])
+  const [returnConfirm, setReturnConfirm] = useState(false)
   const [qrSeconds, setQrSeconds] = useState(59)
   const [isQrModalOpen, setIsQrModalOpen] = useState(false)
   const touchStartX = useRef(0)
@@ -58,7 +65,7 @@ export function MobileTicketQRScreen() {
         </div>
         <div className="flex items-center gap-2">
           {/* 토글 — 빨간 닷 감싸기 */}
-          <CaseSelect variant="dark" value={ticketMode} options={['스마트 티켓', '선물 전'] as const} onChange={setTicketMode} />
+          <CaseSelect variant="dark" value={ticketMode} options={TICKET_MODES} onChange={setTicketMode} />
           <button
             onClick={() => navigate(-1)}
             className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"
@@ -84,16 +91,32 @@ export function MobileTicketQRScreen() {
         </div>
       </div>
 
-      {/* 티켓 카드 — 스와이프 */}
+      {/* 티켓 카드 — 카드 자체가 좌우로 이동하는 캐러셀 */}
       <div
-        className="mx-5 bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col"
-        onTouchStart={e => { touchStartX.current = e.touches[0].clientX }}
-        onTouchEnd={e => {
-          const dx = e.changedTouches[0].clientX - touchStartX.current
-          if (dx < -40) setCurrent(i => Math.min(i + 1, MOBILE_TICKETS.length - 1))
-          if (dx > 40)  setCurrent(i => Math.max(i - 1, 0))
+        className="overflow-hidden"
+        onTouchStart={e => { touchStartX.current = e.touches[0].clientX; setDragging(true) }}
+        onTouchMove={e => {
+          const dx = e.touches[0].clientX - touchStartX.current
+          const atEdge = (current === 0 && dx > 0) || (current === MOBILE_TICKETS.length - 1 && dx < 0)
+          setDrag(atEdge ? dx * 0.25 : dx)
+        }}
+        onTouchEnd={() => {
+          if (drag < -60) setCurrent(i => Math.min(i + 1, MOBILE_TICKETS.length - 1))
+          if (drag > 60) setCurrent(i => Math.max(i - 1, 0))
+          setDrag(0)
+          setDragging(false)
         }}
       >
+        <div
+          className="flex"
+          style={{
+            transform: `translateX(calc(${-current * 100}% + ${drag}px))`,
+            transition: dragging ? 'none' : 'transform 0.3s ease',
+          }}
+        >
+          {MOBILE_TICKETS.map((ticket) => (
+            <div key={ticket.id} className="w-full shrink-0 px-5">
+              <div className="bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col">
         {/* ── KV 이미지 영역 ── */}
         <div className="relative h-[440px] overflow-hidden flex flex-col justify-between">
           {/* 폴백 배경 — 항상 깔림 */}
@@ -153,8 +176,14 @@ export function MobileTicketQRScreen() {
         </div>
 
         {/* ── 하단 콘텐츠 — 모드 분기 ── */}
-        {ticketMode === '스마트 티켓' ? (
+        {ticketMode !== '선물 전' ? (
           <div className="flex flex-col px-5 py-4 gap-3">
+            {ticketMode === '선물 받은 티켓' && (
+              <div className="flex items-center justify-between rounded-xl bg-[#FFF1F0] px-3 py-2">
+                <span className="text-[11px] font-bold text-[#E53935]">🎁 선물 받은 티켓</span>
+                <span className="text-[10px] text-[#9CA3AF]">보낸 분 · <span className="font-semibold text-[#64748B]">라이온하트</span></span>
+              </div>
+            )}
             {/* 티켓 정보 */}
             <div className="grid grid-cols-[1fr_auto] gap-x-8 gap-y-4">
               <div className="col-span-2">
@@ -174,7 +203,27 @@ export function MobileTicketQRScreen() {
               </div>
             </div>
 
-            {/* QR */}
+            {/* QR — 경기 시작 2시간 전부터 노출 */}
+            {returned.includes(ticket.id) ? (
+              <div className="flex flex-col items-center gap-1 border-t border-[#F1F3F8] py-8 text-center">
+                <p className="text-[14px] font-bold text-[#374151]">보낸 분에게 돌려준 티켓이에요</p>
+                <p className="text-[11px] text-[#9CA3AF]">이 티켓은 더 이상 사용할 수 없어요.</p>
+              </div>
+            ) : !(ticketMode !== '바코드 오픈 전' && ticket.barcodeOpen) ? (
+              <div className="flex flex-col items-center gap-2 border-t border-[#F1F3F8] py-7 text-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#F1F3F8]">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <rect x="5" y="11" width="14" height="10" rx="2" stroke="#64748B" strokeWidth="2" />
+                    <path d="M8 11V8a4 4 0 018 0v3" stroke="#64748B" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                </div>
+                <p className="text-[14px] font-bold text-[#374151]">입장 바코드는 아직 열리지 않았어요</p>
+                <p className="text-[12px] leading-relaxed text-[#64748B]">
+                  경기 시작 2시간 전부터 표시돼요.<br />
+                  <span className="font-semibold text-[#1B5BF0]">{ticket.barcodeOpenLabel}</span> 오픈
+                </p>
+              </div>
+            ) : (
             <div className="flex flex-col items-center border-t border-[#F1F3F8] pt-3">
               <div className="mb-1 flex items-center justify-center gap-2">
                 <p className="text-center text-[13px] font-semibold text-[#374151]">
@@ -221,6 +270,7 @@ export function MobileTicketQRScreen() {
                 </button>
               </div>
             </div>
+            )}
           </div>
         ) : (
           /* 선물 전 모드 */
@@ -274,6 +324,10 @@ export function MobileTicketQRScreen() {
             </div>
           </div>
         )}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* 하단 버튼 영역 */}
@@ -287,7 +341,49 @@ export function MobileTicketQRScreen() {
           </button>
         </div>
       )}
+      {ticketMode === '바코드 오픈 전' && (
+        <div className="px-5 pt-4 pb-10">
+          <button
+            onClick={() => navigate('/my/ticket-gift')}
+            className="w-full h-12 rounded-2xl bg-white/10 border border-white/20 text-white text-sm font-semibold"
+          >
+            티켓 선물하기
+          </button>
+        </div>
+      )}
+      {ticketMode === '선물 받은 티켓' && (
+        <div className="px-5 pt-4 pb-10 flex flex-col gap-2">
+          <button
+            disabled={returned.includes(ticket.id)}
+            onClick={() => setReturnConfirm(true)}
+            className="w-full h-12 rounded-2xl bg-white/10 border border-white/20 text-white text-sm font-semibold disabled:opacity-40"
+          >
+            {returned.includes(ticket.id) ? '돌려주기 완료' : '돌려주기'}
+          </button>
+          <p className="text-center text-[11px] text-white/50">선물 받은 티켓은 다시 선물할 수 없어요. 보낸 분에게 돌려줄 수 있어요.</p>
+        </div>
+      )}
       {ticketMode === '선물 전' && <div className="pb-10" />}
+
+      {returnConfirm && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 px-8" onClick={() => setReturnConfirm(false)}>
+          <div className="w-full max-w-sm rounded-3xl bg-white p-6 text-center" onClick={e => e.stopPropagation()}>
+            <p className="text-[16px] font-black text-[#111827]">티켓을 돌려줄까요?</p>
+            <p className="mt-2 text-[12px] leading-relaxed text-[#64748B]">
+              보낸 분(라이온하트)에게 티켓이 돌아가며,<br />돌려준 티켓은 다시 받을 수 없어요.
+            </p>
+            <div className="mt-5 flex gap-2">
+              <button onClick={() => setReturnConfirm(false)} className="h-11 flex-1 rounded-xl bg-[#F3F4F6] text-[13px] font-bold text-[#6B7280]">취소</button>
+              <button
+                onClick={() => { setReturned(r => [...r, ticket.id]); setReturnConfirm(false) }}
+                className="h-11 flex-1 rounded-xl bg-[#1B5BF0] text-[13px] font-bold text-white"
+              >
+                돌려주기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {isQrModalOpen && (
         <div

@@ -1,8 +1,14 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Header } from '@/components/Layout'
+import { EmptyState } from '@/components/EmptyState'
+import { ListCaseBar, type ListCase } from '@/components/ListCaseBar'
 
 // 050(052)-SL-MY-23 멤버십 내역
 export function MembershipHistoryScreen() {
-  const histories = [
+  const navigate = useNavigate()
+  const [listCase, setListCase] = useState<ListCase>('목록 있음')
+  const allHistories = [
     { year: '2026', type: '멤버십', name: '블루멤버십 (GOLD)', member: '홍길동', date: '2026.01.03', amount: '120,000원', status: '결제 완료' },
     { year: '2026', type: '시즌권', name: '프리미엄 블루 시즌권', member: '홍길동', date: '2026.01.03', amount: '1,500,000원', status: '결제 완료' },
     { year: '2026', type: '멤버십', name: '어린이 멤버십', member: '홍길동 Jr.', date: '2026.01.05', amount: '30,000원', status: '결제 완료' },
@@ -12,6 +18,7 @@ export function MembershipHistoryScreen() {
     { year: '2024', type: '멤버십', name: '블루멤버십 (SILVER)', member: '홍길동', date: '2024.01.12', amount: '80,000원', status: '결제 완료' },
   ]
 
+  const histories = listCase === '목록 없음' ? [] : allHistories
   const grouped = histories.reduce<Record<string, typeof histories>>((acc, h) => {
     acc[h.year] = acc[h.year] ?? []
     acc[h.year].push(h)
@@ -26,6 +33,10 @@ export function MembershipHistoryScreen() {
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-8">
       <Header title="가입 내역" />
+      <ListCaseBar value={listCase} onChange={setListCase} />
+      {histories.length === 0 && (
+        <EmptyState icon="💙" title="가입 내역이 없어요" desc="블루멤버십과 시즌권 가입 내역이 여기에 표시돼요." actionLabel="멤버십 안내 보기" onAction={() => navigate('/my/membership-guide')} />
+      )}
       <div className="px-4 pt-4 flex flex-col gap-6">
         {Object.entries(grouped).sort(([a], [b]) => Number(b) - Number(a)).map(([year, items]) => (
           <div key={year}>

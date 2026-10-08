@@ -1,17 +1,23 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Header } from '@/components/Layout'
+import { EmptyState } from '@/components/EmptyState'
+import { ListCaseBar, type ListCase } from '@/components/ListCaseBar'
 import { EVENT_HISTORY, EventStatus, STATUS_STYLE } from '@/data/menu'
 
 // 080(082)-SL-AL-26 이벤트 참여 내역
 export function EventHistoryScreen() {
+  const navigate = useNavigate()
   const [tab, setTab] = useState<EventStatus | '전체'>('전체')
+  const [listCase, setListCase] = useState<ListCase>('목록 있음')
   const tabs = ['전체', '당첨', '미당첨', '응모 중'] as const
 
-  const filtered = tab === '전체' ? EVENT_HISTORY : EVENT_HISTORY.filter(e => e.status === tab)
+  const filtered = listCase === '목록 없음' ? [] : tab === '전체' ? EVENT_HISTORY : EVENT_HISTORY.filter(e => e.status === tab)
 
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-4">
       <Header title="이벤트 참여 내역" />
+      <ListCaseBar value={listCase} onChange={setListCase} />
 
       {/* 탭 */}
       <div className="flex px-4 pt-3 gap-4 border-b border-[#DDE1EC]">
@@ -38,10 +44,11 @@ export function EventHistoryScreen() {
           </div>
         ))}
         {filtered.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-16 text-[#9CA3AF]">
-            <span className="text-4xl mb-3">🎟</span>
-            <p className="text-[13px]">해당 내역이 없습니다</p>
-          </div>
+          tab === '전체' ? (
+            <EmptyState icon="🎟" title="참여한 이벤트가 없어요" desc="진행 중인 이벤트에 참여해 보세요." actionLabel="이벤트 보러가기" onAction={() => navigate('/all/event-list')} />
+          ) : (
+            <EmptyState icon="🎟" title={`${tab} 내역이 없어요`} />
+          )
         )}
       </div>
     </div>

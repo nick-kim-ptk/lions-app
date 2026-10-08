@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import samsungImg from '@/assets/images/v9-team-photo.jpg'
 import { Header, useScreenIdOverride } from '@/components/Layout'
+import { EmptyState } from '@/components/EmptyState'
+import { ListCaseBar, type ListCase } from '@/components/ListCaseBar'
 import { SEASON_GRID_EMPTY, DiaryRecord, INITIAL_DIARIES } from '@/data/lounge'
 
 function DiaryFeedCard({ watchMode, player, date, match, text, result, onEdit }: {
@@ -89,6 +91,7 @@ export function DiaryScreen() {
   const [analysisTab, setAnalysisTab] = useState<'상대팀별'|'야구장별'|'요일별'>('상대팀별')
   const [sheetOpen, setSheetOpen] = useState(false)
   const [filterMode, setFilterMode] = useState<'전체' | '직관' | '집관' | '원정'>('전체')
+  const [listCase, setListCase] = useState<ListCase>('목록 있음')
   const [showWriteModal, setShowWriteModal] = useState(false)
   const [editingPostId, setEditingPostId] = useState<number | null>(null)
   const [writePhoto, setWritePhoto] = useState(false)
@@ -204,8 +207,12 @@ export function DiaryScreen() {
       </div>
 
       {/* 게시물 */}
-      <div className="px-4 flex flex-col gap-4 mb-4 mt-20">
-        {posts.filter(post => filterMode === '전체' || post.watchMode === filterMode).map(post => (
+      <div className="mt-20"><ListCaseBar value={listCase} onChange={setListCase} /></div>
+      <div className="px-4 flex flex-col gap-4 mb-4 mt-2">
+        {(listCase === '목록 없음' || posts.filter(post => filterMode === '전체' || post.watchMode === filterMode).length === 0) && (
+          <EmptyState icon="📝" title={filterMode === '전체' || listCase === '목록 없음' ? '아직 작성한 직관 일기가 없어요' : `${filterMode} 기록이 없어요`} desc="경기를 보고 나서 오늘의 응원을 기록해 보세요." actionLabel="첫 일기 쓰기" onAction={() => setShowWriteModal(true)} />
+        )}
+        {(listCase === '목록 없음' ? [] : posts.filter(post => filterMode === '전체' || post.watchMode === filterMode)).map(post => (
           <DiaryFeedCard
             key={post.id}
             watchMode={post.watchMode}

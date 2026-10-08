@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Header } from '@/components/Layout'
 import { isPostseason, setMatchState, setSeasonPhase, useCaseState } from '@/data/caseStore'
 import {
-  DECISIONS, GLOSSARY, GUIDE_INTRO, MATCH_GUIDE, OFF_SEASON, OPEN_ITEMS, PENDING_LINKS,
+  DECISIONS, EMPTY_STATES, GLOSSARY, GUIDE_INTRO, MATCH_GUIDE, OFF_SEASON, OPEN_ITEMS, PENDING_LINKS,
   ROUTE_TABLE, SCREEN_LINKS, SEASON_GUIDE, SYSTEM_GUIDE, type SystemGuide,
 } from '@/data/caseGuide'
 
@@ -271,6 +271,20 @@ export function CaseGuideScreen() {
                 </div>
               </Card>
             ))}
+            <Card>
+              <p className="mb-2 text-[14px] font-black text-[#0E1A40]">빈 상태 문구 정의</p>
+              <p className="mb-3 text-[11px] leading-relaxed text-[#64748B]">목록형 화면의 "목록 없음" 케이스입니다. 각 화면 상단의 빨간 점선 드롭다운(목록 있음 / 목록 없음)으로 확인합니다. 형식: 아이콘 + 제목 + 보조 문구 + (이어서 할 일이 있으면) 버튼 1개.</p>
+              <div className="flex flex-col divide-y divide-[#F0F2F5]">
+                {EMPTY_STATES.map((e) => (
+                  <div key={e.screen} className="py-2">
+                    <p className="text-[11px] font-bold text-[#0E1A40]">{e.screen}</p>
+                    <p className="text-[12px] text-[#374151]">{e.title}</p>
+                    {e.desc !== '-' && <p className="text-[11px] text-[#9CA3AF]">{e.desc}</p>}
+                    {e.action !== '-' && <p className="text-[11px] font-semibold text-[#1B5BF0]">버튼: {e.action}</p>}
+                  </div>
+                ))}
+              </div>
+            </Card>
           </>
         )}
 

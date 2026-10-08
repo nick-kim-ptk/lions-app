@@ -1,4 +1,6 @@
 import { useCaseState, isSeasonEndPhase } from '@/data/caseStore'
+import { EmptyState } from '@/components/EmptyState'
+import { ListCaseBar, type ListCase } from '@/components/ListCaseBar'
 import { useState } from 'react'
 import { GameStateNotice } from '@/components/GameCaseBar'
 import { useNavigate } from 'react-router-dom'
@@ -12,6 +14,7 @@ import {
 export function BookingHistoryScreen() {
   const navigate = useNavigate()
   const [tab, setTab] = useState<'예매 확인' | '예매 취소'>('예매 확인')
+  const [listCase, setListCase] = useState<ListCase>('목록 있음')
   const [isCancelGuideOpen, setIsCancelGuideOpen] = useState(false)
   const [isSmartTicketConfirmOpen, setIsSmartTicketConfirmOpen] = useState(false)
   const [bookingPeriod, setBookingPeriod] = useState<'1개월' | '3개월' | '6개월' | '1년' | '날짜 지정'>('1개월')
@@ -179,6 +182,7 @@ export function BookingHistoryScreen() {
       />
 
       <GameStateNotice context="bookings" />
+      <ListCaseBar value={listCase} onChange={setListCase} />
 
       {/* 탭 */}
       <div className="flex border-b border-[#DDE1EC]">
@@ -202,9 +206,13 @@ export function BookingHistoryScreen() {
           </div>
         )}
         {tab === '예매 확인' && <PeriodFilter />}
-        {tab === '예매 확인' && UPCOMING.map((item) => <UpcomingBookingCard key={item.no} {...item} />)}
+        {tab === '예매 확인' && (listCase === '목록 없음' || UPCOMING.length === 0
+          ? <EmptyState icon="🎫" title="예매 내역이 없어요" desc="라이온즈 경기를 예매해 보세요." actionLabel="티켓 예매하기" onAction={() => navigate('/ticket')} className="py-12" />
+          : UPCOMING.map((item) => <UpcomingBookingCard key={item.no} {...item} />))}
 
-        {tab === '예매 취소' && CANCELLED.map((item) => <UpcomingBookingCard key={item.no} {...item} />)}
+        {tab === '예매 취소' && (listCase === '목록 없음'
+          ? <EmptyState icon="🎫" title="취소한 예매 내역이 없어요" className="py-12" />
+          : CANCELLED.map((item) => <UpcomingBookingCard key={item.no} {...item} />))}
       </div>
 
       {isCancelGuideOpen && (

@@ -284,6 +284,20 @@ export const GLOSSARY: { term: string; desc: string }[] = [
   { term: '퓨처스리그(2군)', desc: '1군 아래 육성 리그. 선수 등록·말소(1군↔2군 이동)와 연결됨' },
 ]
 
+/** 빈 상태 문구 정의 — 목록형 화면의 "목록 없음" 케이스 (각 화면 상단 드롭다운으로 확인) */
+export const EMPTY_STATES: { screen: string; title: string; desc: string; action: string }[] = [
+  { screen: '알림', title: '아직 도착한 알림이 없어요', desc: '-', action: '-' },
+  { screen: '예매 내역 · 예매 확인', title: '예매 내역이 없어요', desc: '라이온즈 경기를 예매해 보세요.', action: '티켓 예매하기' },
+  { screen: '예매 내역 · 예매 취소', title: '취소한 예매 내역이 없어요', desc: '-', action: '-' },
+  { screen: '쿠폰함 · 사용 가능', title: '사용할 수 있는 쿠폰이 없어요', desc: '이벤트에 참여하면 쿠폰을 받을 수 있어요.', action: '이벤트 보러가기' },
+  { screen: '쿠폰함 · 사용 완료 / 기간 만료', title: '사용한 쿠폰이 없어요 / 만료된 쿠폰이 없어요', desc: '-', action: '-' },
+  { screen: '내 앰블럼', title: '아직 모은 앰블럼이 없어요', desc: '경기 관람과 미션 참여로 앰블럼을 모아보세요.', action: '블루 시그널 가기' },
+  { screen: '가입 내역', title: '가입 내역이 없어요', desc: '블루멤버십과 시즌권 가입 내역이 여기에 표시돼요.', action: '멤버십 안내 보기' },
+  { screen: '함께 만드는 V9', title: '아직 작성한 직관 일기가 없어요', desc: '경기를 보고 나서 오늘의 응원을 기록해 보세요.', action: '첫 일기 쓰기' },
+  { screen: '이벤트 목록', title: '진행 중인 이벤트가 없어요 / 종료된 이벤트가 없어요', desc: '새로운 이벤트가 열리면 알려드릴게요.', action: '-' },
+  { screen: '이벤트 참여 내역', title: '참여한 이벤트가 없어요', desc: '진행 중인 이벤트에 참여해 보세요.', action: '이벤트 보러가기' },
+]
+
 export type SystemGuide = {
   id: 'loading' | 'empty' | 'error' | 'offline' | 'maintenance' | 'update' | 'session' | 'login' | 'permission'
   name: string
@@ -309,7 +323,7 @@ export const SYSTEM_GUIDE: SystemGuide[] = [
     when: '조회는 성공했지만 보여줄 데이터가 0건',
     display: '아이콘 + 안내 문구, 이어서 할 일이 있으면 버튼 한 개',
     action: '이동 버튼 (예: 예매 내역 없음 → "티켓 예매하기")',
-    screens: '예매내역, 알림, 쿠폰, 응원글, 직관일기 등',
+    screens: '알림, 예매내역, 쿠폰함, 내 앰블럼, 가입 내역, 함께 만드는 V9, 이벤트 목록·참여 내역 (아래 문구 표 참고)',
   },
   {
     id: 'error', name: '오류 + 재시도',

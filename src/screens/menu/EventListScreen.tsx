@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Header } from '@/components/Layout'
+import { EmptyState } from '@/components/EmptyState'
+import { ListCaseBar, type ListCase } from '@/components/ListCaseBar'
 import { EVENT_LIST } from '@/data/menu'
 import { MOCK_TODAY, diffDays } from '@/data/mock'
 
@@ -15,8 +17,9 @@ function getDday(endDateStr: string): { label: string; active: boolean } {
 export function EventListScreen() {
   const navigate = useNavigate()
   const [tab, setTab] = useState<'전체' | '진행 중' | '종료'>('전체')
+  const [listCase, setListCase] = useState<ListCase>('목록 있음')
 
-  const filtered = EVENT_LIST.filter((e) => {
+  const filtered = (listCase === '목록 없음' ? [] : EVENT_LIST).filter((e) => {
     if (tab === '전체') return true
     const { active } = getDday(e.endDate)
     return tab === '진행 중' ? active : !active
@@ -31,6 +34,8 @@ export function EventListScreen() {
         </button>
       } />
 
+      <ListCaseBar value={listCase} onChange={setListCase} />
+
       {/* 탭 */}
       <div className="flex px-4 pt-3 gap-4 border-b border-[#DDE1EC]">
         {(['전체', '진행 중', '종료'] as const).map((t) => (
@@ -42,6 +47,13 @@ export function EventListScreen() {
       </div>
 
       <div className="px-4 pt-4 flex flex-col gap-3">
+        {filtered.length === 0 && (
+          <EmptyState
+            icon="🎁"
+            title={tab === '종료' ? '종료된 이벤트가 없어요' : '진행 중인 이벤트가 없어요'}
+            desc={tab === '종료' ? undefined : '새로운 이벤트가 열리면 알려드릴게요.'}
+          />
+        )}
         {filtered.map((event) => {
           const dday = getDday(event.endDate)
           return (

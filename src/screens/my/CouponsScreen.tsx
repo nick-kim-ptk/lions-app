@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Header } from '@/components/Layout'
+import { EmptyState } from '@/components/EmptyState'
+import { ListCaseBar, type ListCase } from '@/components/ListCaseBar'
 
 // 046(048)-SL-MY-19 쿠폰함
 export function CouponsScreen() {
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState<'사용 가능' | '사용 완료' | '기간 만료'>('사용 가능')
+  const [listCase, setListCase] = useState<ListCase>('목록 있음')
 
   const availableCoupons = [
     { id: 1, tag: '이벤트 참여', emoji: '⚾', title: '구자욱 선수 싸인볼', desc: '홈 개막전 이벤트 참여 당첨', expire: '2026.10.31 까지', color: 'from-[#1B5BF0] to-[#6EC6FF]' },
@@ -24,12 +27,13 @@ export function CouponsScreen() {
     { id: 8, tag: '이벤트 참여', emoji: '⚾', title: '강민호 선수 싸인볼', desc: '팬 감사 이벤트 참여 당첨', expiredAt: '2026.05.31 만료', color: 'from-[#9CA3AF] to-[#D1D5DB]' },
   ]
 
-  const currentList = activeTab === '사용 가능' ? availableCoupons : activeTab === '사용 완료' ? usedCoupons : expiredCoupons
+  const currentList = listCase === '목록 없음' ? [] : activeTab === '사용 가능' ? availableCoupons : activeTab === '사용 완료' ? usedCoupons : expiredCoupons
   const isActive = activeTab === '사용 가능'
 
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-8">
       <Header title="쿠폰함" />
+      <ListCaseBar value={listCase} onChange={setListCase} />
 
       {/* 탭 */}
       <div className="flex border-b border-[#DDE1EC] px-4 pt-3">
@@ -43,10 +47,11 @@ export function CouponsScreen() {
 
       <div className="px-4 pt-4 flex flex-col gap-3">
         {currentList.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-16 gap-3">
-            <span className="text-4xl">🎟</span>
-            <p className="text-[14px] font-semibold text-[#9CA3AF]">쿠폰이 없습니다</p>
-          </div>
+          activeTab === '사용 가능' ? (
+            <EmptyState icon="🎟" title="사용할 수 있는 쿠폰이 없어요" desc="이벤트에 참여하면 쿠폰을 받을 수 있어요." actionLabel="이벤트 보러가기" onAction={() => navigate('/all/event-list')} />
+          ) : (
+            <EmptyState icon="🎟" title={activeTab === '사용 완료' ? '사용한 쿠폰이 없어요' : '만료된 쿠폰이 없어요'} />
+          )
         )}
         {currentList.map((c) => {
           const dateStr = 'expire' in c ? c.expire : 'usedAt' in c ? c.usedAt : (c as {expiredAt: string}).expiredAt

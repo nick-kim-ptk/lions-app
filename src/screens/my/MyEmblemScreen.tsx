@@ -1,9 +1,14 @@
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 import { Header } from '@/components/Layout'
+import { EmptyState } from '@/components/EmptyState'
+import { ListCaseBar, type ListCase } from '@/components/ListCaseBar'
 
 // 038(040)-SL-MY-11 내 앰블럼
 export function MyEmblemScreen() {
   const navigate = useNavigate()
+  const [listCase, setListCase] = useState<ListCase>('목록 있음')
+  const empty = listCase === '목록 없음'
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-4">
       <Header
@@ -13,10 +18,11 @@ export function MyEmblemScreen() {
         }
       />
 
+      <ListCaseBar value={listCase} onChange={setListCase} />
       <div className="px-4 pt-4 mb-5">
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-5 flex flex-col items-center gap-1">
           <span className="text-[12px] text-[#9CA3AF]">보유 앰블럼 수</span>
-          <span className="text-[#111827] text-[42px] font-black leading-none">247</span>
+          <span className="text-[#111827] text-[42px] font-black leading-none">{empty ? 0 : 247}</span>
         </div>
       </div>
 
@@ -35,6 +41,9 @@ export function MyEmblemScreen() {
           <span className="text-[15px] font-bold text-[#111827]">획득 앰블럼</span>
         </div>
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-4">
+          {empty ? (
+            <EmptyState icon="🦁" title="아직 모은 앰블럼이 없어요" desc="경기 관람과 미션 참여로 앰블럼을 모아보세요." actionLabel="블루 시그널 가기" onAction={() => navigate('/lounge/blue-signal')} className="py-8" />
+          ) : (
           <div className="grid grid-cols-3 gap-3">
             {[
               { emoji: '🦁', count: 10, color: 'from-[#1B5BF0] to-[#6EC6FF]', name: '라이온 킹' },
@@ -52,6 +61,7 @@ export function MyEmblemScreen() {
               </div>
             ))}
           </div>
+          )}
         </div>
       </div>
     </div>

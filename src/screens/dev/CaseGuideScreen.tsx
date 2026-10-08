@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Header } from '@/components/Layout'
 import { isPostseason, setMatchState, setSeasonPhase, useCaseState } from '@/data/caseStore'
 import {
-  GLOSSARY, GUIDE_INTRO, MATCH_GUIDE, OFF_SEASON, OPEN_ITEMS, PENDING_LINKS,
+  DECISIONS, GLOSSARY, GUIDE_INTRO, MATCH_GUIDE, OFF_SEASON, OPEN_ITEMS, PENDING_LINKS,
   ROUTE_TABLE, SCREEN_LINKS, SEASON_GUIDE, SYSTEM_GUIDE, type SystemGuide,
 } from '@/data/caseGuide'
 
@@ -154,6 +154,17 @@ export function CaseGuideScreen() {
               </div>
             </Card>
             <Card>
+              <H>확정된 정책</H>
+              <div className="flex flex-col gap-2.5">
+                {DECISIONS.map((d) => (
+                  <div key={d.topic}>
+                    <p className="text-[12px] font-semibold text-[#0E1A40]">{d.topic}</p>
+                    <p className="text-[11px] leading-relaxed text-[#64748B]">{d.decision}</p>
+                  </div>
+                ))}
+              </div>
+            </Card>
+            <Card>
               <H>지금 적용 중인 케이스</H>
               <p className="text-[13px] font-semibold text-[#0E1A40]">{phase} · {match}</p>
               <button onClick={() => navigate('/home')} className="mt-3 h-10 w-full rounded-xl bg-[#1B5BF0] text-[13px] font-bold text-white">
@@ -292,7 +303,7 @@ export function CaseGuideScreen() {
         {tab === '정의 필요' && (
           <>
             <p className="px-1 text-[11px] leading-relaxed text-[#64748B]">
-              앱 화면만으로는 확정할 수 없는 정책입니다. 구단·티켓링크·기획 확인 후 화면 설계서에 반영합니다. 현재 화면의 관련 문구는 모두 "예시"입니다.
+              구단·티켓링크 확인이 필요한 정책입니다. 답변을 받으면 화면 설계서에 반영하고 이 목록에서 삭제합니다. 현재 화면의 관련 문구는 모두 "예시"입니다.
             </p>
             {OPEN_ITEMS.map((o, i) => (
               <Card key={o.topic}>

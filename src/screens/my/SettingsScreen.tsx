@@ -123,6 +123,7 @@ export function SettingsScreen() {
             >
               <div className="min-w-0 pr-3">
                 <span className={`text-sm ${allowNotif && !denied ? 'text-[#111827]' : 'text-[#9CA3AF]'}`}>{n}</span>
+                {n === '경기 시작 알림' && <p className="text-[11px] text-[#9CA3AF] mt-0.5">경기 시작 30분 전에 알려드려요</p>}
                 {n === '마케팅 알림' && <p className="text-[11px] text-[#9CA3AF] mt-0.5">21시~08시에는 발송되지 않아요</p>}
               </div>
               <button

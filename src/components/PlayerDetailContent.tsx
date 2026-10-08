@@ -132,7 +132,7 @@ export function PlayerDetailContent({ onClose, playerId = DEFAULT_PLAYER_ID }: {
           </div>
         </div>
 
-        {currentStats.length > 0 && (
+        {currentStats.length > 0 && kind === '일반' && (
         <div>
           <PHSection label="2026 시즌 기록" right="" />
           <div className="grid grid-cols-3 gap-3">
@@ -146,7 +146,7 @@ export function PlayerDetailContent({ onClose, playerId = DEFAULT_PLAYER_ID }: {
         </div>
         )}
 
-        {pastStats.length > 0 && (
+        {pastStats.length > 0 && kind === '일반' && (
         <div>
           <PHSection label="연도별 기록" right="" />
           <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden">

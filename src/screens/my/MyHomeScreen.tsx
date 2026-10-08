@@ -6,6 +6,21 @@ import { joinInfo, type JoinKind, type JoinState } from '@/data/mock/membership'
 
 const CARD_COUNT = 5
 
+/**
+ * 카드 우측 상단 상태 배지 — 멤버십 카드 타입 정리
+ *  · 모집 전: 모집 오픈 전 (D-day, 가입하기 비활성)
+ *  · 모집 중: 모집 기간 (가입하기 활성)
+ *  · 가입 완료: 가입 후 보유 중인 카드 (멤버십·시즌권·어린이)
+ */
+type CardState = '모집 전' | '모집 중' | '가입 완료'
+function StateBadge({ state }: { state: CardState }) {
+  const cls =
+    state === '모집 전' ? 'bg-white/20 text-white border-white/30'
+    : state === '모집 중' ? 'bg-[#4ADE80] text-[#064E3B] border-[#4ADE80]'
+    : 'bg-white text-[#0E2F80] border-white'
+  return <span className={`shrink-0 text-[10px] font-bold border rounded-full px-2.5 py-0.5 ${cls}`}>{state}</span>
+}
+
 // 모집 기간 외 카드 (가입하기 비활성) — 매년 특정 기간에만 모집
 function JoinClosedCard({ kind, title, tone, state, onJoin }: { kind: JoinKind; title: string; tone: 'blue' | 'gold'; state: JoinState; onJoin: () => void }) {
   const { schedule, dday } = joinInfo(kind, state)
@@ -17,9 +32,12 @@ function JoinClosedCard({ kind, title, tone, state, onJoin }: { kind: JoinKind; 
     <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${bg} p-5 aspect-[9/16] flex flex-col justify-between`}>
       <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10 pointer-events-none" />
       <div className="absolute -left-10 bottom-24 w-32 h-32 rounded-full bg-white/5 pointer-events-none" />
-      <div className="relative">
-        <p className="text-white/70 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
-        <p className="text-white text-[18px] font-bold leading-snug">{title}</p>
+      <div className="relative flex items-start justify-between gap-2">
+        <div>
+          <p className="text-white/70 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
+          <p className="text-white text-[18px] font-bold leading-snug">{title}</p>
+        </div>
+        <StateBadge state={state} />
       </div>
       <div className="relative flex flex-col items-center gap-1">
         <span className="text-[28px] font-black text-white">{dday}</span>
@@ -176,8 +194,9 @@ export function MyHomeScreen() {
                 <div>
                   <p className="text-white/60 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
                   <p className="text-white text-[18px] font-bold">블루멤버십</p>
+                  <span className="mt-1.5 inline-block text-[10px] font-bold text-[#F0A500] bg-[#F0A500]/20 border border-[#F0A500]/40 rounded-full px-2 py-0.5">GOLD</span>
                 </div>
-                <span className="text-[10px] font-bold text-[#F0A500] bg-[#F0A500]/20 border border-[#F0A500]/40 rounded-full px-2.5 py-0.5">GOLD</span>
+                <StateBadge state="가입 완료" />
               </div>
               <div className="relative">
                 <p className="text-white/40 text-[9px] mb-0.5">MEMBER</p>
@@ -200,8 +219,9 @@ export function MyHomeScreen() {
                 <div>
                   <p className="text-white/50 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
                   <p className="text-white text-[18px] font-bold leading-snug">프리미엄 블루<br />시즌권</p>
+                  <span className="mt-1.5 inline-block text-[10px] font-bold text-white bg-white/15 border border-white/25 rounded-full px-2 py-0.5">SEASON</span>
                 </div>
-                <span className="text-[10px] font-bold text-white bg-white/15 border border-white/25 rounded-full px-2.5 py-0.5">SEASON</span>
+                <StateBadge state="가입 완료" />
               </div>
               <div className="relative">
                 <p className="text-white/40 text-[9px] mb-0.5">SEAT</p>
@@ -219,9 +239,12 @@ export function MyHomeScreen() {
             <div onClick={() => navigate('/my/membership')} className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#F0A500] to-[#D48B00] p-5 cursor-pointer active:opacity-90 aspect-[9/16] flex flex-col justify-between">
               <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10 pointer-events-none" />
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[64px] opacity-20 pointer-events-none">🦁</div>
-              <div className="relative">
-                <p className="text-white/70 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
-                <p className="text-white text-[18px] font-bold">어린이 멤버십</p>
+              <div className="relative flex items-start justify-between gap-2">
+                <div>
+                  <p className="text-white/70 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
+                  <p className="text-white text-[18px] font-bold">어린이 멤버십</p>
+                </div>
+                <StateBadge state="가입 완료" />
               </div>
               <div className="relative">
                 <p className="text-white/60 text-[9px] mb-0.5">MEMBER</p>

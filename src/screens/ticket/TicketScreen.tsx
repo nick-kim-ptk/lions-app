@@ -218,6 +218,11 @@ export function TicketScreen() {
             <span>예매 안내</span>
           </button>
         </div>
+        {homeGames.length > 0 && (
+          <p className="mb-3 rounded-xl bg-[#EBF0FF] px-3 py-2 text-[11px] leading-relaxed text-[#1B5BF0]">
+            경기당 1인 선예매 최대 4매 · 일반 예매 최대 6매 (선예매 매수 포함 합산)
+          </p>
+        )}
         {homeGames.length === 0 && (
           <div className="rounded-2xl border border-[#DDE1EC] bg-white p-6 text-center">
             <p className="text-[13px] font-bold text-[#0E1A40]">{seasonEnd ? '2026 시즌 예매가 종료되었어요' : '예매 가능한 경기가 없어요'}</p>

@@ -7,8 +7,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { MOBILE_TICKETS } from '@/data/my'
 import { MOCK_TIME, MOCK_TODAY, addDays, fmtMDW } from '@/data/mock'
 
-type TicketMode = '스마트 티켓' | '바코드 오픈 전' | '선물 받은 티켓' | '선물 전'
-const TICKET_MODES = ['스마트 티켓', '바코드 오픈 전', '선물 받은 티켓', '선물 전'] as const
+type TicketMode = '스마트 티켓' | 'QR 오픈 전' | '선물 받은 티켓' | '선물 전'
+const TICKET_MODES = ['스마트 티켓', 'QR 오픈 전', '선물 받은 티켓', '선물 전'] as const
 
 export function MobileTicketQRScreen() {
   const navigate = useNavigate()
@@ -29,7 +29,7 @@ export function MobileTicketQRScreen() {
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setQrSeconds(seconds => Math.max(0, seconds - 1))
+      setQrSeconds(seconds => (seconds <= 0 ? 59 : seconds - 1)) // 1분마다 자동 갱신
     }, 1000)
     return () => window.clearInterval(timer)
   }, [])
@@ -60,7 +60,7 @@ export function MobileTicketQRScreen() {
       {/* 상단 닫기 */}
       <div className="flex items-center justify-between px-5 pt-12 pb-4">
         <div className="flex flex-col gap-0.5">
-          <span className="text-white/50 text-[11px]">2026 KBO {seasonLabel(phase)}</span>
+          <span className="text-white/50 text-[11px]">2027 KBO {seasonLabel(phase)}</span>
           <span className="text-white font-bold text-base">스마트 티켓</span>
         </div>
         <div className="flex items-center gap-2">
@@ -79,16 +79,10 @@ export function MobileTicketQRScreen() {
 
       <div className="px-5 pb-3"><GameStateNotice context="ticket" dark inset={false} /></div>
 
-      {/* 티켓 카운터 + 인디케이터 */}
+      {/* 티켓 카운터 — 경기 날짜순, 숫자 표기 */}
       <div className="flex items-center justify-between px-5 mb-3">
-        <span className="text-white/50 text-[11px]">{current + 1} / {MOBILE_TICKETS.length}장</span>
-        <div className="flex gap-1.5">
-          {MOBILE_TICKETS.map((_, i) => (
-            <button key={i} onClick={() => setCurrent(i)}
-              className={`h-1.5 rounded-full transition-all ${i === current ? 'w-5 bg-white' : 'w-1.5 bg-white/30'}`}
-            />
-          ))}
-        </div>
+        <span className="text-white text-[12px] font-bold tabular-nums">{current + 1} <span className="text-white/40 font-medium">/ {MOBILE_TICKETS.length}장</span></span>
+        <span className="text-white/40 text-[11px]">경기 날짜순 · 좌우로 넘겨보세요</span>
       </div>
 
       {/* 티켓 카드 — 카드 자체가 좌우로 이동하는 캐러셀 */}
@@ -133,7 +127,7 @@ export function MobileTicketQRScreen() {
 
           {/* 상단 eyebrow */}
           <div className="px-5 pt-4 relative z-10">
-            <span className="text-white/70 text-[9px] font-bold tracking-[0.2em] uppercase drop-shadow">Samsung Lions · 2026 KBO</span>
+            <span className="text-white/70 text-[9px] font-bold tracking-[0.2em] uppercase drop-shadow">Samsung Lions · 2027 KBO</span>
           </div>
 
           {/* 빈 중앙 — 선수 이미지 공간 */}
@@ -209,7 +203,7 @@ export function MobileTicketQRScreen() {
                 <p className="text-[14px] font-bold text-[#374151]">보낸 분에게 돌려준 티켓이에요</p>
                 <p className="text-[11px] text-[#9CA3AF]">이 티켓은 더 이상 사용할 수 없어요.</p>
               </div>
-            ) : !(ticketMode !== '바코드 오픈 전' && ticket.barcodeOpen) ? (
+            ) : !(ticketMode !== 'QR 오픈 전' && ticket.barcodeOpen) ? (
               <div className="flex flex-col items-center gap-2 border-t border-[#F1F3F8] py-7 text-center">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#F1F3F8]">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -217,7 +211,7 @@ export function MobileTicketQRScreen() {
                     <path d="M8 11V8a4 4 0 018 0v3" stroke="#64748B" strokeWidth="2" strokeLinecap="round" />
                   </svg>
                 </div>
-                <p className="text-[14px] font-bold text-[#374151]">입장 바코드는 아직 열리지 않았어요</p>
+                <p className="text-[14px] font-bold text-[#374151]">입장 QR은 아직 열리지 않았어요</p>
                 <p className="text-[12px] leading-relaxed text-[#64748B]">
                   경기 시작 2시간 전부터 표시돼요.<br />
                   <span className="font-semibold text-[#1B5BF0]">{ticket.barcodeOpenLabel}</span> 오픈
@@ -227,7 +221,7 @@ export function MobileTicketQRScreen() {
             <div className="flex flex-col items-center border-t border-[#F1F3F8] pt-3">
               <div className="mb-1 flex items-center justify-center gap-2">
                 <p className="text-center text-[13px] font-semibold text-[#374151]">
-                  입장 시, 직원에게 바코드를 제시해주시기 바랍니다.
+                  입장 시, 직원에게 QR을 제시해주시기 바랍니다.
                 </p>
                 <button
                   onClick={() => setIsQrModalOpen(true)}
@@ -244,19 +238,12 @@ export function MobileTicketQRScreen() {
                 <img
                   src={mobileTicketQr}
                   alt="입장용 QR 코드"
-                  className={`h-full w-full ${qrSeconds === 0 ? 'opacity-25' : ''}`}
+                  className={`h-full w-full `}
                 />
-                {qrSeconds === 0 && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-white/45">
-                    <span className="rounded-lg bg-[#111827]/80 px-3 py-2 text-center text-[12px] font-bold text-white">
-                      유효하지 않은 QR입니다.
-                    </span>
-                  </div>
-                )}
               </div>
               <div className="relative flex w-44 items-center justify-center">
                 <span className="text-[11px] font-semibold tabular-nums text-[#64748B]">
-                  QR 갱신까지 00:{String(qrSeconds).padStart(2, '0')}
+                  QR 자동 갱신까지 00:{String(qrSeconds).padStart(2, '0')}
                 </span>
                 <button
                   onClick={() => setQrSeconds(59)}
@@ -341,7 +328,7 @@ export function MobileTicketQRScreen() {
           </button>
         </div>
       )}
-      {ticketMode === '바코드 오픈 전' && (
+      {ticketMode === 'QR 오픈 전' && (
         <div className="px-5 pt-4 pb-10">
           <button
             onClick={() => navigate('/my/ticket-gift')}
@@ -404,23 +391,17 @@ export function MobileTicketQRScreen() {
               </svg>
             </button>
             <div className="flex flex-col items-center pt-8">
-              <p className="mb-4 text-[15px] font-bold text-[#111827]">입장용 QR 코드</p>
+              <p className="mb-1 text-[15px] font-bold text-[#111827]">입장용 QR 코드</p>
+              <p className="mb-4 text-[11px] text-[#9CA3AF]">확대하면 화면 밝기가 자동으로 높아지고, 닫으면 원래대로 돌아와요.</p>
               <div className="relative h-72 w-72 max-w-full">
                 <img
                   src={mobileTicketQr}
                   alt="확대된 입장용 QR 코드"
-                  className={`h-full w-full ${qrSeconds === 0 ? 'opacity-25' : ''}`}
+                  className={`h-full w-full `}
                 />
-                {qrSeconds === 0 && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-white/45">
-                    <span className="rounded-lg bg-[#111827]/80 px-4 py-3 text-center text-[14px] font-bold text-white">
-                      유효하지 않은 QR입니다.
-                    </span>
-                  </div>
-                )}
               </div>
               <span className="mt-3 text-[12px] font-semibold tabular-nums text-[#64748B]">
-                QR 갱신까지 00:{String(qrSeconds).padStart(2, '0')}
+                QR 자동 갱신까지 00:{String(qrSeconds).padStart(2, '0')}
               </span>
             </div>
           </div>

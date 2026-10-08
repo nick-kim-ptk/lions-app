@@ -23,7 +23,9 @@ export const WITHDRAW_REASONS = [
 
 // 037(039)-SL-MY-10 스마트티켓 (QR) — 전체화면
 // 발권된 예매(data/mock/bookings)를 좌석 1매 = 티켓 1장으로 펼친 목록
-export const MOBILE_TICKETS = SMART_TICKET_BOOKINGS.flatMap((b) => {
+export const MOBILE_TICKETS = [...SMART_TICKET_BOOKINGS]
+  .sort((a, b) => toMinutes(gameOf(a).date, gameOf(a).time) - toMinutes(gameOf(b).date, gameOf(b).time)) // 경기 날짜순
+  .flatMap((b) => {
   const g = gameOf(b)
   const seats = b.status === '부분 취소' ? b.seats.slice(0, 1) : b.seats
   return seats.map((seat) => ({
@@ -35,7 +37,7 @@ export const MOBILE_TICKETS = SMART_TICKET_BOOKINGS.flatMap((b) => {
     ticketNo: `TK-${g.date.replace(/-/g, '')}-${b.no.slice(-4)}`,
     barcode: `SL-${g.date}-${b.no.slice(-4)}-S${seat}`,
     kvImage: ticketKv,
-    // 입장 바코드는 경기 시작 2시간 전부터 노출
+    // 입장 QR은 경기 시작 2시간 전부터 노출
     barcodeOpen: NOW_MINUTES >= toMinutes(g.date, g.time) - 120,
     barcodeOpenLabel: `${fmtMDW(g.date)} ${String(Number(g.time.slice(0, 2)) - 2).padStart(2, '0')}:${g.time.slice(3)}`,
   }))
@@ -45,13 +47,13 @@ export const MOBILE_TICKETS = SMART_TICKET_BOOKINGS.flatMap((b) => {
 export const BOOKING_GUIDE_TABS = ['예매 일정', '예매 방법', '취소/환불', '주의사항'] as const
 export const BOOKING_GUIDE: Record<(typeof BOOKING_GUIDE_TABS)[number], { title: string; lines: string[] }[]> = {
   '예매 일정': [
-    { title: '선예매 (멤버십 회원)', lines: ['경기 7일 전 오전 10:00부터 예매할 수 있습니다.', '블루멤버십 회원과 시즌권 회원 대상입니다.'] },
-    { title: '일반 예매', lines: ['경기 7일 전 오전 11:00부터 전체 회원이 예매할 수 있습니다.', '예매 오픈 5분 전에 알림을 보내드립니다.'] },
+    { title: '선예매 (멤버십 회원)', lines: ['경기 7일 전 오전 10:00부터 예매할 수 있습니다.', '블루멤버십 회원과 시즌권 회원 대상이며, 경기당 1인 최대 4매입니다.'] },
+    { title: '일반 예매', lines: ['경기 7일 전 오전 11:00부터 전체 회원이 예매할 수 있습니다.', '경기당 1인 최대 6매(선예매 매수 포함)입니다.', '예매 오픈 5분 전에 알림을 보내드립니다.'] },
     { title: '경기 시작 시각', lines: ['평일 18:30, 토요일 17:00, 일요일 14:00 (월요일은 경기가 없습니다).', '우천·혹서 등으로 변경될 수 있으며 변경 시 앱 알림으로 안내합니다.'] },
   ],
   '예매 방법': [
     { title: '예매 절차', lines: ['티켓+ 또는 경기 일정에서 경기를 선택합니다.', '좌석을 선택하고 결제를 완료하면 예매가 확정됩니다.', '예매 완료 후 MY > 예매 내역에서 확인할 수 있습니다.'] },
-    { title: '1인 예매 가능 매수', lines: ['1회 최대 4매까지 예매할 수 있습니다.', '경기당 1인 최대 매수는 별도로 제한될 수 있습니다.'] },
+    { title: '1인 예매 가능 매수 (경기당)', lines: ['멤버십 선예매는 1인 최대 4매까지 예매할 수 있습니다.', '일반 예매는 1인 최대 6매까지 예매할 수 있으며, 선예매 매수를 포함해 합산합니다.', '예) 선예매로 4매를 예매했다면 일반 예매에서는 2매까지 예매할 수 있습니다.'] },
     { title: '스마트티켓', lines: ['예매한 티켓은 스마트티켓(QR)으로 발권됩니다.', '입장 시 MY > 스마트티켓(QR) 화면을 제시해 주세요.'] },
   ],
   '취소/환불': [

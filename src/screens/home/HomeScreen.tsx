@@ -168,15 +168,15 @@ export function HomeScreen() {
               /* 비시즌·가을야구 탈락: 시즌 종료 카드 — 시즌 정리 + 다음 시즌 개막 D-day (수치는 예시) */
               <div className="rounded-2xl bg-gradient-to-br from-[#0E1A40] to-[#1B3A80] p-5 text-white">
                 <span className="rounded-full bg-white/15 px-2.5 py-0.5 text-[10px] font-bold">2026 시즌 종료</span>
-                <p className="mt-3 text-[15px] font-black">{phase === '가을야구 탈락' ? '아쉽지만 가을야구는 여기까지, 끝까지 함께해 줘서 고마워요 💙' : '올 시즌도 함께해 주셔서 감사합니다'}</p>
+                <p className="mt-3 text-[15px] font-black">{phase === '가을야구 탈락' ? '끝까지 응원해 주셔서 감사합니다. 더 강해져서 돌아오겠습니다.' : '올 시즌도 함께해 주셔서 감사합니다'}</p>
                 <p className="mt-0.5 text-[11px] text-white/60">
-                  {phase === '가을야구 탈락' ? '정규시즌 2위 · 82승 3무 59패 · 준플레이오프에서 멈췄어요 (예시)' : '정규시즌 2위 · 82승 3무 59패 (예시)'}
+                  {phase === '가을야구 탈락' ? '정규시즌 2위 · 82승 3무 59패 · 준플레이오프 탈락 (예시)' : '정규시즌 2위 · 82승 3무 59패 (예시)'}
                 </p>
                 <div className="mt-4 flex items-center justify-between rounded-xl bg-white/10 px-3 py-2.5">
-                  <span className="text-[11px] text-white/70">{phase === '가을야구 탈락' ? '다시 달릴 2027 시즌 개막까지' : '2027 시즌 개막까지'}</span>
+                  <span className="text-[11px] text-white/70">{phase === '가을야구 탈락' ? '2027 시즌 개막까지' : '2027 시즌 개막까지'}</span>
                   <span className="text-[16px] font-black text-[#F0A500]">D-146</span>
                 </div>
-                <p className="mt-4 text-center text-[13px] font-bold text-white">{phase === '가을야구 탈락' ? '내년엔 더 높이, 라이온즈와 함께!' : '비시즌도 라이온즈와 함께!'}</p>
+                <p className="mt-4 text-center text-[13px] font-bold text-white">{phase === '가을야구 탈락' ? '다음 시즌, 더 단단히 준비하겠습니다.' : '비시즌도 라이온즈와 함께!'}</p>
                 <div className="mt-2 flex gap-2">
                   <button onClick={() => window.open('https://www.youtube.com/@lionstv1982', '_blank', 'noopener,noreferrer')} className="h-10 flex-1 rounded-xl bg-white text-[12px] font-bold text-[#0E1A40]">공식 유튜브</button>
                   <button onClick={() => window.open('https://www.instagram.com/samsunglions_baseballclub/', '_blank', 'noopener,noreferrer')} className="h-10 flex-1 rounded-xl border border-white/30 text-[12px] font-bold text-white">공식 인스타그램</button>

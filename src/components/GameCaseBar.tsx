@@ -80,7 +80,7 @@ const MESSAGES: Record<Context, Partial<Record<(typeof MATCH_STATES)[number], st
 const BREAK_MSG = '올스타 브레이크 기간이에요. 정규 경기는 재개 후 열려요.'
 const OFF_MSG = '시즌이 종료되었어요. 다음 시즌 일정은 공개되면 안내드려요.'
 const CHAMP_MSG = 'V9 달성! 푸른 피로 함께 만든 우승이에요 💙 다음 시즌 일정은 공개되면 바로 알려드릴게요.'
-const OUT_MSG = '올 시즌은 여기까지예요. 내년엔 더 높이 날아올라요 🦁 다음 시즌 일정은 공개되면 바로 알려드릴게요.'
+const OUT_MSG = '올 시즌 일정이 모두 종료되었습니다. 더 강해져서 돌아오겠습니다. 다음 시즌 일정은 공개되면 안내드릴게요.'
 const PHASE_MESSAGES: Partial<Record<(typeof SEASON_PHASES)[number], Partial<Record<Context, string>>>> = {
   '올스타 브레이크': { game: BREAK_MSG, schedule: BREAK_MSG, lineup: BREAK_MSG, ticketlist: BREAK_MSG },
   '가을야구 탈락': { game: OUT_MSG, schedule: OUT_MSG, lineup: OUT_MSG, ticketlist: OUT_MSG },

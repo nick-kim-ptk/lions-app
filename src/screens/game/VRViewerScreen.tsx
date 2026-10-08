@@ -1,4 +1,4 @@
-import { useRef, useState, type PointerEvent } from 'react'
+import { useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { VR_SEAT_GROUPS, VR_TOPICS, type VrTopicId } from '@/data/game'
 
@@ -20,7 +20,7 @@ export function VRViewerScreen() {
   const [zoom, setZoom] = useState(1)
   const drag = useRef<{ x: number; y: number } | null>(null)
   const resetView = () => { setPan({ x: 0, y: 0 }); setZoom(1) }
-  const stop = (e: PointerEvent) => e.stopPropagation()
+  const stop = (e: { stopPropagation: () => void }) => e.stopPropagation()
 
   const chip = (active: boolean) =>
     `shrink-0 rounded-full px-4 py-2 text-[12px] font-semibold border backdrop-blur-sm ${active ? 'bg-[#1B5BF0] border-[#1B5BF0] text-white' : 'bg-black/40 border-white/25 text-white/80'}`

@@ -288,7 +288,6 @@ export function AllMenuScreen() {
                 ))}
               </div>
             ))}
-            <PH className="mt-5 h-32 w-full rounded-2xl bg-[#D8DCE9]" />
           </div>
         </div>
       </div>

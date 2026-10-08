@@ -38,6 +38,7 @@ import {
   MagazineScreen,
   AwayScreen,
   VRScreen,
+  VRViewerScreen,
 } from './screens/game'
 
 // Ticket
@@ -164,6 +165,7 @@ export default function App() {
           <Route path="/game/magazine" element={<MagazineScreen />} />
           <Route path="/game/away" element={<AwayScreen />} />
           <Route path="/game/vr" element={<VRScreen />} />
+          <Route path="/game/vr-viewer" element={<VRViewerScreen />} />
 
           {/* Ticket */}
           <Route path="/ticket" element={<TicketScreen />} />

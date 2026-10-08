@@ -41,6 +41,7 @@ export const SCREENS: ScreenMeta[] = [
   { id: '014-SL-GM-09', name: '라이온즈 매거진', path: '/game/magazine', group: '경기', layout: 'list' },
   { id: '015-SL-GM-10', name: '라이온즈 원정대', path: '/game/away', group: '경기', layout: 'detail' },
   { id: '016-SL-GM-11', name: '라이온즈 VR', path: '/game/vr', group: '경기', layout: 'grid' },
+  { id: '107-SL-GM-12', name: '라이온즈 VR 뷰어', path: '/game/vr-viewer', group: '경기', layout: 'detail' },
   // 티켓+
   { id: '017-SL-TK-01', name: '티켓+(Ticket+)', path: '/ticket', group: '티켓+', layout: 'dashboard' },
   // 라운지
@@ -177,7 +178,9 @@ export const IA_TREE: { group: Group; screens: IATreeNode[] }[] = [
       ]},
       { id: '009-SL-GM-04', name: '라이온즈 뉴스', path: '/game/news' },
       { id: '014-SL-GM-09', name: '라이온즈 매거진', path: '/game/magazine' },
-      { id: '016-SL-GM-11', name: '라이온즈 VR', path: '/game/vr' },
+      { id: '016-SL-GM-11', name: '라이온즈 VR', path: '/game/vr', children: [
+        { id: '107-SL-GM-12', name: '라이온즈 VR 뷰어', path: '/game/vr-viewer' },
+      ]},
     ],
   },
   {

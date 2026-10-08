@@ -1,9 +1,11 @@
 import { PHImage } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
-import { VR_EXPERIENCES, VR_GESTURES, VR_INTRO } from '@/data/game'
+import { useNavigate } from 'react-router-dom'
+import { VR_GESTURES, VR_INTRO, VR_TOPICS } from '@/data/game'
 
 // 016-SL-GM-11 라이온즈 VR
 export function VRScreen() {
+  const navigate = useNavigate()
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-6">
       <Header title="라이온즈 VR" />
@@ -38,18 +40,22 @@ export function VRScreen() {
       <div className="px-4">
         <p className="text-[15px] font-bold text-[#111827] mb-3">보고 싶은 곳을 골라보세요</p>
         <div className="flex flex-col gap-4">
-          {VR_EXPERIENCES.map((exp) => (
-            <div key={exp.title} className="relative overflow-hidden rounded-3xl border border-[#DDE1EC]">
-              <PHImage className="h-44" label={exp.imageLabel} />
+          {VR_TOPICS.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => navigate(`/game/vr-viewer?topic=${t.id}`)}
+              className="relative overflow-hidden rounded-3xl border border-[#DDE1EC] text-left"
+            >
+              <PHImage className="h-44" label={t.imageLabel} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/10 flex flex-col justify-end p-5">
-                <span className="text-xs text-white/80 mb-1">360° · {exp.badge}</span>
-                <p className="text-white font-bold text-lg">{exp.title}</p>
-                <p className="text-white/80 text-[12px] mt-0.5">{exp.desc}</p>
+                <span className="text-xs text-white/80 mb-1">360° · {t.items.length === 1 ? t.items[0] : `${t.items.length}곳`}</span>
+                <p className="text-white font-bold text-lg">{t.title}</p>
+                <p className="text-white/80 text-[12px] mt-0.5">{t.desc}</p>
                 <div className="mt-3">
                   <span className="text-xs bg-white text-[#0E2F80] font-semibold rounded-full px-4 py-1.5">360°로 보기</span>
                 </div>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>

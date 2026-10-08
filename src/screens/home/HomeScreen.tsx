@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom'
-import { useState, useRef } from 'react'
+import { useState, useRef, useSyncExternalStore } from 'react'
 import { PH, PHCircle, PHSection } from '@/components/Placeholder'
-import { KV_SLIDES, MATCH_STATES, MAGAZINE_ITEMS, LIONS_TV_ITEMS, NOTIF_DATA, LIVE_SNAPSHOT, FINAL_SNAPSHOT, MY_SEAT } from '@/data/home'
+import { subscribeNotif, getHasUnread } from '@/data/notifStore'
+import { KV_SLIDES, MATCH_STATES, MAGAZINE_ITEMS, LIONS_TV_ITEMS, LIVE_SNAPSHOT, FINAL_SNAPSHOT, MY_SEAT } from '@/data/home'
 import { MY_TEAM, TEAMS, TODAY_GAME, TODAY_LINEUP, fmtKoTime, fmtSlashMDW, nextGame, ticketStateOf } from '@/data/mock'
 
 type MatchState = typeof MATCH_STATES[number]
@@ -44,7 +45,7 @@ export function HomeScreen() {
   const opp = game ? TEAMS[game.opp] : null
   const venueShort = game ? (game.home ? '라이온즈 파크' : TEAMS[game.opp].stadium) : ''
   const upcoming = nextGame()
-  const hasUnread = NOTIF_DATA.some((n) => !n.read)
+  const hasUnread = useSyncExternalStore(subscribeNotif, getHasUnread)
 
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-4">

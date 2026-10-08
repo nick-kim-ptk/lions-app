@@ -1,19 +1,19 @@
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { NOTIF_DATA } from '@/data/home'
+import { markAllNotifRead } from '@/data/notifStore'
 
 // 005-SL-HM-02 알림
 export function NotificationsScreen() {
   const navigate = useNavigate()
   const [tab, setTab] = useState<'알림' | '알림 없음'>('알림')
-  const [items, setItems] = useState(() => NOTIF_DATA)
+  // 정책: 알림 페이지에 진입하면 미확인 알림을 포함한 전체 알림이 읽음 처리된다
+  const items = NOTIF_DATA.map((n) => ({ ...n, read: true }))
+  useEffect(() => { markAllNotifRead() }, [])
 
   const handleItemClick = (n: typeof NOTIF_DATA[0]) => {
-    setItems(prev => prev.map(item => item.id === n.id ? { ...item, read: true } : item))
     if (n.link?.path) navigate(n.link.path)
   }
-
-  const markAllRead = () => setItems(prev => prev.map(n => ({ ...n, read: true })))
 
   const groups = ['오늘', '어제', '이전']
 
@@ -52,11 +52,6 @@ export function NotificationsScreen() {
       {/* 알림 탭 — 기존 화면 그대로 */}
       {tab === '알림' && (
         <>
-          {items.some(n => !n.read) && (
-            <div className="flex justify-end px-4 pt-3">
-              <button onClick={markAllRead} className="text-[12px] font-semibold text-[#1B5BF0]">모두 읽음</button>
-            </div>
-          )}
           <div className="flex flex-col pb-6">
             {groups.map(group => {
               const grouped = items.filter(n => n.date === group)

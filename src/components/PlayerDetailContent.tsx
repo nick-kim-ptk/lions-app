@@ -1,11 +1,24 @@
+import { useState } from 'react'
 import { PH, PHSection } from './Placeholder'
-import { BATTER_STATS, PITCHER_STATS, PLAYER_BY_ID, PLAYER_PROFILES } from '@/data/mock'
+import { CaseSelect } from './CaseSelect'
+import { PlayerStatusBadge } from './PlayerStatusBadge'
+import { BATTER_STATS, PITCHER_STATS, PLAYER_BY_ID, PLAYER_PROFILES, playerStatus, type PlayerKind, type PlayerTier } from '@/data/mock'
+
+type StatusCase = '1군' | '2군' | '부상' | '신입단' | '군입대'
+const STATUS_CASES: StatusCase[] = ['1군', '2군', '부상', '신입단', '군입대']
+const DEFAULT_INJURY = '어깨 통증'
 
 const DEFAULT_PLAYER_ID = 'lee-jae-hyun'
 
 export function PlayerDetailContent({ onClose, playerId = DEFAULT_PLAYER_ID }: { onClose: () => void; playerId?: string }) {
   const base = PLAYER_BY_ID[playerId] ?? PLAYER_BY_ID[DEFAULT_PLAYER_ID]
   const profile = PLAYER_PROFILES[base.id]
+  const st0 = playerStatus(base)
+  // 케이스 전환(와이어프레임 전용): 어드민 구분(일반/신입단/군입대) + 등록 상태(1군/2군/부상)
+  const [statusCase, setStatusCase] = useState<StatusCase>(st0.kind === '신입단' ? '신입단' : st0.kind === '군입대' ? '군입대' : st0.tier)
+  const kind: PlayerKind = statusCase === '신입단' ? '신입단' : statusCase === '군입대' ? '군입대' : '일반'
+  const tier: PlayerTier = statusCase === '2군' ? '2군' : statusCase === '부상' ? '부상' : '1군'
+  const injury = tier === '부상' ? (st0.injury || DEFAULT_INJURY) : ''
   const isPitcher = base.group === '투수'
   const [throws, bats] = [base.handed.slice(0, 2), base.handed.slice(2)]
   const player = {
@@ -62,6 +75,9 @@ export function PlayerDetailContent({ onClose, playerId = DEFAULT_PLAYER_ID }: {
             <path d="M18 6L6 18M6 6l12 12" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
           </svg>
         </button>
+        <div className="absolute top-4 left-4 z-10">
+          <CaseSelect variant="dark" value={statusCase} options={STATUS_CASES} onChange={setStatusCase} />
+        </div>
         <div className="absolute bottom-0 right-4 w-44 h-56 flex items-end justify-center">
           <div className="w-full h-full rounded-t-full flex items-end justify-center pb-2"
             style={{background:'linear-gradient(to bottom,rgba(27,90,240,0.3) 0%,transparent 100%)'}}>
@@ -80,11 +96,23 @@ export function PlayerDetailContent({ onClose, playerId = DEFAULT_PLAYER_ID }: {
             <span className="text-[10px] font-semibold text-white bg-white/15 rounded-full px-2.5 py-1">{player.position}</span>
             <span className="text-[10px] font-semibold text-white bg-white/15 rounded-full px-2.5 py-1">{player.bats} · {player.throws}</span>
             <span className="text-[10px] font-semibold text-[#F0A500] bg-[#F0A500]/15 rounded-full px-2.5 py-1">#{player.number}</span>
+            {kind === '일반' && tier === '1군' && <span className="text-[10px] font-semibold text-white bg-white/15 rounded-full px-2.5 py-1">1군</span>}
+            <PlayerStatusBadge kind={kind} tier={tier} injury={injury} size="md" />
           </div>
         </div>
       </div>
 
       <div className="px-4 pt-5 flex flex-col gap-6">
+        {(tier !== '1군' || kind !== '일반') && (
+          <div className={`rounded-2xl px-4 py-3 border ${tier === '부상' && kind !== '군입대' ? 'bg-[#FEF2F2] border-[#EF4444]/30' : 'bg-[#EEF1F7] border-[#DDE1EC]'}`}>
+            <p className="text-[13px] font-bold text-[#111827]">
+              {kind === '군입대' ? '군 복무 중인 선수예요' : kind === '신입단' ? '올 시즌 새로 입단한 선수예요' : tier === '2군' ? '현재 2군(퓨처스리그)에서 뛰고 있어요' : `부상 : ${injury}`}
+            </p>
+            <p className="text-[11px] text-[#64748B] mt-0.5">
+              {kind === '군입대' ? '복무 기간 동안에는 1군 경기와 라인업에 나오지 않아요.' : kind === '신입단' ? '시즌 기록은 출전 후부터 쌓여요.' : tier === '2군' ? '1군 등록 시 라인업과 기록에 다시 반영돼요.' : '복귀 전까지 라인업에 나오지 않을 수 있어요.'}
+            </p>
+          </div>
+        )}
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-4">
           <p className="text-[13px] font-bold text-[#111827] mb-3">선수 정보</p>
           <div className="grid grid-cols-3 gap-y-4">

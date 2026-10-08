@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PH } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
-import { PLAYERS, type PlayerGroup } from '@/data/mock'
+import { PLAYERS, playerStatus, type PlayerGroup } from '@/data/mock'
+import { PlayerStatusBadge } from '@/components/PlayerStatusBadge'
 import { COACHING_STAFF } from '@/data/club'
 
 const TABS = ['감독/코치', '투수', '포수', '내야수', '외야수'] as const
@@ -44,7 +45,9 @@ export function PlayersScreen() {
           </div>
         ) : (
           <div className="grid grid-cols-3 gap-3">
-            {list.map((p) => (
+            {list.map((p) => {
+              const st = playerStatus(p)
+              return (
               <button
                 key={p.id}
                 onClick={() => navigate(`/all/player-detail?id=${p.id}`)}
@@ -58,9 +61,14 @@ export function PlayersScreen() {
                     {p.foreign && <span className="text-[8px] font-bold text-[#64748B] bg-[#E8EBF4] rounded px-1">외국인</span>}
                   </div>
                   <span className="text-[10px] text-[#9CA3AF]">{p.pos} · {p.handed}</span>
+                  <div className="flex items-center gap-1 flex-wrap">
+                    <PlayerStatusBadge kind={st.kind} tier={st.tier} />
+                    {st.tier === '부상' && st.kind !== '군입대' && st.injury && <span className="text-[9px] text-[#EF4444] truncate">{st.injury}</span>}
+                  </div>
                 </div>
               </button>
-            ))}
+              )
+            })}
           </div>
         )}
       </div>

@@ -38,7 +38,7 @@ export function PostseasonFrame({ children }: { children: React.ReactNode }) {
   )
 }
 
-type Context = 'game' | 'schedule' | 'lineup' | 'ticket' | 'bookings'
+type Context = 'game' | 'schedule' | 'lineup' | 'ticket' | 'ticketlist' | 'bookings'
 
 const MESSAGES: Record<Context, Partial<Record<(typeof MATCH_STATES)[number], string>>> = {
   game: {
@@ -67,14 +67,13 @@ const MESSAGES: Record<Context, Partial<Record<(typeof MATCH_STATES)[number], st
     '경기 후': '경기가 종료되어 입장 QR이 만료됐어요.',
     '경기 연기': '경기가 연기되어 입장할 수 없어요. 재편성 일정과 티켓 처리 방법은 확정 후 안내드려요.',
     '서스펜디드': '경기가 중단됐어요. 속개 일정이 확정되면 안내드려요.',
-    '더블헤더': '더블헤더는 1차전·2차전 티켓이 경기별로 구분돼요. (예시)',
   },
+  ticketlist: {},
   bookings: {
     '우천 지연': '오늘 경기가 지연 중이에요. 취소가 확정되면 예매 티켓은 자동 환불됩니다.',
     '우천 취소': '오늘 경기가 취소되어 예매 티켓이 자동 환불 진행 중이에요.',
     '경기 연기': '오늘 경기가 연기됐어요. 예매 티켓의 환불·유효 여부는 재편성 확정 후 안내드려요.',
     '서스펜디드': '중단된 경기는 속개 시 기존 예매 티켓이 유효해요. (예시)',
-    '더블헤더': '더블헤더는 1차전·2차전 예매 내역이 경기별로 구분돼요.',
   },
 }
 

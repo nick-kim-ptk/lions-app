@@ -89,7 +89,7 @@ export const MATCH_GUIDE: MatchGuide[] = [
     effects: [
       { screen: '홈', text: '예매하기·라인업 발표 시각 안내' },
       { screen: '라인업', text: '발표 전(선발만) / 발표 후(전체 타순) 두 단계 — 라인업 화면의 케이스 선택으로 확인' },
-      { screen: '티켓', text: '예매 가능 여부는 오픈 전 / 선예매 / 일반 / 매진 / 마감으로 다시 나뉨' },
+      { screen: '티켓 예매', text: '오픈 전 / 선예매 / 일반으로 나뉨. 매진·예매 마감은 앱이 파악하지 않고 예매 화면에서 처리' },
     ],
     ticket: '예매·취소 가능. 취소 마감은 경기 시작 4시간 전(가정).',
   },
@@ -183,10 +183,9 @@ export const MATCH_GUIDE: MatchGuide[] = [
       { screen: '홈', text: '1·2차전을 한 카드에 표시 (2차전은 1차전 종료 30분 후 가정)' },
       { screen: '일정', text: '오늘 경기가 두 행으로 분리 (더블헤더 1·2차전)' },
       { screen: '라인업', text: '1차전·2차전 라인업이 각각 발표됨' },
-      { screen: '스마트 티켓·예매내역', text: '경기별 티켓 구분 (예시)' },
+      { screen: '티켓 예매', text: '1·2차전이 각각 별도 카드로 표시되고 각각 예매 (별도 처리 없음)' },
     ],
-    ticket: '(예시) 1차전·2차전 티켓이 경기별로 구분.',
-    open: '더블헤더 티켓 구조(1장 2경기 vs 경기별), 2차전 입장 방식 정의 필요',
+    ticket: '1차전·2차전을 각각 예매 (별도 처리 없음).',
   },
 ]
 
@@ -195,12 +194,12 @@ export const SCREEN_LINKS = [
   { screen: '경기(대시보드)', season: '상단 시즌 배지', match: '우천 지연·취소·연기·서스펜디드·더블헤더 안내' },
   { screen: '일정', season: '상단 시즌 배지', match: '오늘 경기 행: LIVE / 지연 / 취소 / 연기 / 서스펜디드 / 종료 / 더블헤더 2행' },
   { screen: '라인업', season: '상단 시즌 배지', match: '취소·연기는 빈 화면, 서스펜디드·더블헤더·지연·경기 중 안내' },
-  { screen: '예매내역', season: '상단 시즌 배지', match: '지연·취소·연기·서스펜디드·더블헤더 안내' },
-  { screen: '스마트 티켓', season: '헤더 시즌명', match: '지연·취소·연기·서스펜디드·종료·더블헤더 안내' },
+  { screen: '티켓 예매', season: '상단 시즌 배지', match: '오늘 경기가 취소·연기면 예매 불가 표시, 더블헤더는 1·2차전 카드 분리, 경기 종료 경기는 목록에서 제외' },
+  { screen: '예매내역', season: '상단 시즌 배지', match: '지연·취소·연기·서스펜디드 안내' },
+  { screen: '스마트 티켓', season: '헤더 시즌명', match: '지연·취소·연기·서스펜디드·종료 안내' },
 ]
 
 export const PENDING_LINKS = [
-  { screen: '티켓 예매 (/ticket)', plan: '제안 1 — 전역 케이스 연동' },
   { screen: '알림 (/notifications)', plan: '제안 5와 함께 알림 종류 예시' },
   { screen: '라운지(엘도라도·블루 시그널·오늘의 미션)', plan: '연동하지 않기로 결정' },
 ]
@@ -212,7 +211,6 @@ export const OPEN_ITEMS: { topic: string; detail: string; owner: string; screens
   { topic: '우천 취소 환불', detail: '자동 환불 소요일, 환불 완료 알림, 부분 환불 여부', owner: '티켓링크', screens: '예매내역, 알림' },
   { topic: '경기 연기 티켓 처리', detail: '재편성 시 유효 유지 / 환불 / 선택 가능 중 무엇인지', owner: '구단', screens: '예매내역, 스마트 티켓' },
   { topic: '서스펜디드 속개 티켓', detail: '속개 경기 입장 가능 여부, 좌석 유지 여부', owner: '구단', screens: '예매내역, 스마트 티켓' },
-  { topic: '더블헤더 티켓 구조', detail: '1장으로 2경기 입장 vs 경기별 티켓, 2차전 재입장', owner: '구단', screens: '티켓, 스마트 티켓' },
   { topic: '지연 중 입장 허용', detail: '우천 지연 중 구장 입장·QR 사용 가능 시점', owner: '구단', screens: '스마트 티켓' },
   { topic: '강우콜드·노게임 표기', detail: '5회 이상 진행 후 종료(콜드)와 5회 미만 중단(노게임)의 앱 표기', owner: '기획', screens: '홈, 일정' },
   { topic: '순연 경기 일정 반영', detail: '취소 경기의 재편성 일정이 앱 일정에 들어오는 시점·방식(API)', owner: '기획·개발', screens: '일정' },
@@ -241,7 +239,6 @@ export const GLOSSARY: { term: string; desc: string }[] = [
 ]
 
 export const ROADMAP = [
-  { n: 1, name: '티켓 예매', desc: '전역 케이스 연동 (연기·더블헤더·포스트시즌 예매 표기)' },
   { n: 2, name: '시즌 단계 확장', desc: '비시즌·올스타 브레이크·시범경기' },
   { n: 3, name: 'MY 홈·멤버십', desc: '비로그인 / 신규 / 멤버십 / 만료 / 시즌권' },
   { n: 4, name: '로그인·계정', desc: '오류·시도 초과·휴면·탈퇴 처리' },

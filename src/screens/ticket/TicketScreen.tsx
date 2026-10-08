@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { PH, PHCircle, PHSection } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
+import { GameStateNotice } from '@/components/GameCaseBar'
+import { withCaseGames } from '@/data/caseStore'
 import { AUTHENTIC_SHOP_ITEMS, BEERYS_SHOP_ITEMS, DURATION } from '@/data/ticket'
 import {
   TEAMS, MY_TEAM, MOCK_TODAY, fmtMD, fmtMDW, fmtSlashMDW,
@@ -39,7 +41,8 @@ export function TicketScreen() {
   const countdownBg = `rgb(${r},${g},${b})`
 
   // 예매 가능한 홈 경기 (오늘 이후). 상태(오픈 전/선예매/매진/마감)는 일정 더미에서 계산
-  const homeGames = bookableHomeGames()
+  // 매진·예매 마감은 앱이 파악하지 않는다(예매 화면에서 처리). 전역 케이스(취소·연기·더블헤더)만 오늘 경기에 반영
+  const homeGames = bookableHomeGames().flatMap(withCaseGames).filter((g) => g.status !== 'final')
   const visibleGames = showMoreGames ? homeGames : homeGames.slice(0, 3)
 
   // 예매 오픈 카운트다운/히어로 대상: 아직 열리지 않은 가장 가까운 홈 경기 (없으면 가장 가까운 예매 가능 경기)
@@ -47,11 +50,14 @@ export function TicketScreen() {
   const heroGame = openingGame ?? homeGames[0]
   const heroSale = heroGame ? ticketSaleOf(heroGame) : null
   const heroOpp = heroGame ? TEAMS[heroGame.opp] : null
-  const heroCanBook = heroGame ? ['open', 'presale'].includes(ticketStateOf(heroGame)) : false
+  const heroState = heroGame ? ticketStateOf(heroGame) : null
+  const heroCanBook = heroState !== null && !['before', 'cancelled', 'away'].includes(heroState)
+  const heroOff = heroState === 'cancelled'
 
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-4">
       <Header showBack={false} showNotif showMenu bare />
+      <GameStateNotice context="ticketlist" />
 
       {/* 예매 오픈 D-5분 카운트다운 바 */}
       {openingGame && heroOpp && (
@@ -122,9 +128,9 @@ export function TicketScreen() {
               {/* 예매 오픈 안내 + CTA */}
               <div className="flex items-center justify-between gap-3 bg-white/10 rounded-2xl px-4 py-3">
                 <div>
-                  <p className="text-white/60 text-[10px] font-medium mb-0.5">{heroCanBook ? '예매 가능' : '선예매 일시'}</p>
+                  <p className="text-white/60 text-[10px] font-medium mb-0.5">{heroOff ? '예매 불가' : heroCanBook ? '예매 가능' : '선예매 일시'}</p>
                   <p className="text-white text-[14px] font-black">
-                    {heroCanBook ? '지금 예매하세요' : heroSale ? `${fmtMD(heroSale.preSaleAt.date)} ${heroSale.preSaleAt.time}` : ''}
+                    {heroOff ? '경기가 열리지 않아요' : heroCanBook ? '지금 예매하세요' : heroSale ? `${fmtMD(heroSale.preSaleAt.date)} ${heroSale.preSaleAt.time}` : ''}
                   </p>
                 </div>
                 <button
@@ -208,6 +214,7 @@ export function TicketScreen() {
             const state = ticketStateOf(g)
             const sale = ticketSaleOf(g)
             const isToday = g.date === MOCK_TODAY
+            const dhTag = g.note?.startsWith('더블헤더') ? g.note.replace('더블헤더 ', '') : null
             return (
               <div key={g.id} className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-4">
                 <div className="flex items-center justify-between mb-3">
@@ -216,6 +223,7 @@ export function TicketScreen() {
                     <span className="text-[12px] font-semibold text-[#111827]">{fmtMDW(g.date)}</span>
                     <span className="text-[11px] text-[#64748B]">{g.time}</span>
                     {isToday && <span className="text-[10px] font-bold text-[#E53935] bg-[#FDECEC] rounded-full px-2 py-0.5">오늘</span>}
+                    {dhTag && <span className="text-[10px] font-bold text-[#0E1A40] bg-[#F0F2F5] rounded-full px-2 py-0.5">{dhTag}</span>}
                   </div>
                   {state === 'before' && sale && (
                     <div className="flex items-center gap-1 bg-[#F5F7FB] rounded-full px-2.5 py-1">
@@ -238,18 +246,18 @@ export function TicketScreen() {
                     <span className="text-[13px] font-semibold text-[#111827]">{opp.short}</span>
                   </div>
                   <div className="ml-auto">
-                    {state === 'open' || state === 'presale' ? (
+                    {state !== 'before' && state !== 'cancelled' && state !== 'away' ? (
                       <button className="h-8 px-4 rounded-xl bg-[#1B5BF0] text-white text-[12px] font-semibold">
                         예매
                       </button>
                     ) : (
                       <div className="h-8 px-4 rounded-xl bg-[#E8EBF4] text-[#9CA3AF] text-[12px] font-semibold flex items-center">
-                        {state === 'soldout' ? '매진' : state === 'closed' ? '예매 마감' : '예매 예정'}
+                        {state === 'cancelled' ? (g.status === 'postponed' ? '경기 연기' : '경기 취소') : '예매 예정'}
                       </div>
                     )}
                   </div>
                 </div>
-                {g.note && (
+                {g.note && !dhTag && g.makeupOfId && (
                   <p className="mt-3 text-[11px] text-[#64748B] bg-[#F5F7FB] rounded-lg px-2.5 py-1.5">{g.note} · 기존 예매 내역은 자동 환불되며, 새 경기는 별도로 예매해 주세요.</p>
                 )}
               </div>

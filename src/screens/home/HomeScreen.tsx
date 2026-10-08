@@ -164,7 +164,6 @@ export function HomeScreen() {
                   <button onClick={() => window.open('https://www.youtube.com/@lionstv1982', '_blank', 'noopener,noreferrer')} className="h-10 flex-1 rounded-xl bg-white text-[12px] font-bold text-[#0E1A40]">공식 유튜브</button>
                   <button onClick={() => window.open('https://www.instagram.com/samsunglions_baseballclub/', '_blank', 'noopener,noreferrer')} className="h-10 flex-1 rounded-xl border border-white/30 text-[12px] font-bold text-white">공식 인스타그램</button>
                 </div>
-                <button className="mt-2 h-10 w-full rounded-xl bg-[#F0A500] text-[12px] font-bold text-[#0E1A40]">굿즈샵 바로가기</button>
               </div>
             ) : phase === '올스타 브레이크' ? (
               <div className="bg-white rounded-2xl border border-[#DDE1EC] p-5 text-center">

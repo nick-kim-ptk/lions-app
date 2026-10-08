@@ -90,14 +90,25 @@ export const FINAL_SNAPSHOT = { us: 5, them: 2, summary: '구자욱 2홈런 · �
 export const MY_SEAT = seatLabelForGame('G2026-09-19') ?? ''
 
 // 알림 아이템 데이터 (기준 시각: data/mock/clock.ts 의 MOCK_TODAY)
-export const NOTIF_DATA = [
+export type NotifItem = {
+  id: number; date: string; title: string; body: string; time: string; read: boolean
+  link: { label: string; path: string } | null
+  /** 필수 알림 — 설정에서 끌 수 없고 항상 발송 (예매·취소·환불, 예매자 대상 경기 변경) */
+  required?: boolean
+}
+export const NOTIF_DATA: NotifItem[] = [
   { id: 0, date: '오늘', title: '[이벤트] 9월 키즈런 이벤트 접수 안내', body: '이번 키즈런은 금년 시즌 마지막으로 진행되는 키즈런으로, 선정 인원을 999명으로 확대했습니다. 지금 바로 참여하세요.', time: '방금 전', read: false, link: { label: '이벤트 참여하기', path: '/all/event-list' } },
+  { id: 9, date: '오늘', title: '[경기] 우천으로 경기 시작이 지연되고 있어요', body: '대구 라이온즈 파크에 비가 내려 경기 시작이 지연되고 있습니다. 재개 또는 취소가 결정되면 다시 알려드릴게요.', time: '10분 전', read: true, link: { label: '경기 일정 보기', path: '/game/schedule' }, required: true },
+  { id: 10, date: '오늘', title: '[경기] 오늘 선발 라인업이 발표됐어요', body: '경기 약 1시간 전 라인업이 발표됐습니다. 오늘의 타순을 확인해 보세요.', time: '1시간 전', read: true, link: { label: '라인업 보기', path: '/game/lineup' } },
   { id: 1, date: '오늘', title: '[경기] 오늘 삼성 라이온즈 vs NC 다이노스 경기가 17시에 시작됩니다', body: '오후 5시 대구 라이온즈 파크에서 경기가 시작됩니다. 오늘의 선발은 원태인! 선발 라인업은 16시경 발표돼요.', time: '30분 전', read: false, link: { label: '라인업 보기', path: '/game/lineup' } },
   { id: 2, date: '오늘', title: '[공지] 앱 업데이트 안내 (v3.2.1)', body: '새로운 기능과 버그 수정이 포함된 업데이트가 출시되었습니다.', time: '3시간 전', read: true, link: null },
   { id: 3, date: '어제', title: '[티켓] 예매하신 티켓이 발권되었습니다', body: '9월 20일 삼성 라이온즈 vs NC 다이노스 경기 티켓이 발권되었습니다. 스마트 티켓을 확인하세요.', time: '어제', read: true, link: { label: '스마트 티켓 확인', path: '/my/ticket-qr' } },
   { id: 4, date: '어제', title: '[이벤트] 블루 시그널 미션 완료 보상 지급', body: '이번 주 미션을 완료하셨습니다. 앰블럼 50개가 지급되었습니다.', time: '어제', read: true, link: { label: '블루 시그널 보기', path: '/lounge/blue-signal' } },
   { id: 5, date: '어제', title: '[경기] 삼성 라이온즈 승리! 최종 스코어 9:4', body: '어제(9/18) 경기에서 삼성 라이온즈가 NC 다이노스를 9:4로 꺾었습니다.', time: '어제', read: true, link: null },
+  { id: 11, date: '어제', title: '[티켓] 9월 26일 경기 예매가 오픈됐어요', body: '일반 예매가 오픈되었습니다. 원하는 좌석을 지금 예매하세요.', time: '어제', read: true, link: { label: '티켓 예매하기', path: '/ticket' } },
   { id: 6, date: '이전', title: '[쇼핑] 주문하신 상품이 배송 중입니다', body: '주문번호 SL20260912-003 상품이 출고되었습니다.', time: '9/12', read: true, link: null },
   { id: 7, date: '이전', title: '[경기] 9월 9일 한화전 우천 취소 안내', body: '우천으로 9/9(수) 한화전이 취소되었습니다. 예매하신 티켓은 자동 환불되며, 순연 경기는 10/5(월) 18:30에 편성되었습니다.', time: '9/9', read: true, link: { label: '경기 일정 보기', path: '/game/schedule' } },
   { id: 8, date: '이전', title: '[이벤트] 팬미팅 응모 결과 안내', body: '팬미팅 응모 결과를 확인해주세요. MY > 이벤트 내역에서 확인 가능합니다.', time: '9/10', read: true, link: { label: '응모 내역 보기', path: '/all/event-history' } },
+  { id: 12, date: '이전', title: '[티켓] 우천 취소 티켓 환불이 완료되었어요', body: '9/9(수) 한화전 티켓 환불이 완료되었습니다. 결제 수단에 따라 영업일 기준 3~5일 이내 반영됩니다.', time: '9/10', read: true, link: { label: '예매 내역 보기', path: '/my/booking-history' }, required: true },
+  { id: 13, date: '이전', title: '[경기] 9월 5일 경기가 연기되었어요', body: '기상 악화로 경기가 연기되었습니다. 예매하신 티켓은 재편성 일정 확정 후 다시 안내드립니다.', time: '9/5', read: true, link: { label: '예매 내역 보기', path: '/my/booking-history' }, required: true },
 ]

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import iconSocial from '@/assets/images/social-login-icons.png'
 import { useNavigate } from 'react-router-dom'
 import { Header } from '@/components/Layout'
+import { CaseSelect } from '@/components/CaseSelect'
 import { SOCIAL_ICONS } from '@/data/my'
 
 // Reusable list row
@@ -44,9 +45,17 @@ function SocialIconRow() {
 export function SettingsScreen() {
   const navigate = useNavigate()
   const [allowNotif, setAllowNotif] = useState(true)
+  const [permission, setPermission] = useState<'권한 허용' | '권한 거부'>('권한 허용')
+  const denied = permission === '권한 거부'
+  const REQUIRED_NOTIFS = [
+    { name: '예매·발권·취소·환불 알림', desc: '예매 확인, 티켓 발권, 취소·환불 처리 결과' },
+    { name: '경기 변경 알림(예매자)', desc: '우천 지연·취소, 경기 연기·재편성 시 예매하신 경기 안내' },
+  ]
   const [isVersionModalOpen, setIsVersionModalOpen] = useState(false)
   const [notifs, setNotifs] = useState({
     '경기 시작 알림': true,
+    '라인업 발표 알림': true,
+    '경기 결과 알림': true,
     '티켓 예매 오픈 알림': true,
     '이벤트 알림': true,
     '공지 알림': true,
@@ -57,7 +66,7 @@ export function SettingsScreen() {
   })
 
   function toggleOne(key: keyof typeof notifs) {
-    if (!allowNotif) return
+    if (!allowNotif || denied) return
     setNotifs((prev) => ({ ...prev, [key]: !prev[key] }))
   }
 
@@ -68,7 +77,29 @@ export function SettingsScreen() {
       <div className="px-4 pt-4 flex flex-col gap-4 flex-1">
         {/* 알림 설정 카드 */}
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] px-4 pb-1">
-          <p className="text-xs text-[#9CA3AF] py-3">알림 설정</p>
+          <div className="flex items-center justify-between py-3">
+            <p className="text-xs text-[#9CA3AF]">알림 설정</p>
+            <CaseSelect value={permission} options={['권한 허용', '권한 거부'] as const} onChange={setPermission} />
+          </div>
+
+          {denied && (
+            <div className="mb-3 rounded-xl bg-[#FFF4E5] border border-[#F0A500]/40 px-3 py-3">
+              <p className="text-[12px] font-bold text-[#7C5C00]">기기 알림 권한이 꺼져 있어요</p>
+              <p className="text-[11px] text-[#7C5C00]/80 mt-0.5">알림을 받으려면 기기 설정에서 권한을 허용해 주세요.</p>
+              <button type="button" className="mt-2 h-8 px-3 rounded-lg bg-[#F0A500] text-white text-[12px] font-bold">설정으로 이동</button>
+            </div>
+          )}
+
+          {/* 필수 알림 — 토글 없이 항상 발송 */}
+          {REQUIRED_NOTIFS.map((r) => (
+            <div key={r.name} className="flex items-center justify-between py-3 border-t border-[#DDE1EC]">
+              <div className="min-w-0 pr-3">
+                <p className="text-sm text-[#111827]">{r.name}</p>
+                <p className="text-[11px] text-[#9CA3AF] mt-0.5">{r.desc}</p>
+              </div>
+              <span className="shrink-0 text-[10px] font-bold text-[#64748B] bg-[#EEF1F7] rounded-full px-2.5 py-1">항상 수신</span>
+            </div>
+          ))}
 
           {/* Master toggle: 전체 알림 ON/OFF */}
           <div className="flex items-center justify-between py-3.5 border-t border-[#DDE1EC]">
@@ -90,13 +121,16 @@ export function SettingsScreen() {
               key={n}
               className="flex items-center justify-between py-3 border-t border-[#DDE1EC]"
             >
-              <span className={`text-sm ${allowNotif ? 'text-[#111827]' : 'text-[#9CA3AF]'}`}>{n}</span>
+              <div className="min-w-0 pr-3">
+                <span className={`text-sm ${allowNotif && !denied ? 'text-[#111827]' : 'text-[#9CA3AF]'}`}>{n}</span>
+                {n === '마케팅 알림' && <p className="text-[11px] text-[#9CA3AF] mt-0.5">21시~08시에는 발송되지 않아요</p>}
+              </div>
               <button
                 type="button"
-                disabled={!allowNotif}
+                disabled={!allowNotif || denied}
                 onClick={() => toggleOne(n)}
                 className={`w-12 h-6 rounded-full flex items-center transition-colors duration-200 ${
-                  !allowNotif
+                  !allowNotif || denied
                     ? 'bg-[#E5E7EB] justify-start pl-0.5 cursor-not-allowed'
                     : notifs[n]
                     ? 'bg-[#1B5BF0] justify-end pr-0.5'

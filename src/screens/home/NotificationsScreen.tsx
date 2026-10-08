@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { CaseSelect } from '@/components/CaseSelect'
 import { useState, useEffect } from 'react'
-import { NOTIF_DATA } from '@/data/home'
+import { NOTIF_DATA, type NotifItem } from '@/data/home'
 import { markAllNotifRead } from '@/data/notifStore'
 
 // 005-SL-HM-02 알림
@@ -12,7 +12,7 @@ export function NotificationsScreen() {
   const items = NOTIF_DATA.map((n) => ({ ...n, read: true }))
   useEffect(() => { markAllNotifRead() }, [])
 
-  const handleItemClick = (n: typeof NOTIF_DATA[0]) => {
+  const handleItemClick = (n: NotifItem) => {
     if (n.link?.path) navigate(n.link.path)
   }
 
@@ -71,6 +71,7 @@ export function NotificationsScreen() {
                             <span className="text-[13px] leading-snug truncate text-[#111827]">
                               {n.title}
                             </span>
+                            {n.required && <span className="shrink-0 text-[9px] font-bold text-[#64748B] bg-[#EEF1F7] rounded px-1 py-0.5">필수</span>}
                           </div>
                           <span className="text-[11px] text-[#9CA3AF] shrink-0 pt-0.5">{n.time}</span>
                         </div>

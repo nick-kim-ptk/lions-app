@@ -139,12 +139,18 @@ export const TEAM_RECORDS = [
 
 // 016-SL-GM-11 라이온즈 VR
 export const VR_INTRO = {
-  title: '경기장을 360°로 만나보세요',
-  desc: '스마트폰을 움직여 라팍 곳곳을 둘러볼 수 있는 몰입형 VR 콘텐츠입니다.',
-  note: 'Wi-Fi 환경에서 이용을 권장하며, 콘텐츠당 약 3~5분 소요됩니다.',
+  title: '라팍을 360°로 둘러보세요',
+  desc: '360° 카메라로 담은 경기장 곳곳을 화면 속에서 직접 둘러볼 수 있어요.',
+  note: '용량이 큰 콘텐츠라 Wi-Fi 환경에서 이용을 권장해요.',
 }
+/** 360° 뷰어 조작법 */
+export const VR_GESTURES = [
+  { icon: '👆', title: '드래그', desc: '손가락으로 밀어 좌우·위아래로 시점을 돌려요' },
+  { icon: '🤏', title: '핀치', desc: '두 손가락을 벌리거나 오므려 확대·축소해요' },
+  { icon: '🔄', title: '더블 탭', desc: '처음 시점으로 돌아가요' },
+]
 export const VR_EXPERIENCES = [
-  { title: '좌석 체험', desc: '내야석·외야석·프리미엄석에서 바라본 경기장 전경', duration: '약 4분', imageLabel: '좌석 시야 360° 이미지' },
-  { title: '선수 라커룸 체험', desc: '평소 볼 수 없는 선수단 라커룸 내부 둘러보기', duration: '약 3분', imageLabel: '라커룸 360° 이미지' },
-  { title: '덕아웃 체험', desc: '그라운드와 가장 가까운 덕아웃에서 느끼는 현장감', duration: '약 5분', imageLabel: '덕아웃 360° 이미지' },
+  { title: '좌석 체험', desc: '내야석·외야석·프리미엄석에서 바라본 경기장 전경', badge: '좌석 시야 6곳', imageLabel: '좌석 시야 360° 이미지' },
+  { title: '선수 라커룸 체험', desc: '평소 볼 수 없는 선수단 라커룸 내부 둘러보기', badge: '라커룸 3곳', imageLabel: '라커룸 360° 이미지' },
+  { title: '덕아웃 체험', desc: '그라운드와 가장 가까운 덕아웃에서 느끼는 현장감', badge: '덕아웃 2곳', imageLabel: '덕아웃 360° 이미지' },
 ]

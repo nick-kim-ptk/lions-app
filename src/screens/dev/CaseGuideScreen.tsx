@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Header } from '@/components/Layout'
 import { isPostseason, setMatchState, setSeasonPhase, useCaseState } from '@/data/caseStore'
 import {
-  GLOSSARY, GUIDE_INTRO, MATCH_GUIDE, OFF_SEASON, OPEN_ITEMS, PENDING_LINKS, ROADMAP,
+  GLOSSARY, GUIDE_INTRO, MATCH_GUIDE, OFF_SEASON, OPEN_ITEMS, PENDING_LINKS,
   ROUTE_TABLE, SCREEN_LINKS, SEASON_GUIDE, SYSTEM_GUIDE, type SystemGuide,
 } from '@/data/caseGuide'
 
@@ -159,20 +159,6 @@ export function CaseGuideScreen() {
               <button onClick={() => navigate('/home')} className="mt-3 h-10 w-full rounded-xl bg-[#1B5BF0] text-[13px] font-bold text-white">
                 홈에서 보기
               </button>
-            </Card>
-            <Card>
-              <H>케이스 정의 진행 순서</H>
-              <div className="flex flex-col gap-2">
-                {ROADMAP.map((r) => (
-                  <div key={r.n} className="flex items-start gap-3">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#EBF0FF] text-[11px] font-bold text-[#1B5BF0]">{r.n}</span>
-                    <div>
-                      <p className="text-[13px] font-semibold text-[#0E1A40]">{r.name}</p>
-                      <p className="text-[11px] text-[#64748B]">{r.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
             </Card>
           </>
         )}

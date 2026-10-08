@@ -13,7 +13,8 @@ const won = (n: number) => `${n.toLocaleString('ko-KR')}원`
 export function BookingCancelScreen() {
   const navigate = useNavigate()
   const [agreed, setAgreed] = useState(false)
-  const [cancelMode, setCancelMode] = useState<'부분 취소' | '전체 취소'>('부분 취소')
+  const [cancelMode, setCancelMode] = useState<'부분 취소' | '전체 취소' | '취소 마감 후'>('부분 취소')
+  const isClosed = cancelMode === '취소 마감 후'
   const isFullCancel = cancelMode === '전체 취소'
 
   const booking = bookingByNo(DETAIL_BOOKING_NO)!
@@ -41,10 +42,19 @@ export function BookingCancelScreen() {
       <Header
         title="예매 취소"
         rightSlot={
-          <CaseSelect value={cancelMode} options={['부분 취소', '전체 취소'] as const} onChange={(mode) => { setCancelMode(mode); setAgreed(false) }} />
+          <CaseSelect value={cancelMode} options={['부분 취소', '전체 취소', '취소 마감 후'] as const} onChange={(mode) => { setCancelMode(mode); setAgreed(false) }} />
         }
       />
       <div className="px-4 pt-4 flex flex-col gap-4">
+
+        {isClosed && (
+          <div className="rounded-2xl border border-[#E53935]/30 bg-[#FFF5F5] px-4 py-3">
+            <p className="text-[13px] font-bold text-[#E53935]">취소 기간이 종료되었어요</p>
+            <p className="text-[11px] text-[#64748B] mt-1 leading-relaxed">
+              취소 마감시간({fmtDotYMD(deadline.date)} {deadline.time})이 지나 취소·환불이 불가합니다. 경기 취소(우천 등) 시에는 별도 신청 없이 자동 환불됩니다.
+            </p>
+          </div>
+        )}
 
         {/* 예매 정보 요약 */}
         <div className="bg-white rounded-2xl border border-[#DDE1EC] overflow-hidden">
@@ -127,7 +137,7 @@ export function BookingCancelScreen() {
         </div>
 
         {/* 동의 체크 */}
-        <button onClick={() => setAgreed(a => !a)} className="flex items-center gap-3 py-1">
+        <button disabled={isClosed} onClick={() => setAgreed(a => !a)} className={`flex items-center gap-3 py-1 ${isClosed ? 'opacity-40' : ''}`}>
           <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${agreed ? 'bg-[#1B5BF0] border-[#1B5BF0]' : 'border-[#DDE1EC]'}`}>
             {agreed && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
           </div>
@@ -143,11 +153,11 @@ export function BookingCancelScreen() {
       {/* 하단 플로팅 CTA */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#DDE1EC] px-4 pt-3 pb-8">
         <button
-          disabled={!agreed}
+          disabled={!agreed || isClosed}
           onClick={() => navigate(-1)}
-          className={`w-full h-14 rounded-2xl font-semibold text-[15px] transition-colors ${agreed ? 'bg-[#E53935] text-white' : 'bg-[#DDE1EC] text-[#9CA3AF]'}`}
+          className={`w-full h-14 rounded-2xl font-semibold text-[15px] transition-colors ${agreed && !isClosed ? 'bg-[#E53935] text-white' : 'bg-[#DDE1EC] text-[#9CA3AF]'}`}
         >
-          {isFullCancel ? '전체 4매 취소하기' : '선택한 1매 취소하기'}
+          {isClosed ? '취소할 수 없어요' : isFullCancel ? '전체 4매 취소하기' : '선택한 1매 취소하기'}
         </button>
       </div>
     </div>

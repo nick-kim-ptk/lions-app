@@ -151,7 +151,7 @@ export function GameDashboardScreen() {
                     const day = row * 7 + col - (seasonEnd ? 3 : 5)
                     const monthDays = seasonEnd ? 31 : 30
                     const hasGame = !seasonEnd && gameDays.includes(day)
-                    const isToday = !seasonEnd && day === 18
+                    const isToday = day === 18
                     return (
                       <div key={col} className="flex flex-col items-center gap-0.5 py-1">
                         <div className={`w-7 h-7 rounded-full flex items-center justify-center ${isToday ? 'bg-[#1B5BF0]' : ''}`}>

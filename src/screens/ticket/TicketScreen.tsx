@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react'
 import { PH, PHCircle, PHSection } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
 import { GameStateNotice } from '@/components/GameCaseBar'
-import { withCaseGames, useCaseState, hasGamesInPhase } from '@/data/caseStore'
+import { withCaseGames, useCaseState } from '@/data/caseStore'
+import { CaseSelect } from '@/components/CaseSelect'
 import { AUTHENTIC_SHOP_ITEMS, BEERYS_SHOP_ITEMS, DURATION } from '@/data/ticket'
 import {
   TEAMS, MY_TEAM, MOCK_TODAY, fmtMD, fmtMDW, fmtSlashMDW,
@@ -43,7 +44,11 @@ export function TicketScreen() {
   // 예매 가능한 홈 경기 (오늘 이후). 상태(오픈 전/선예매/매진/마감)는 일정 더미에서 계산
   // 매진·예매 마감은 앱이 파악하지 않는다(예매 화면에서 처리). 전역 케이스(취소·연기·더블헤더)만 오늘 경기에 반영
   const { phase } = useCaseState()
-  const inSeason = hasGamesInPhase(phase)
+  // 케이스: 시즌 중 / 시즌 종료 — 전역 시즌 단계가 비시즌이면 시즌 종료로 자동 전환
+  const [ticketCase, setTicketCase] = useState<'시즌 중' | '시즌 종료'>(phase === '비시즌' ? '시즌 종료' : '시즌 중')
+  useEffect(() => { setTicketCase(phase === '비시즌' ? '시즌 종료' : '시즌 중') }, [phase])
+  const seasonEnd = ticketCase === '시즌 종료'
+  const inSeason = !seasonEnd
   const homeGames = inSeason ? bookableHomeGames().flatMap(withCaseGames).filter((g) => g.status !== 'final') : []
   const visibleGames = showMoreGames ? homeGames : homeGames.slice(0, 3)
 
@@ -60,6 +65,9 @@ export function TicketScreen() {
     <div className="min-h-full bg-[#F5F7FB] pb-4">
       <Header showBack={false} showNotif showMenu bare />
       <GameStateNotice context="ticketlist" />
+      <div className="flex justify-end px-4 pt-3">
+        <CaseSelect value={ticketCase} options={['시즌 중', '시즌 종료'] as const} onChange={setTicketCase} />
+      </div>
 
       {/* 예매 오픈 D-5분 카운트다운 바 */}
       {openingGame && heroOpp && (
@@ -212,7 +220,7 @@ export function TicketScreen() {
         </div>
         {homeGames.length === 0 && (
           <div className="rounded-2xl border border-[#DDE1EC] bg-white p-6 text-center">
-            <p className="text-[13px] font-bold text-[#0E1A40]">예매 가능한 경기가 없어요</p>
+            <p className="text-[13px] font-bold text-[#0E1A40]">{seasonEnd ? '2026 시즌 예매가 종료되었어요' : '예매 가능한 경기가 없어요'}</p>
             <p className="mt-1 text-[11px] text-[#9CA3AF]">다음 시즌 일정이 공개되면 안내드려요.</p>
           </div>
         )}

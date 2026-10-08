@@ -1,25 +1,25 @@
 import { PHCircle, PHImage } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
-import { INFLUENCERS, SNS_POSTS } from '@/data/lounge'
+import { BLUE_MATES, SNS_POSTS } from '@/data/lounge'
 
-// 027(029)-SL-LG-12 삼팬 인플루언서 1기
+// 027(029)-SL-LG-12 블루메이트 1기
 export function SNSScreen() {
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-4">
-      <Header title="삼팬 인플루언서 1기" />
+      <Header title="블루메이트 1기" />
 
-      {/* 1기 인플루언서 — 좌우로 드래그하는 프로필 카드 */}
+      {/* 블루메이트 1기 — 좌우로 드래그하는 프로필 카드 */}
       <div className="pt-4 mb-4">
-        <p className="px-4 text-[13px] font-semibold text-[#111827] mb-3">1기 인플루언서로 선정되신 분들입니다</p>
+        <p className="px-4 text-[13px] font-semibold text-[#111827] mb-3">블루메이트 1기로 선정되신 분들입니다</p>
         <div className="flex gap-3 overflow-x-auto px-4 pb-1 snap-x snap-mandatory" style={{ scrollbarWidth: 'none' }}>
-          {INFLUENCERS.map((inf) => (
-            <div key={inf.handle} className="snap-start shrink-0 w-[148px] bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-4 flex flex-col items-center text-center">
+          {BLUE_MATES.map((mate) => (
+            <div key={mate.handle} className="snap-start shrink-0 w-[148px] bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-4 flex flex-col items-center text-center">
               <PHCircle className="w-16 h-16" />
-              <p className="mt-3 text-[13px] font-bold text-[#111827]">{inf.name}</p>
-              <p className="text-[11px] text-[#9CA3AF] truncate w-full">@{inf.handle}</p>
-              <p className="mt-1 text-[10px] text-[#64748B] truncate w-full">{inf.desc}</p>
+              <p className="mt-3 text-[13px] font-bold text-[#111827]">{mate.name}</p>
+              <p className="text-[11px] text-[#9CA3AF] truncate w-full">@{mate.handle}</p>
+              <p className="mt-1 text-[10px] text-[#64748B] truncate w-full">{mate.desc}</p>
               <button
-                onClick={() => window.open(`https://www.instagram.com/${inf.handle}/`, '_blank', 'noopener,noreferrer')}
+                onClick={() => window.open(`https://www.instagram.com/${mate.handle}/`, '_blank', 'noopener,noreferrer')}
                 className="mt-3 h-8 w-full rounded-lg bg-[#1B5BF0] text-white text-[11px] font-bold"
               >
                 인스타 이동

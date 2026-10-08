@@ -96,8 +96,8 @@ export const MOOD_OPTIONS = [
   { label: '전설이에요', emoji: '👑' },
 ]
 
-// 029-SL-LG-12 삼팬 인플루언서 1기 — 선정 인플루언서 5명 (더미)
-export const INFLUENCERS = [
+// 029-SL-LG-12 블루메이트 1기 — 선정 멤버 5명 (더미)
+export const BLUE_MATES = [
   { name: '민아', handle: 'samfan_mina', desc: '가족 직관 · 먹거리' },
   { name: '라팍러', handle: 'lions_forever_', desc: '경기장 응원 · 직관 기록' },
   { name: '블루로어', handle: 'blue_roar_kim', desc: '응원 문화 · 굿즈' },
@@ -105,7 +105,7 @@ export const INFLUENCERS = [
   { name: '라이온즈매니아', handle: 'lionsmania_', desc: '경기 분석 · 하이라이트' },
 ]
 
-// 삼팬 인플루언서 1기 피드 (더미)
+// 블루메이트 1기 피드 (더미)
 export const SNS_POSTS = [
   { user: 'lions_forever_', time: '2시간 전', likes: 128, caption: '오늘도 라팍은 푸르다 💙 승리 기원!', tags: ['#삼성라이온즈', '#직관'], imageLabel: '경기장 응원석 인증샷' },
   { user: 'daegu_blue_92', time: '3시간 전', likes: 94, caption: '치맥 세팅 완료. 오늘 경기 이겨라!', tags: ['#삼팬', '#라이온즈파크'], imageLabel: '먹거리 인증샷' },

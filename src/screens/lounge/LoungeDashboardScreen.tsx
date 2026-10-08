@@ -53,7 +53,7 @@ export function LoungeDashboardScreen() {
               { label: '디지털 피켓', path: '/lounge/cheer-board', emoji: '📣' },
               { label: '승리 운세', path: '/lounge/fortune', emoji: '🔮' },
               { label: '디지털 굿즈', path: '/lounge/digital-goods', emoji: '🎁' },
-              { label: '삼팬 인플루언서 1기', path: '/lounge/sns', emoji: '📸' },
+              { label: '블루메이트 1기', path: '/lounge/sns', emoji: '📸' },
               { label: '블루 시그널', path: '/lounge/blue-signal', emoji: '📍' },
             ].map((item) => (
               <button
@@ -386,10 +386,10 @@ export function LoungeDashboardScreen() {
         </div>
       </div>
 
-      {/* ── 삼팬 인플루언서 1기 preview ── */}
+      {/* ── 블루메이트 1기 preview ── */}
       <div className="px-4">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-[14px] font-bold text-[#111827]">삼팬 인플루언서 1기</span>
+          <span className="text-[14px] font-bold text-[#111827]">블루메이트 1기</span>
           <button onClick={() => navigate('/lounge/sns')} className="text-[11px] text-[#9CA3AF]">전체보기 ›</button>
         </div>
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-3">

@@ -11,7 +11,7 @@ type MissionPhase = (typeof MISSION_PHASES)[number]
 const REVEAL: Record<MissionType, { q: string; options: string[]; answer: string; wrong: string; note: string }> = {
   사지선다: { q: '오늘 경기에서 홈런을 칠 선수는 누구일까요?', options: ['구자욱', '이재현', '디아즈', '강민호'], answer: '디아즈', wrong: '구자욱', note: '디아즈 선수가 3회 투런 홈런을 기록했어요 (예시)' },
   OX퀴즈: { q: '오늘 삼성 라이온즈가 7점 이상 득점할까요?', options: ['O', 'X'], answer: 'O', wrong: 'X', note: '삼성은 오늘 8득점을 기록했어요 (예시)' },
-  VS선택: { q: '원태인 선수는 오늘 경기 끝나고 ____ 을 먹을 것이다.', options: ['막창', '삼겹살'], answer: '삼겹살', wrong: '막창', note: '원태인 선수의 선택! 라이온즈 인스타 스토리에서도 확인할 수 있어요 (예시)' },
+  VS선택: { q: '원태인 선수는 오늘 경기 끝나고 ____ 을 먹을 것이다.', options: ['막창', '삼겹살'], answer: '삼겹살', wrong: '막창', note: '라이온즈 인스타 스토리를 통해 생생한 정답을 확인할 수 있어요!' },
   예측형: { q: '오늘 경기 최종 점수를 예측해보세요!', options: [], answer: '5 : 3', wrong: '3 : 1', note: '최종 스코어 삼성 5 : 3 상대팀 (예시)' },
 }
 

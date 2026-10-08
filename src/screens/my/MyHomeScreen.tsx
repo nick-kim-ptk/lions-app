@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PH, PHCircle } from '@/components/Placeholder'
 import { CaseSelect } from '@/components/CaseSelect'
-import { MemberCard, StateBadge } from '@/components/MemberCard'
+import { MemberCard } from '@/components/MemberCard'
 import { EMBLEMS, EMBLEM_TOTAL } from '@/data/emblems'
 import { joinInfo,type JoinKind, type JoinState } from '@/data/mock/membership'
 
@@ -26,7 +26,6 @@ function JoinClosedCard({ kind, title, tone, state, onJoin }: { kind: JoinKind; 
           <p className="text-white/70 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
           <p className="text-white text-[18px] font-bold leading-snug">{title}</p>
         </div>
-        <StateBadge state={open ? '멤버십 모집 중' : '멤버십 모집 전'} />
       </div>
       <div className="relative flex flex-col items-center gap-1">
         <span className="text-[28px] font-black text-white">{dday}</span>

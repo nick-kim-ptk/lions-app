@@ -2,16 +2,6 @@
  * 가입 완료 카드 — MY 홈(030-SL-MY-01)과 나의 멤버십/시즌권(050-SL-MY-21)이 같은 디자인을 공유합니다.
  * 9:16 세로형. 크기는 부모 너비로 정합니다.
  */
-export type CardState = '멤버십 모집 전' | '멤버십 모집 중' | '가입 완료'
-
-export function StateBadge({ state }: { state: CardState }) {
-  const cls =
-    state === '멤버십 모집 전' ? 'bg-white/20 text-white border-white/30'
-    : state === '멤버십 모집 중' ? 'bg-[#4ADE80] text-[#064E3B] border-[#4ADE80]'
-    : 'bg-white text-[#0E2F80] border-white'
-  return <span className={`shrink-0 text-[10px] font-bold border rounded-full px-2.5 py-0.5 ${cls}`}>{state}</span>
-}
-
 export type MemberCardKind = 'blue' | 'season' | 'kids'
 
 const CARDS: Record<MemberCardKind, { title: string[]; tag: string; tagCls: string; name: string; no: string; label: string }> = {

@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { GameStateNotice } from '@/components/GameCaseBar'
+import { useCaseState } from '@/data/caseStore'
 import { CaseSelect } from '@/components/CaseSelect'
 import { Header } from '@/components/Layout'
 import {
@@ -10,7 +12,10 @@ import {
 export function LineupScreen() {
   const game = TODAY_GAME
   // 케이스 베리에이션용 토글 — 선발 투수는 전날 예고되지만, 타순은 경기 시작 약 1시간 전에 발표됩니다.
-  const [announced, setAnnounced] = useState(true)
+  const { match } = useCaseState()
+  const [announcedLocal, setAnnounced] = useState(true)
+  // 경기 전에는 발표 전/후 토글로 확인하고, 그 외 상태는 전역 케이스를 따른다
+  const announced = match === '경기 전' ? announcedLocal : match !== '우천 취소'
   const [side, setSide] = useState<'us' | 'them'>('us')
 
   if (!game) {
@@ -20,6 +25,19 @@ export function LineupScreen() {
         <div className="px-4 pt-10 text-center">
           <p className="text-[14px] font-semibold text-[#111827]">오늘은 경기가 없습니다</p>
           <p className="mt-1 text-[12px] text-[#9CA3AF]">월요일·휴식일에는 라인업이 제공되지 않아요.</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (match === '우천 취소') {
+    return (
+      <div className="min-h-full bg-[#F5F7FB] pb-4">
+        <Header title="오늘의 라인업" />
+        <GameStateNotice context="lineup" />
+        <div className="px-4 pt-10 text-center">
+          <p className="text-[14px] font-semibold text-[#111827]">오늘 경기가 우천 취소되어 라인업이 없어요</p>
+          <p className="mt-1 text-[12px] text-[#9CA3AF]">순연 경기가 확정되면 라인업이 다시 발표돼요.</p>
         </div>
       </div>
     )
@@ -48,8 +66,10 @@ export function LineupScreen() {
         <span className="text-[13px] font-semibold text-[#111827]">{MOCK_TODAY.slice(0, 4)}년 {fmtMDW(MOCK_TODAY)}</span>
         <span className="text-[12px] text-[#64748B]">{MY_TEAM.short} vs {opp.short} · {game.time}</span>
         {/* 상태 토글 — 케이스 베리에이션용 */}
-        <CaseSelect className="ml-auto" value={announced ? '발표 후' : '발표 전'} options={['발표 후', '발표 전'] as const} onChange={(v) => setAnnounced(v === '발표 후')} />
+        {match === '경기 전' && <CaseSelect className="ml-auto" value={announced ? '발표 후' : '발표 전'} options={['발표 후', '발표 전'] as const} onChange={(v) => setAnnounced(v === '발표 후')} />}
       </div>
+
+      <GameStateNotice context="lineup" />
 
       {/* Match header */}
       <div className="px-4 py-2">

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { GameStateNotice } from '@/components/GameCaseBar'
 import { useNavigate } from 'react-router-dom'
 import { Header } from '@/components/Layout'
 import {
@@ -173,6 +174,8 @@ export function BookingHistoryScreen() {
           </button>
         }
       />
+
+      <GameStateNotice context="bookings" />
 
       {/* 탭 */}
       <div className="flex border-b border-[#DDE1EC]">

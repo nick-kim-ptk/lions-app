@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { GameStateNotice } from '@/components/GameCaseBar'
 import { CaseSelect } from '@/components/CaseSelect'
 import { useState } from 'react'
 import { PH, PHCircle, PHSection } from '@/components/Placeholder'
@@ -30,6 +31,7 @@ export function GameDashboardScreen() {
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-4">
       <Header showBack={false} showNotif showMenu bare />
+      <GameStateNotice context="game" />
 
       {/* Match summary header & Chips */}
       <div className="px-4 pt-3 pb-1">

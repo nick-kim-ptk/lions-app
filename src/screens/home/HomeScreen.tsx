@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom'
-import { CaseSelect } from '@/components/CaseSelect'
 import { useState, useRef, useSyncExternalStore } from 'react'
 import { PH, PHCircle, PHSection } from '@/components/Placeholder'
+import { useCaseState, setMatchState } from '@/data/caseStore'
+import { GameCaseBar, PostseasonFrame } from '@/components/GameCaseBar'
 import { subscribeNotif, getHasUnread } from '@/data/notifStore'
 import { KV_SLIDES, MATCH_STATES, MAGAZINE_ITEMS, LIONS_TV_ITEMS, LIVE_SNAPSHOT, FINAL_SNAPSHOT, MY_SEAT } from '@/data/home'
 import { MY_TEAM, TEAMS, TODAY_GAME, TODAY_LINEUP, fmtKoTime, fmtSlashMDW, nextGame, ticketStateOf } from '@/data/mock'
 
-type MatchState = typeof MATCH_STATES[number]
 
 function TeamBadge({ name, score, highlight, dim }: { name: string; score?: number; highlight?: boolean; dim?: boolean }) {
   return (
@@ -36,7 +36,7 @@ export function HomeScreen() {
   const navigate = useNavigate()
   const [kvIndex, setKvIndex] = useState(0)
   const touchStartX = useRef(0)
-  const [matchState, setMatchState] = useState<MatchState>('경기 전')
+  const { match: matchState } = useCaseState()
   const [selectedLionsVideo, setSelectedLionsVideo] = useState<(typeof LIONS_TV_ITEMS)[number] | null>(null)
   const matchTouchStartX = useRef(0)
   const matchIndex = MATCH_STATES.indexOf(matchState)
@@ -129,11 +129,10 @@ export function HomeScreen() {
       </div>
 
       {/* Today's Match Carousel */}
-      <div className="py-4">
+      <GameCaseBar />
+      <div className="pb-4 pt-2">
         <div className="flex items-center justify-between px-4 mb-3">
           <span className="text-sm font-bold text-[#111827]">오늘의 경기</span>
-          {/* 상태 탭 — 케이스 베리에이션용 토글 */}
-          <CaseSelect value={matchState} options={MATCH_STATES} onChange={setMatchState} />
         </div>
 
         {/* 카드 캐러셀 */}
@@ -156,7 +155,7 @@ export function HomeScreen() {
               )}
             </div>
           ) : (
-            <>
+            <PostseasonFrame>
               {/* 경기 전 */}
               {matchState === '경기 전' && (
                 <div className="bg-white rounded-2xl border border-[#DDE1EC] p-4">
@@ -313,7 +312,7 @@ export function HomeScreen() {
                   </div>
                 </div>
               )}
-            </>
+            </PostseasonFrame>
           )}
         </div>
 

@@ -2,14 +2,17 @@ import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PH, PHCircle } from '@/components/Placeholder'
 import { CaseSelect } from '@/components/CaseSelect'
-import { joinInfo, type JoinKind } from '@/data/mock/membership'
+import { joinInfo, type JoinKind, type JoinState } from '@/data/mock/membership'
 
 const CARD_COUNT = 5
 
 // 모집 기간 외 카드 (가입하기 비활성) — 매년 특정 기간에만 모집
-function JoinClosedCard({ kind, title, tone }: { kind: JoinKind; title: string; tone: 'blue' | 'gold' }) {
-  const { schedule, dday } = joinInfo(kind)
-  const bg = tone === 'blue' ? 'from-[#64748B] to-[#334155]' : 'from-[#B8A27A] to-[#8A7650]'
+function JoinClosedCard({ kind, title, tone, state, onJoin }: { kind: JoinKind; title: string; tone: 'blue' | 'gold'; state: JoinState; onJoin: () => void }) {
+  const { schedule, dday } = joinInfo(kind, state)
+  const open = state === '모집 중'
+  const bg = open
+    ? (tone === 'blue' ? 'from-[#1B5BF0] to-[#0E2F80]' : 'from-[#F0A500] to-[#D48B00]')
+    : (tone === 'blue' ? 'from-[#64748B] to-[#334155]' : 'from-[#B8A27A] to-[#8A7650]')
   return (
     <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${bg} p-5 aspect-[9/16] flex flex-col justify-between`}>
       <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10 pointer-events-none" />
@@ -20,12 +23,18 @@ function JoinClosedCard({ kind, title, tone }: { kind: JoinKind; title: string; 
       </div>
       <div className="relative flex flex-col items-center gap-1">
         <span className="text-[28px] font-black text-white">{dday}</span>
-        <p className="text-white/70 text-[10px]">모집 일정</p>
+        <p className="text-white/70 text-[10px]">{open ? '모집 중 · 일정' : '모집 일정'}</p>
         <p className="text-white text-[12px] font-semibold">{schedule}</p>
       </div>
-      <button disabled className="relative w-full h-9 rounded-xl bg-white/25 text-white/60 text-[13px] font-bold cursor-not-allowed">
-        가입하기
-      </button>
+      {open ? (
+        <button onClick={onJoin} className="relative w-full h-9 rounded-xl bg-white text-[#0E2F80] text-[13px] font-bold active:opacity-90">
+          가입하기
+        </button>
+      ) : (
+        <button disabled className="relative w-full h-9 rounded-xl bg-white/25 text-white/60 text-[13px] font-bold cursor-not-allowed">
+          가입하기
+        </button>
+      )}
     </div>
   )
 }
@@ -33,6 +42,7 @@ function JoinClosedCard({ kind, title, tone }: { kind: JoinKind; title: string; 
 export function MyHomeScreen() {
   const navigate = useNavigate()
   const [cardIndex, setCardIndex] = useState(0)
+  const [joinState, setJoinState] = useState<JoinState>('모집 전')
   const touchStartX = useRef(0)
   const [showDiaryModal, setShowDiaryModal] = useState(false)
   const [diaryPhoto, setDiaryPhoto] = useState(false)
@@ -73,13 +83,14 @@ export function MyHomeScreen() {
       {/* Player theme hero banner — GNB 포함 */}
       <div className="relative w-full h-[270px] bg-gradient-to-br from-[#1B5BF0] to-[#0E2F80] overflow-hidden mb-4">
         {/* 케이스 전환 (와이어프레임 전용) — KV 좌측 상단 */}
-        <div className="absolute top-0 left-4 z-20 h-14 flex items-center">
+        <div className="absolute top-0 left-4 z-20 h-14 flex items-center gap-1.5">
           <CaseSelect
             variant="dark"
             value={'로그인 상태' as '로그인 상태' | '비로그인'}
             options={['로그인 상태', { value: '비로그인', label: '비로그인' }]}
             onChange={(v) => { if (v === '비로그인') navigate('/login') }}
           />
+          <CaseSelect variant="dark" value={joinState} options={['모집 전', '모집 중'] as const} onChange={setJoinState} />
         </div>
         {/* Floating GNB */}
         <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-end px-4 h-14 gap-1">
@@ -222,12 +233,12 @@ export function MyHomeScreen() {
 
           {/* 카드 4 — 블루멤버십 모집 (모집 기간 외) */}
           <div className="shrink-0 pr-3" style={{ width: '60%' }}>
-            <JoinClosedCard kind="member" title="2027 블루멤버십 모집" tone="blue" />
+            <JoinClosedCard kind="member" title="2027 블루멤버십 모집" tone="blue" state={joinState} onJoin={() => navigate('/my/membership-guide')} />
           </div>
 
           {/* 카드 5 — 어린이 회원 모집 (모집 기간 외) */}
           <div className="shrink-0 pr-3" style={{ width: '60%' }}>
-            <JoinClosedCard kind="child" title="2027 어린이 회원 모집" tone="gold" />
+            <JoinClosedCard kind="child" title="2027 어린이 회원 모집" tone="gold" state={joinState} onJoin={() => navigate('/my/child-register')} />
           </div>
         </div>
 

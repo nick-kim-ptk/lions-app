@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { GameStateNotice } from '@/components/GameCaseBar'
-import { useCaseState, seasonLabel } from '@/data/caseStore'
+import { useCaseState, seasonLabel, isSeasonEndPhase } from '@/data/caseStore'
 import { CaseSelect } from '@/components/CaseSelect'
 import mobileTicketQr from '@/assets/images/mobile-ticket-qr-sample.png'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -29,6 +29,24 @@ export function MobileTicketQRScreen() {
 
   // 자동 회수 시각: 기준 시각(mock clock)으로부터 24시간 후
   const expireStr = `${fmtMDW(addDays(MOCK_TODAY, 1))} ${MOCK_TIME}까지`
+
+  // 시즌 종료(탈락·우승·비시즌): 사용할 수 있는 스마트 티켓이 없음
+  if (isSeasonEndPhase(phase)) {
+    return (
+      <div className="fixed inset-0 z-50 bg-[#0E1A40] flex flex-col">
+        <div className="flex items-center justify-between px-5 pt-12 pb-4">
+          <span className="text-white font-bold text-base">스마트 티켓</span>
+          <button onClick={() => navigate(-1)} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="white" strokeWidth="2" strokeLinecap="round"/></svg>
+          </button>
+        </div>
+        <div className="flex-1 flex flex-col items-center justify-center gap-1 px-8 text-center">
+          <p className="text-white text-[15px] font-bold">사용할 수 있는 티켓이 없어요</p>
+          <p className="text-white/60 text-[12px]">다음 시즌 예매가 열리면 스마트 티켓이 여기에 표시돼요.</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="fixed inset-0 z-50 bg-[#0E1A40] flex flex-col overflow-y-auto">

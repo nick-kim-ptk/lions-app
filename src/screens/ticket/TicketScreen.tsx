@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { PH, PHCircle, PHSection } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
 import { GameStateNotice } from '@/components/GameCaseBar'
-import { withCaseGames, useCaseState } from '@/data/caseStore'
+import { withCaseGames, useCaseState, isSeasonEndPhase } from '@/data/caseStore'
 import { CaseSelect } from '@/components/CaseSelect'
 import { AUTHENTIC_SHOP_ITEMS, BEERYS_SHOP_ITEMS, DURATION } from '@/data/ticket'
 import {
@@ -44,9 +44,9 @@ export function TicketScreen() {
   // 예매 가능한 홈 경기 (오늘 이후). 상태(오픈 전/선예매/매진/마감)는 일정 더미에서 계산
   // 매진·예매 마감은 앱이 파악하지 않는다(예매 화면에서 처리). 전역 케이스(취소·연기·더블헤더)만 오늘 경기에 반영
   const { phase } = useCaseState()
-  // 케이스: 시즌 중 / 시즌 종료 — 전역 시즌 단계가 비시즌이면 시즌 종료로 자동 전환
-  const [ticketCase, setTicketCase] = useState<'시즌 중' | '시즌 종료'>(phase === '비시즌' ? '시즌 종료' : '시즌 중')
-  useEffect(() => { setTicketCase(phase === '비시즌' ? '시즌 종료' : '시즌 중') }, [phase])
+  // 케이스: 시즌 중 / 시즌 종료 — 전역 시즌 단계가 시즌 종료(탈락·우승·비시즌)이면 시즌 종료로 자동 전환
+  const [ticketCase, setTicketCase] = useState<'시즌 중' | '시즌 종료'>(isSeasonEndPhase(phase) ? '시즌 종료' : '시즌 중')
+  useEffect(() => { setTicketCase(isSeasonEndPhase(phase) ? '시즌 종료' : '시즌 중') }, [phase])
   const seasonEnd = ticketCase === '시즌 종료'
   const inSeason = !seasonEnd
   const homeGames = inSeason ? bookableHomeGames().flatMap(withCaseGames).filter((g) => g.status !== 'final') : []

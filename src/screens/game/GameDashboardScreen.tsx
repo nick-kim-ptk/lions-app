@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { GameStateNotice } from '@/components/GameCaseBar'
 import { CaseSelect } from '@/components/CaseSelect'
 import { useEffect, useState } from 'react'
-import { useCaseState } from '@/data/caseStore'
+import { isSeasonEndPhase, useCaseState } from '@/data/caseStore'
 import { PH, PHCircle, PHSection } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
 import { AWAY_STADIUMS } from '@/data/game'
@@ -11,10 +11,10 @@ import { AWAY_STADIUMS } from '@/data/game'
 export function GameDashboardScreen() {
   const navigate = useNavigate()
   const { phase } = useCaseState()
-  const [matchType, setMatchType] = useState<'home' | 'away' | 'none' | 'end'>(phase === '비시즌' ? 'end' : 'home')
-  // 전역 시즌 단계가 비시즌이면 시즌 종료 케이스, 아니면 홈 경기로 복귀
+  const [matchType, setMatchType] = useState<'home' | 'away' | 'none' | 'end'>(isSeasonEndPhase(phase) ? 'end' : 'home')
+  // 전역 시즌 단계가 시즌 종료(탈락·우승·비시즌)이면 시즌 종료 케이스, 아니면 홈 경기로 복귀
   useEffect(() => {
-    setMatchType((m) => (phase === '비시즌' ? 'end' : m === 'end' ? 'home' : m))
+    setMatchType((m) => (isSeasonEndPhase(phase) ? 'end' : m === 'end' ? 'home' : m))
   }, [phase])
   const seasonEnd = matchType === 'end'
   const noMatch = matchType === 'none' || seasonEnd
@@ -64,7 +64,9 @@ export function GameDashboardScreen() {
           <div className="rounded-2xl bg-gradient-to-br from-[#0E1A40] to-[#1B3A80] p-5 text-white">
             <span className="rounded-full bg-white/15 px-2.5 py-0.5 text-[10px] font-bold">2026 시즌 종료</span>
             <p className="mt-3 text-[15px] font-black">2026 시즌 최종 결과</p>
-            <p className="mt-0.5 text-[11px] text-white/60">정규시즌 2위 (예시)</p>
+            <p className="mt-0.5 text-[11px] text-white/60">
+              {phase === '우승 확정' ? '정규시즌 2위 · 한국시리즈 우승 🏆 (예시)' : phase === '가을야구 탈락' ? '정규시즌 2위 · 준플레이오프 탈락 (예시)' : '정규시즌 2위 (예시)'}
+            </p>
             <div className="mt-4 grid grid-cols-4 gap-2 text-center">
               {[
                 { label: '승', value: '82' },

@@ -10,10 +10,13 @@ export type JoinKind = keyof typeof JOIN_PERIODS
 
 const fmt = (d: string) => d.slice(2).replace(/-/g, '.')
 
-export function joinInfo(kind: JoinKind) {
+export type JoinState = '모집 전' | '모집 중'
+
+/** 모집 전: 오픈까지 D-n / 모집 중: 마감까지 D-n (모집 오픈일을 오늘로 가정) */
+export function joinInfo(kind: JoinKind, state: JoinState = '모집 전') {
   const p = JOIN_PERIODS[kind]
   return {
     schedule: `${fmt(p.open)} ~ ${fmt(p.close)}`,
-    dday: `D-${diffDays(MOCK_TODAY, p.open)}`,
+    dday: state === '모집 전' ? `D-${diffDays(MOCK_TODAY, p.open)}` : `마감 D-${diffDays(p.open, p.close)}`,
   }
 }

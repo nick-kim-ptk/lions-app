@@ -6,7 +6,7 @@ import { MOCK_TODAY, TODAY_GAME, type Game, type GameStatus } from '@/data/mock'
  * 와이어프레임용 전역 케이스 상태.
  * 홈 '오늘의 경기' 위 케이스 바에서 바꾸면 홈·경기·일정·라인업·예매내역·스마트 티켓이 같이 바뀐다.
  */
-export const SEASON_PHASES = ['시범경기', '정규시즌', '올스타 브레이크', '와일드카드', '준플레이오프', '플레이오프', '한국시리즈', '비시즌'] as const
+export const SEASON_PHASES = ['시범경기', '정규시즌', '올스타 브레이크', '와일드카드', '준플레이오프', '플레이오프', '한국시리즈', '가을야구 탈락', '우승 확정', '비시즌'] as const
 export type SeasonPhase = (typeof SEASON_PHASES)[number]
 export type MatchState = (typeof MATCH_STATES)[number]
 
@@ -14,10 +14,13 @@ export type MatchState = (typeof MATCH_STATES)[number]
 export const POSTSEASON_PHASES = ['와일드카드', '준플레이오프', '플레이오프', '한국시리즈'] as const
 export type PostseasonPhase = (typeof POSTSEASON_PHASES)[number]
 export const isPostseason = (p: SeasonPhase): p is PostseasonPhase => (POSTSEASON_PHASES as readonly string[]).includes(p)
-/** 오늘 경기가 없는 구간 (올스타 브레이크·비시즌) */
-export const isNoGamePhase = (p: SeasonPhase) => p === '올스타 브레이크' || p === '비시즌'
+/** 삼성의 시즌이 끝난 구간 (가을야구 탈락·우승 확정·비시즌) — 앱에서는 모두 "시즌 종료"로 취급 */
+export const isSeasonEndPhase = (p: SeasonPhase) => p === '가을야구 탈락' || p === '우승 확정' || p === '비시즌'
+/** 오늘 경기가 없는 구간 (올스타 브레이크·시즌 종료) */
+export const isNoGamePhase = (p: SeasonPhase) => p === '올스타 브레이크' || isSeasonEndPhase(p)
 /** 헤더 등에 쓰는 시즌명 */
-export const seasonLabel = (p: SeasonPhase) => (p === '시범경기' || isPostseason(p) ? p : '정규시즌')
+export const seasonLabel = (p: SeasonPhase) =>
+  p === '시범경기' || isPostseason(p) ? p : p === '우승 확정' ? '한국시리즈' : p === '가을야구 탈락' ? '포스트시즌' : '정규시즌'
 
 export const POSTSEASON_INFO: Record<PostseasonPhase, { title: string; game: string; format: string; record: string }> = {
   와일드카드: { title: '와일드카드 결정전', game: '1차전', format: '최대 2경기', record: '삼성 0승 0패' },
@@ -74,5 +77,5 @@ export function useTodayGame(): Game | undefined {
   return isNoGamePhase(phase) ? undefined : TODAY_GAME
 }
 
-/** 일정·예매처럼 경기 목록이 있는 화면에서 비시즌이면 빈 목록 */
-export const hasGamesInPhase = (p: SeasonPhase) => p !== '비시즌'
+/** 일정·예매처럼 경기 목록이 있는 화면에서 시즌 종료 구간이면 빈 목록 */
+export const hasGamesInPhase = (p: SeasonPhase) => !isSeasonEndPhase(p)

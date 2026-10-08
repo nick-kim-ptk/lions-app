@@ -1,3 +1,4 @@
+import { useCaseState, isSeasonEndPhase } from '@/data/caseStore'
 import { useState } from 'react'
 import { GameStateNotice } from '@/components/GameCaseBar'
 import { useNavigate } from 'react-router-dom'
@@ -31,7 +32,9 @@ export function BookingHistoryScreen() {
       memo: b.memo,
     }
   }
-  const UPCOMING = UPCOMING_BOOKINGS.map(toCard)
+  // 시즌 종료(탈락·우승·비시즌)에는 앞으로 볼 경기가 없으므로 관람 완료 내역만 남김
+  const { phase } = useCaseState()
+  const UPCOMING = UPCOMING_BOOKINGS.filter((b) => !isSeasonEndPhase(phase) || b.status === '관람 완료').map(toCard)
   const CANCELLED = CANCELLED_BOOKINGS.map(toCard)
 
   const UpcomingBookingCard = ({ no, league, match, viewingAt, cancelUntil, status, issued, memo }: typeof UPCOMING[0]) => {

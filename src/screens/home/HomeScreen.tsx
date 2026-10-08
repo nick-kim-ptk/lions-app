@@ -149,12 +149,29 @@ export function HomeScreen() {
           }}>
 
           {!game || !opp ? (
-            phase === '비시즌' ? (
-              /* 비시즌: 시즌 정리 + 다음 시즌 개막 D-day (수치는 예시) */
+            phase === '우승 확정' ? (
+              /* 우승 확정: 우승 축하 카드 (수치는 예시) */
+              <div className="rounded-2xl bg-gradient-to-br from-[#7C5C00] via-[#F0A500] to-[#FFD966] p-5 text-[#0E1A40]">
+                <span className="rounded-full bg-[#0E1A40] px-2.5 py-0.5 text-[10px] font-bold text-[#F0A500]">2026 한국시리즈 우승</span>
+                <p className="mt-3 text-[18px] font-black">🏆 우승을 축하합니다!</p>
+                <p className="mt-0.5 text-[11px] font-semibold text-[#0E1A40]/70">한국시리즈 4승 2패 (예시) · 함께해 주셔서 감사합니다</p>
+                <div className="mt-4 flex items-center justify-between rounded-xl bg-[#0E1A40]/15 px-3 py-2.5">
+                  <span className="text-[11px] font-semibold">2027 시즌 개막까지</span>
+                  <span className="text-[16px] font-black">D-146</span>
+                </div>
+                <div className="mt-3 flex gap-2">
+                  <button onClick={() => window.open('https://www.youtube.com/@lionstv1982', '_blank', 'noopener,noreferrer')} className="h-10 flex-1 rounded-xl bg-[#0E1A40] text-[12px] font-bold text-white">공식 유튜브</button>
+                  <button onClick={() => window.open('https://www.instagram.com/samsunglions_baseballclub/', '_blank', 'noopener,noreferrer')} className="h-10 flex-1 rounded-xl border border-[#0E1A40]/40 text-[12px] font-bold">공식 인스타그램</button>
+                </div>
+              </div>
+            ) : phase === '비시즌' || phase === '가을야구 탈락' ? (
+              /* 비시즌·가을야구 탈락: 시즌 종료 카드 — 시즌 정리 + 다음 시즌 개막 D-day (수치는 예시) */
               <div className="rounded-2xl bg-gradient-to-br from-[#0E1A40] to-[#1B3A80] p-5 text-white">
                 <span className="rounded-full bg-white/15 px-2.5 py-0.5 text-[10px] font-bold">2026 시즌 종료</span>
                 <p className="mt-3 text-[15px] font-black">올 시즌도 함께해 주셔서 감사합니다</p>
-                <p className="mt-0.5 text-[11px] text-white/60">정규시즌 2위 · 82승 3무 59패 (예시)</p>
+                <p className="mt-0.5 text-[11px] text-white/60">
+                  {phase === '가을야구 탈락' ? '정규시즌 2위 · 82승 3무 59패 · 준플레이오프 탈락 (예시)' : '정규시즌 2위 · 82승 3무 59패 (예시)'}
+                </p>
                 <div className="mt-4 flex items-center justify-between rounded-xl bg-white/10 px-3 py-2.5">
                   <span className="text-[11px] text-white/70">2027 시즌 개막까지</span>
                   <span className="text-[16px] font-black text-[#F0A500]">D-146</span>

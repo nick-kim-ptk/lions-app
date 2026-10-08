@@ -3,6 +3,77 @@ import { CaseSelect } from '@/components/CaseSelect'
 import { useState, useEffect, useRef } from 'react'
 import { Header } from '@/components/Layout'
 
+type MissionType = '사지선다' | 'OX퀴즈' | 'VS선택' | '예측형'
+const MISSION_PHASES = ['참여 중', '정답 발표 · 정답', '정답 발표 · 오답', '정답 발표 · 미참여'] as const
+type MissionPhase = (typeof MISSION_PHASES)[number]
+
+// 정답 발표 더미 (경기 종료 후)
+const REVEAL: Record<MissionType, { q: string; options: string[]; answer: string; wrong: string; note: string }> = {
+  사지선다: { q: '오늘 경기에서 홈런을 칠 선수는 누구일까요?', options: ['구자욱', '이재현', '디아즈', '강민호'], answer: '디아즈', wrong: '구자욱', note: '디아즈 선수가 3회 투런 홈런을 기록했어요 (예시)' },
+  OX퀴즈: { q: '오늘 삼성 라이온즈가 7점 이상 득점할까요?', options: ['O', 'X'], answer: 'O', wrong: 'X', note: '삼성은 오늘 8득점을 기록했어요 (예시)' },
+  VS선택: { q: '원태인 선수는 오늘 경기 끝나고 ____ 을 먹을 것이다.', options: ['막창', '삼겹살'], answer: '삼겹살', wrong: '막창', note: '원태인 선수의 선택! 라이온즈 인스타 스토리에서도 확인할 수 있어요 (예시)' },
+  예측형: { q: '오늘 경기 최종 점수를 예측해보세요!', options: [], answer: '5 : 3', wrong: '3 : 1', note: '최종 스코어 삼성 5 : 3 상대팀 (예시)' },
+}
+
+function MissionReveal({ type, outcome }: { type: MissionType; outcome: 'correct' | 'wrong' | 'none' }) {
+  const r = REVEAL[type]
+  const mine = outcome === 'correct' ? r.answer : outcome === 'wrong' ? r.wrong : null
+  const banner =
+    outcome === 'correct'
+      ? { cls: 'bg-[#ECFDF3] text-[#16A34A]', t: '🎉 정답이에요!', d: '앰블럼은 오늘 자정에 일괄 지급돼요.' }
+      : outcome === 'wrong'
+        ? { cls: 'bg-[#FEF2F2] text-[#DC2626]', t: '아쉽게도 오답이에요', d: '내일 미션에 다시 도전해 보세요.' }
+        : { cls: 'bg-[#F3F4F6] text-[#6B7280]', t: '참여하지 않은 미션이에요', d: '다음 미션에는 꼭 참여해 보세요.' }
+  return (
+    <>
+      <div className="bg-gradient-to-r from-[#0D1117] to-[#1A2035] px-4 py-3 flex items-center justify-between">
+        <span className="text-white text-[11px] font-bold tracking-widest">정답 발표</span>
+        <span className="rounded-full bg-white/10 px-2.5 py-0.5 text-[11px] font-bold text-[#9CA3AF]">경기 종료</span>
+      </div>
+      <div className="p-4">
+        <p className="text-[13px] font-bold text-[#111827] mb-3">{r.q}</p>
+        {type === '예측형' ? (
+          <div className="grid grid-cols-2 gap-2 mb-3">
+            <div className="rounded-xl border border-[#16A34A] bg-[#ECFDF3] py-2.5 text-center">
+              <p className="text-[10px] font-bold text-[#16A34A]">정답</p>
+              <p className="text-[20px] font-black text-[#111827]">{r.answer}</p>
+            </div>
+            <div className="rounded-xl border border-[#DDE1EC] bg-[#F5F7FB] py-2.5 text-center">
+              <p className="text-[10px] font-bold text-[#64748B]">내 예측</p>
+              <p className="text-[20px] font-black text-[#111827]">{mine ?? '-'}</p>
+            </div>
+          </div>
+        ) : (
+          <div className={`grid ${r.options.length === 4 ? 'grid-cols-2' : 'grid-cols-2'} gap-2 mb-3`}>
+            {r.options.map((o) => {
+              const isAns = o === r.answer
+              const isMine = o === mine
+              return (
+                <div
+                  key={o}
+                  className={`relative flex ${type === '사지선다' ? 'h-10' : 'h-16'} items-center justify-center rounded-xl border-2 font-bold ${
+                    type === 'OX퀴즈' ? 'text-[26px] font-black' : 'text-[13px]'
+                  } ${isAns ? 'border-[#16A34A] bg-[#ECFDF3] text-[#16A34A]' : isMine ? 'border-[#DC2626] bg-[#FEF2F2] text-[#DC2626]' : 'border-[#DDE1EC] bg-[#F5F7FB] text-[#9CA3AF]'}`}
+                >
+                  {o}
+                  {isAns && <span className="absolute -top-2 left-2 rounded-full bg-[#16A34A] px-1.5 text-[9px] font-bold text-white">정답</span>}
+                  {isMine && <span className={`absolute -top-2 right-2 rounded-full px-1.5 text-[9px] font-bold text-white ${isAns ? 'bg-[#1B5BF0]' : 'bg-[#DC2626]'}`}>내 선택</span>}
+                </div>
+              )
+            })}
+          </div>
+        )}
+        <p className="mb-3 text-center text-[11px] text-[#64748B]">{r.note}</p>
+        <div className={`rounded-xl px-4 py-3 text-center ${banner.cls}`}>
+          <p className="text-[13px] font-bold">{banner.t}</p>
+          <p className="mt-0.5 text-[11px] opacity-80">{banner.d}</p>
+        </div>
+        <p className="mt-3 text-center text-[10px] text-[#9CA3AF]">1,284명 참여 · 정답자 312명 (24%)</p>
+      </div>
+    </>
+  )
+}
+
 // 018(020)-SL-LG-01 라운지 대시보드
 export function LoungeDashboardScreen() {
   const navigate = useNavigate()
@@ -10,7 +81,9 @@ export function LoungeDashboardScreen() {
   const missionRef = useRef<HTMLDivElement>(null)
   const [selectedPlayer, setSelectedPlayer] = useState<string>('구자욱')
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
-  const [missionType, setMissionType] = useState<'사지선다' | 'OX퀴즈' | 'VS선택' | '예측형'>('사지선다')
+  const [missionType, setMissionType] = useState<MissionType>('사지선다')
+  const [missionPhase, setMissionPhase] = useState<MissionPhase>('참여 중')
+  const revealed = missionPhase !== '참여 중'
   const [predScore, setPredScore] = useState<[number, number]>([3, 1])
   const [menuExpanded, setMenuExpanded] = useState(false)
   const [eldoradoMatch, setEldoradoMatch] = useState<'경기 전' | '경기 중' | '미 운영'>('경기 중')
@@ -285,9 +358,15 @@ export function LoungeDashboardScreen() {
       <div ref={missionRef} id="mission" className="px-4 mb-5">
         <div className="flex items-center justify-between mb-3">
           <span className="text-[14px] font-bold text-[#111827]">오늘의 미션</span>
-          <CaseSelect value={missionType} options={['사지선다', 'OX퀴즈', 'VS선택', '예측형'] as const} onChange={(t) => { setMissionType(t); setIsSubmitted(false); setSelectedPlayer('') }} />
+          <div className="flex items-center gap-1.5">
+            <CaseSelect value={missionPhase} options={MISSION_PHASES} onChange={setMissionPhase} />
+            <CaseSelect value={missionType} options={['사지선다', 'OX퀴즈', 'VS선택', '예측형'] as const} onChange={(t) => { setMissionType(t); setIsSubmitted(false); setSelectedPlayer('') }} />
+          </div>
         </div>
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden">
+          {revealed ? (
+            <MissionReveal type={missionType} outcome={missionPhase === '정답 발표 · 정답' ? 'correct' : missionPhase === '정답 발표 · 오답' ? 'wrong' : 'none'} />
+          ) : (<>
           <div className="bg-gradient-to-r from-[#0D1117] to-[#1A2035] px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-[#E53935] animate-pulse" />
@@ -383,6 +462,7 @@ export function LoungeDashboardScreen() {
               <p className="text-[11px] text-[#9CA3AF] text-center">정답을 맞힌 회원에게는 앰블럼이 제공되며, 매일 자정에 일괄 지급됩니다.</p>
             </div>
           </div>
+          </>)}
         </div>
       </div>
 

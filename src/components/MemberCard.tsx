@@ -55,7 +55,6 @@ export function MemberCard({ kind, onClick }: { kind: MemberCardKind; onClick?: 
           </p>
           <span className={`mt-1.5 inline-block text-[10px] font-bold border rounded-full px-2 py-0.5 ${c.tagCls}`}>{c.tag}</span>
         </div>
-        <StateBadge state="가입 완료" />
       </div>
 
       <div className="relative">

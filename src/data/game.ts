@@ -45,3 +45,30 @@ export const TEAM_RECORDS = [
     badge: '최다 기록',
   },
 ]
+
+// 012-SL-GM-07 유튜브 콘텐츠 (공식 채널 최근 영상 더미)
+export const YOUTUBE_FEATURED = { title: '[하이라이트] 9월 14일 vs 두산 — 짜릿한 역전승 풀 하이라이트', duration: '07:42', channel: '삼성라이온즈 공식', views: '12만회', date: '5일 전' }
+export const YOUTUBE_VIDEOS = [
+  { title: '[비하인드] 경기 전 불펜 훈련 현장 — 선발 투수의 하루', duration: '05:18', views: '4.1만회', date: '6일 전' },
+  { title: '[LIVE 다시보기] 9월 13일 응원 영상 모음', duration: '12:30', views: '2.8만회', date: '6일 전' },
+  { title: '[인터뷰] 승리 투수 인터뷰 "팬들의 함성이 힘이 됐다"', duration: '03:46', views: '3.5만회', date: '1주 전' },
+  { title: '[라팍 24시] 홈경기 날, 구장은 어떻게 준비될까', duration: '08:05', views: '5.9만회', date: '1주 전' },
+  { title: '[하이라이트] 9월 9일 vs 한화 — 홈런 3방 폭발', duration: '06:12', views: '9.7만회', date: '10일 전' },
+  { title: '[챌린지] 삼성 선수들의 응원가 따라 부르기', duration: '04:27', views: '6.3만회', date: '2주 전' },
+  { title: '[Q&A] 신인 선수에게 물었다! 야구장 맛집 TOP 3', duration: '09:51', views: '2.2만회', date: '2주 전' },
+  { title: '[V-log] 원정 버스에서 만난 선수단', duration: '10:14', views: '3.1만회', date: '3주 전' },
+  { title: '[치어리더] 시즌 하이라이트 응원 퍼포먼스', duration: '03:20', views: '8.4만회', date: '3주 전' },
+  { title: '[마스코트] 블레오와 함께하는 어린이날 특집', duration: '06:40', views: '1.9만회', date: '1개월 전' },
+]
+
+// 016-SL-GM-11 라이온즈 VR
+export const VR_INTRO = {
+  title: '경기장을 360°로 만나보세요',
+  desc: '스마트폰을 움직여 라팍 곳곳을 둘러볼 수 있는 몰입형 VR 콘텐츠입니다.',
+  note: 'Wi-Fi 환경에서 이용을 권장하며, 콘텐츠당 약 3~5분 소요됩니다.',
+}
+export const VR_EXPERIENCES = [
+  { title: '좌석 체험', desc: '내야석·외야석·프리미엄석에서 바라본 경기장 전경', duration: '약 4분', imageLabel: '좌석 시야 360° 이미지' },
+  { title: '선수 라커룸 체험', desc: '평소 볼 수 없는 선수단 라커룸 내부 둘러보기', duration: '약 3분', imageLabel: '라커룸 360° 이미지' },
+  { title: '덕아웃 체험', desc: '그라운드와 가장 가까운 덕아웃에서 느끼는 현장감', duration: '약 5분', imageLabel: '덕아웃 360° 이미지' },
+]

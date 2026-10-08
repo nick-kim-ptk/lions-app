@@ -95,3 +95,13 @@ export const MOOD_OPTIONS = [
   { label: '최고예요', emoji: '🔥' },
   { label: '전설이에요', emoji: '👑' },
 ]
+
+// 029-SL-LG-12 삼팬 SNS (해시태그 취합 더미)
+export const SNS_POSTS = [
+  { user: 'lions_forever_', time: '2시간 전', likes: 128, caption: '오늘도 라팍은 푸르다 💙 승리 기원!', tags: ['#삼성라이온즈', '#직관'], imageLabel: '경기장 응원석 인증샷' },
+  { user: 'daegu_blue_92', time: '3시간 전', likes: 94, caption: '치맥 세팅 완료. 오늘 경기 이겨라!', tags: ['#삼팬', '#라이온즈파크'], imageLabel: '먹거리 인증샷' },
+  { user: 'samfan_mina', time: '5시간 전', likes: 213, caption: '아이랑 첫 직관! 블레오 만났어요', tags: ['#삼성라이온즈', '#SamsungLions'], imageLabel: '가족 직관 인증샷' },
+  { user: 'blue_roar_kim', time: '어제', likes: 76, caption: '응원 피켓 들고 입장 🔥', tags: ['#삼팬', '#직관'], imageLabel: '응원 피켓 인증샷' },
+  { user: 'lionsmania_', time: '어제', likes: 305, caption: '9회말 역전승… 소름 돋았다', tags: ['#삼성라이온즈', '#라이온즈파크'], imageLabel: '전광판 사진' },
+  { user: 'v9_dreamer', time: '2일 전', likes: 57, caption: '유니폼 새로 장만! 올 시즌도 같이 달려요', tags: ['#SamsungLions', '#삼팬'], imageLabel: '유니폼 착용 사진' },
+]

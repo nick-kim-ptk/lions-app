@@ -1,32 +1,29 @@
-import { PH, PHText } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
+import { CATCHPHRASE, CATCHPHRASE_HISTORY } from '@/data/club'
 
-// 060(062)-SL-AL-06 캐치프레이즈
+// 062-SL-AL-06 캐치프레이즈
 export function CatchphraseScreen() {
   return (
-    <div className="min-h-full bg-[#F5F7FB] pb-4">
+    <div className="min-h-full bg-[#F5F7FB] pb-6">
       <Header title="캐치프레이즈" />
       <div className="px-4 pt-6 flex flex-col items-center gap-6 text-center">
-        <div className="w-full h-64 bg-gradient-to-b from-[#EBF0FF] to-[#F5F7FB] rounded-3xl border border-[#1B5BF0]/30 flex flex-col items-center justify-center gap-4 p-6">
-          <span className="text-xs text-[#1B5BF0] tracking-widest uppercase">2026 Season</span>
-          <PH className="w-48 h-8 rounded-xl bg-[#1B5BF0]/20" />
-          <PHText className="w-40" />
+        <div className="w-full h-64 bg-gradient-to-b from-[#EBF0FF] to-[#F5F7FB] rounded-3xl border border-[#1B5BF0]/30 flex flex-col items-center justify-center gap-3 p-6">
+          <span className="text-xs text-[#1B5BF0] tracking-widest uppercase">{CATCHPHRASE.season}</span>
+          <p className="text-[30px] font-black text-[#0E1A40] leading-tight">{CATCHPHRASE.phrase}</p>
+          <p className="text-[12px] tracking-[0.3em] text-[#64748B]">{CATCHPHRASE.sub}</p>
         </div>
-        <div className="flex flex-col gap-3 text-left w-full">
-          <PH className="w-32 h-4 rounded-full bg-[#D8DCE9]" />
-          <div className="flex flex-col gap-2">
-            {Array.from({length: 4}).map((_, i) => (
-              <PHText key={i} className={i % 2 === 0 ? 'w-full' : 'w-4/5'} />
-            ))}
-          </div>
+        <div className="flex flex-col gap-2 text-left w-full">
+          <p className="text-[14px] font-bold text-[#111827]">슬로건에 담은 뜻</p>
+          {CATCHPHRASE.desc.map((t, i) => (
+            <p key={i} className="text-[13px] text-[#374151] leading-relaxed">{t}</p>
+          ))}
         </div>
-        {/* History */}
         <div className="w-full flex flex-col gap-3">
           <p className="text-xs text-[#9CA3AF] font-medium text-left">역대 캐치프레이즈</p>
-          {Array.from({length: 4}).map((_, i) => (
-            <div key={i} className="flex justify-between bg-[#FFFFFF] rounded-xl border border-[#DDE1EC] p-3">
-              <PHText className="w-16" />
-              <PHText className="w-36" />
+          {CATCHPHRASE_HISTORY.map((h) => (
+            <div key={h.year} className="flex justify-between items-center bg-[#FFFFFF] rounded-xl border border-[#DDE1EC] px-4 py-3">
+              <span className="text-[12px] font-bold text-[#1B5BF0]">{h.year}</span>
+              <span className="text-[13px] font-semibold text-[#111827]">{h.phrase}</span>
             </div>
           ))}
         </div>

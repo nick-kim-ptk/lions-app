@@ -1,10 +1,11 @@
-import { PH, PHText } from '@/components/Placeholder'
+import { PH } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
+import { YOUTUBE_FEATURED, YOUTUBE_VIDEOS } from '@/data/game'
 
 // 012-SL-GM-07 유튜브 콘텐츠 — 카테고리 없이 연속 리스트
 export function YoutubeScreen() {
   return (
-    <div className="min-h-full bg-[#F5F7FB] pb-4">
+    <div className="min-h-full bg-[#F5F7FB] pb-6">
       <Header title="유튜브 콘텐츠" />
 
       {/* Featured (top) */}
@@ -17,11 +18,11 @@ export function YoutubeScreen() {
             </div>
           </div>
           <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/90">
-            <PHText className="w-3/4 mb-1" />
+            <p className="text-white text-[13px] font-bold leading-snug mb-1">{YOUTUBE_FEATURED.title}</p>
             <div className="flex items-center gap-2">
-              <PHText className="w-20" />
-              <div className="bg-black/50 rounded px-1.5">
-                <span className="text-[9px] text-white">07:42</span>
+              <span className="text-[10px] text-white/70">{YOUTUBE_FEATURED.channel} · 조회수 {YOUTUBE_FEATURED.views} · {YOUTUBE_FEATURED.date}</span>
+              <div className="bg-black/50 rounded px-1.5 ml-auto">
+                <span className="text-[9px] text-white">{YOUTUBE_FEATURED.duration}</span>
               </div>
             </div>
           </div>
@@ -30,8 +31,8 @@ export function YoutubeScreen() {
 
       {/* Continuous list — no category tabs */}
       <div className="px-4 flex flex-col gap-4">
-        {Array.from({length: 10}).map((_, i) => (
-          <div key={i} className="flex gap-3">
+        {YOUTUBE_VIDEOS.map((v) => (
+          <div key={v.title} className="flex gap-3">
             <div className="relative shrink-0 w-36 h-24 rounded-xl overflow-hidden">
               <PH className="w-full h-full rounded-none" />
               <div className="absolute inset-0 flex items-center justify-center">
@@ -40,16 +41,12 @@ export function YoutubeScreen() {
                 </div>
               </div>
               <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1">
-                <span className="text-[8px] text-white">{`0${(i % 9) + 1}:${(i * 13 + 24) % 60}`.padStart(5,'0')}</span>
+                <span className="text-[8px] text-white">{v.duration}</span>
               </div>
             </div>
-            <div className="flex-1 flex flex-col gap-1.5 justify-center">
-              <PHText className="w-full" />
-              <PHText className="w-4/5" />
-              <div className="flex gap-2 mt-0.5">
-                <PHText className="w-16" />
-                <PHText className="w-12" />
-              </div>
+            <div className="flex-1 flex flex-col gap-1 justify-center min-w-0">
+              <p className="text-[13px] font-semibold text-[#111827] leading-snug line-clamp-2">{v.title}</p>
+              <p className="text-[11px] text-[#9CA3AF]">조회수 {v.views} · {v.date}</p>
             </div>
           </div>
         ))}

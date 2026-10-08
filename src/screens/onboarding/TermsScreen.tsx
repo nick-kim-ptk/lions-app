@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
-import { PHText } from '@/components/Placeholder'
 import { Page } from '@/components/Layout'
+import { TERMS_ARTICLES, TERMS_UPDATED } from '@/data/onboarding'
+import { LEGAL_DUMMY_NOTE } from '@/data/my'
 
 // 091-SL-CM-06 블루멤버십 회원 약관 — 내용만 보기, 동의 체크 없음
 export function TermsScreen() {
@@ -17,27 +18,19 @@ export function TermsScreen() {
       </div>
       {/* 약관 내용만 표시 — 동의 체크 없음 */}
       <div className="flex-1 px-5 pb-8 overflow-y-auto">
-        <p className="text-xs text-[#9CA3AF] mb-4">최종 수정일: 2025년 01월 01일</p>
+        <p className="text-xs text-[#9CA3AF] mb-4">최종 수정일: {TERMS_UPDATED}</p>
         <div className="flex flex-col gap-5">
-          {[
-            { article: '제1조 (목적)', lines: 3 },
-            { article: '제2조 (정의)', lines: 4 },
-            { article: '제3조 (회원가입 및 이용계약)', lines: 3 },
-            { article: '제4조 (서비스의 제공 및 변경)', lines: 5 },
-            { article: '제5조 (서비스 이용 제한)', lines: 3 },
-            { article: '제6조 (개인정보 보호)', lines: 2 },
-            { article: '제7조 (면책조항)', lines: 4 },
-            { article: '제8조 (분쟁해결)', lines: 2 },
-          ].map(({ article, lines }, i) => (
-            <div key={i} className="flex flex-col gap-2">
+          {TERMS_ARTICLES.map(({ article, lines }) => (
+            <div key={article} className="flex flex-col gap-2">
               <p className="text-sm text-[#111827] font-semibold">{article}</p>
               <div className="flex flex-col gap-1.5 pl-2">
-                {Array.from({length: lines}).map((_, j) => (
-                  <PHText key={j} className={j % 2 === 0 ? 'w-full' : 'w-4/5'} />
+                {lines.map((l) => (
+                  <p key={l} className="text-[12px] text-[#64748B] leading-relaxed">{l}</p>
                 ))}
               </div>
             </div>
           ))}
+          <p className="mt-4 text-[11px] text-[#9CA3AF] leading-relaxed">{LEGAL_DUMMY_NOTE}</p>
         </div>
       </div>
       {/* 닫기 버튼 — 하단 플로팅 */}

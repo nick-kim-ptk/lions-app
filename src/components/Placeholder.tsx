@@ -5,6 +5,20 @@ export function PH({ className = '' }: { className?: string }) {
   return <div className={`bg-[#E8EBF4] rounded-xl ${className}`} />
 }
 
+// 이미지 자리 — 어떤 이미지가 들어가는지 설명 캡션을 함께 표시 (화면설계서/디자인 인계용)
+export function PHImage({ label, className = 'h-44', rounded = 'rounded-none' }: { label?: string; className?: string; rounded?: string }) {
+  return (
+    <div className={`relative w-full bg-[#E4E8F5] overflow-hidden flex items-center justify-center ${rounded} ${className}`}>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="opacity-40">
+        <rect x="3" y="4" width="18" height="16" rx="2" stroke="#8595AB" strokeWidth="1.6" />
+        <circle cx="9" cy="10" r="1.8" stroke="#8595AB" strokeWidth="1.6" />
+        <path d="M21 16l-5-5-8 8" stroke="#8595AB" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      {label && <span className="absolute bottom-2 left-3 right-3 text-center text-[10px] text-[#8595AB] leading-snug">{label}</span>}
+    </div>
+  )
+}
+
 // Circle placeholder (avatars, icons)
 export function PHCircle({ className = 'w-10 h-10' }: { className?: string }) {
   return <div className={`${className} bg-[#E8EBF4] rounded-full shrink-0`} />

@@ -1,5 +1,6 @@
-import { PH, PHCircle, PHText } from '@/components/Placeholder'
+import { PHCircle, PHImage } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
+import { SNS_POSTS } from '@/data/lounge'
 
 // 027(029)-SL-LG-12 삼팬 SNS
 export function SNSScreen() {
@@ -25,19 +26,19 @@ export function SNSScreen() {
 
       {/* Single column Instagram-style scroll */}
       <div className="flex flex-col gap-4 pb-4">
-        {Array.from({length: 6}).map((_, i) => (
-          <div key={i} className="bg-[#FFFFFF] border-y border-[#DDE1EC]">
+        {SNS_POSTS.map((post) => (
+          <div key={post.user + post.time} className="bg-[#FFFFFF] border-y border-[#DDE1EC]">
             {/* Post header */}
             <div className="flex items-center gap-3 px-4 py-3">
               <PHCircle className="w-9 h-9" />
               <div className="flex flex-col gap-0.5 flex-1">
-                <PHText className="w-24" />
-                <PHText className="w-16" />
+                <span className="text-[13px] font-semibold text-[#111827]">{post.user}</span>
+                <span className="text-[11px] text-[#9CA3AF]">{post.time} · Instagram</span>
               </div>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="5" r="1" fill="#9CA3AF"/><circle cx="12" cy="12" r="1" fill="#9CA3AF"/><circle cx="12" cy="19" r="1" fill="#9CA3AF"/></svg>
             </div>
             {/* Image */}
-            <PH className="w-full aspect-square rounded-none" />
+            <PHImage className="aspect-square" label={post.imageLabel} />
             {/* Actions */}
             <div className="px-4 py-3 flex items-center gap-4">
               <button>
@@ -52,12 +53,9 @@ export function SNSScreen() {
             </div>
             {/* Likes & caption */}
             <div className="px-4 pb-4 flex flex-col gap-1.5">
-              <PHText className="w-16" />
-              <div className="flex gap-2">
-                <PHText className="w-20" />
-                <PHText className="w-32" />
-              </div>
-              <PHText className="w-24" />
+              <span className="text-[12px] font-semibold text-[#111827]">좋아요 {post.likes}개</span>
+              <p className="text-[13px] text-[#111827] leading-snug"><span className="font-semibold">{post.user}</span> {post.caption}</p>
+              <p className="text-[12px] text-[#1B5BF0]">{post.tags.join(' ')}</p>
             </div>
           </div>
         ))}

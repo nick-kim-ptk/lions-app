@@ -1,5 +1,5 @@
-import { PHText } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
+import { EMAIL_REFUSE, LEGAL_DUMMY_NOTE } from '@/data/my'
 
 // 032(034)-SL-MY-05 이메일 무단수집거부
 export function EmailRefuseScreen() {
@@ -14,12 +14,11 @@ export function EmailRefuseScreen() {
           </svg>
         </div>
         <div className="flex flex-col gap-3 text-left w-full">
-          {Array.from({length: 5}).map((_, i) => (
-            <div key={i} className="flex flex-col gap-1.5">
-              <PHText className={i === 0 ? 'w-40' : 'w-full'} />
-              {i === 0 && <PHText className="w-full" />}
-            </div>
+          {EMAIL_REFUSE.paragraphs.map((t, i) => (
+            <p key={i} className="text-[13px] text-[#374151] leading-relaxed">{t}</p>
           ))}
+          <p className="text-[11px] text-[#9CA3AF]">{EMAIL_REFUSE.date}</p>
+          <p className="mt-6 text-[11px] text-[#9CA3AF] leading-relaxed">{LEGAL_DUMMY_NOTE}</p>
         </div>
       </div>
     </div>

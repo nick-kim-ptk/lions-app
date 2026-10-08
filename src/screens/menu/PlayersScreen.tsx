@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { PH, PHText } from '@/components/Placeholder'
+import { PH } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
 import { PLAYERS, type PlayerGroup } from '@/data/mock'
+import { COACHING_STAFF } from '@/data/club'
 
 const TABS = ['감독/코치', '투수', '포수', '내야수', '외야수'] as const
 type Tab = (typeof TABS)[number]
@@ -31,12 +32,12 @@ export function PlayersScreen() {
         <p className="text-xs text-[#9CA3AF] mb-3">{tab === '감독/코치' ? '코칭스태프' : `${tab}진`}</p>
         {tab === '감독/코치' ? (
           <div className="grid grid-cols-3 gap-3">
-            {Array.from({ length: 6 }).map((_, i) => (
+            {COACHING_STAFF.map((c, i) => (
               <div key={i} className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden">
                 <PH className="w-full h-28 rounded-none" />
-                <div className="p-2 flex flex-col gap-1">
-                  <PHText className="w-full" />
-                  <PHText className="w-10" />
+                <div className="p-2 flex flex-col gap-0.5">
+                  <span className="text-[12px] font-semibold text-[#111827] truncate">{c.name}</span>
+                  <span className="text-[10px] text-[#9CA3AF]">{c.role}</span>
                 </div>
               </div>
             ))}

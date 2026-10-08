@@ -8,11 +8,11 @@ const MISSION_PHASES = ['참여 중', '정답 발표 · 정답', '정답 발표 
 type MissionPhase = (typeof MISSION_PHASES)[number]
 
 // 정답 발표 더미 (경기 종료 후)
-const REVEAL: Record<MissionType, { q: string; options: string[]; answer: string; wrong: string; note: string }> = {
-  사지선다: { q: '오늘 경기에서 홈런을 칠 선수는 누구일까요?', options: ['구자욱', '이재현', '디아즈', '강민호'], answer: '디아즈', wrong: '구자욱', note: '디아즈 선수가 3회 투런 홈런을 기록했어요 (예시)' },
-  OX퀴즈: { q: '오늘 삼성 라이온즈가 7점 이상 득점할까요?', options: ['O', 'X'], answer: 'O', wrong: 'X', note: '삼성은 오늘 8득점을 기록했어요 (예시)' },
+const REVEAL: Record<MissionType, { q: string; options: string[]; answer: string; wrong: string; note?: string }> = {
+  사지선다: { q: '오늘 경기에서 홈런을 칠 선수는 누구일까요?', options: ['구자욱', '이재현', '디아즈', '강민호'], answer: '디아즈', wrong: '구자욱' },
+  OX퀴즈: { q: '오늘 삼성 라이온즈가 7점 이상 득점할까요?', options: ['O', 'X'], answer: 'O', wrong: 'X' },
   VS선택: { q: '원태인 선수는 오늘 경기 끝나고 ____ 을 먹을 것이다.', options: ['막창', '삼겹살'], answer: '삼겹살', wrong: '막창', note: '라이온즈 인스타 스토리를 통해 생생한 정답을 확인할 수 있어요!' },
-  예측형: { q: '오늘 경기 최종 점수를 예측해보세요!', options: [], answer: '5 : 3', wrong: '3 : 1', note: '최종 스코어 삼성 5 : 3 상대팀 (예시)' },
+  예측형: { q: '오늘 경기 최종 점수를 예측해보세요!', options: [], answer: '5 : 3', wrong: '3 : 1' },
 }
 
 function MissionReveal({ type, outcome }: { type: MissionType; outcome: 'correct' | 'wrong' | 'none' }) {
@@ -63,7 +63,7 @@ function MissionReveal({ type, outcome }: { type: MissionType; outcome: 'correct
             })}
           </div>
         )}
-        <p className="mb-3 text-center text-[11px] text-[#64748B]">{r.note}</p>
+        {r.note && <p className="mb-3 text-center text-[11px] text-[#64748B]">{r.note}</p>}
         <div className={`rounded-xl px-4 py-3 text-center ${banner.cls}`}>
           <p className="text-[13px] font-bold">{banner.t}</p>
           <p className="mt-0.5 text-[11px] opacity-80">{banner.d}</p>

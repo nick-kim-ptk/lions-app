@@ -1,10 +1,10 @@
-import { MOCK_TODAY, diffDays } from './clock'
+import { MOCK_TODAY, addDays, diffDays } from './clock'
 
-/** 멤버십·어린이 회원 가입 일정 (더미). 매년 초 특정 기간에만 가입 접수, 시즌 종료 시 일괄 만료 */
+/** 멤버십·어린이 회원 모집 일정 (더미). 특정 기간(최대 약 한 달)에만 접수, 시즌 종료 시 일괄 만료. 모집 오픈 D-14 기준 */
 export const JOIN_PERIODS = {
-  member: { label: '블루멤버십', open: '2027-01-05', close: '2027-01-18' },
-  child: { label: '어린이 멤버십', open: '2027-01-12', close: '2027-01-25' },
-} as const
+  member: { label: '2027 블루멤버십 모집', open: addDays(MOCK_TODAY, 14), close: addDays(MOCK_TODAY, 27) },
+  child: { label: '2027 어린이 회원 모집', open: addDays(MOCK_TODAY, 14), close: addDays(MOCK_TODAY, 27) },
+}
 
 export type JoinKind = keyof typeof JOIN_PERIODS
 

@@ -214,7 +214,7 @@ export const SCREEN_LINKS = [
   { screen: '라인업', season: '상단 시즌 배지', match: '취소·연기는 빈 화면, 서스펜디드·더블헤더·지연·경기 중 안내' },
   { screen: '티켓 예매', season: '상단 시즌 배지', match: '오늘 경기가 취소·연기면 예매 불가 표시, 더블헤더는 1·2차전 카드 분리, 경기 종료 경기는 목록에서 제외' },
   { screen: '예매내역', season: '상단 시즌 배지', match: '지연·취소·연기·서스펜디드 안내' },
-  { screen: 'MY 홈', season: '-', match: '멤버십 카드 5종: 블루멤버십 / 시즌권(본인 좌석 표기) / 어린이 / 멤버십 가입 기간 외(D-day) / 어린이 가입 기간 외(D-day). 비로그인은 로그인 페이지로 이동' },
+  { screen: 'MY 홈', season: '-', match: '멤버십 카드 5종: 블루멤버십 / 시즌권(본인 좌석 표기) / 어린이 / 2027 블루멤버십 모집(D-14) / 2027 어린이 회원 모집(D-14), 모두 9:16 세로형 카드. 비로그인은 로그인 페이지로 이동' },
   { screen: '스마트 티켓', season: '헤더 시즌명', match: '지연·취소·연기·서스펜디드·종료 안내' },
 ]
 
@@ -237,7 +237,7 @@ export const OPEN_ITEMS: { topic: string; detail: string; owner: string; screens
   { topic: '비시즌 홈 콘텐츠 구성', detail: '시즌 정리 항목, 개막 D-day 기준일, 굿즈·콘텐츠 노출 구성', owner: '기획', screens: '홈' },
   { topic: '가을야구 탈락·우승 상태', detail: '삼성 탈락 후 / 우승 확정 시 홈 카드와 콘텐츠', owner: '기획', screens: '홈' },
   { topic: '알림 종류·발송 시점', detail: '우천 지연·취소, 라인업 발표, 예매 오픈, 경기 결과 알림 정의', owner: '기획', screens: '알림, 설정' },
-  { topic: '멤버십·어린이 회원 가입 일정', detail: '매년 초 가입 접수 기간의 출처(고정/구단 공지/API)와 D-day 기준(오픈일)', owner: '구단', screens: 'MY 홈, 멤버십 안내' },
+  { topic: '멤버십·어린이 회원 모집 일정', detail: '모집 기간(최대 약 한 달)의 출처(고정/구단 공지/API)와 D-day 기준(오픈일)', owner: '구단', screens: 'MY 홈, 멤버십 안내' },
   { topic: '시즌권 좌석 정보 노출', detail: '시즌권 카드에 표기할 좌석 항목과 양도·변경 시 갱신 방식', owner: '구단·티켓링크', screens: 'MY 홈' },
 ]
 

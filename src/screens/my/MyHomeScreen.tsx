@@ -6,30 +6,30 @@ import { joinInfo, type JoinKind } from '@/data/mock/membership'
 
 const CARD_COUNT = 5
 
-// 가입 기간 외 카드 (가입하기 비활성) — 매년 초 특정 기간에만 가입 접수
+// 모집 기간 외 카드 (가입하기 비활성) — 매년 특정 기간에만 모집
 function JoinClosedCard({ kind, title, tone }: { kind: JoinKind; title: string; tone: 'blue' | 'gold' }) {
   const { schedule, dday } = joinInfo(kind)
   const bg = tone === 'blue' ? 'from-[#64748B] to-[#334155]' : 'from-[#B8A27A] to-[#8A7650]'
   return (
-    <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${bg} p-5`}>
-      <div className="absolute -right-6 -top-6 w-32 h-32 rounded-full bg-white/10 pointer-events-none" />
-      <div className="flex items-start justify-between mb-3">
-        <div>
-          <p className="text-white/70 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
-          <p className="text-white text-[16px] font-bold">{title}</p>
-        </div>
-        <span className="text-[11px] font-bold text-white bg-white/20 border border-white/30 rounded-full px-2.5 py-0.5">{dday}</span>
+    <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${bg} p-5 aspect-[9/16] flex flex-col justify-between`}>
+      <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10 pointer-events-none" />
+      <div className="absolute -left-10 bottom-24 w-32 h-32 rounded-full bg-white/5 pointer-events-none" />
+      <div className="relative">
+        <p className="text-white/70 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
+        <p className="text-white text-[18px] font-bold leading-snug">{title}</p>
       </div>
-      <p className="text-white/70 text-[9px] mb-0.5">가입 일정</p>
-      <p className="text-white text-[13px] font-semibold mb-3">{schedule}</p>
-      <button disabled className="w-full h-9 rounded-xl bg-white/25 text-white/60 text-[13px] font-bold cursor-not-allowed">
+      <div className="relative flex flex-col items-center gap-1">
+        <span className="text-[28px] font-black text-white">{dday}</span>
+        <p className="text-white/70 text-[10px]">모집 일정</p>
+        <p className="text-white text-[12px] font-semibold">{schedule}</p>
+      </div>
+      <button disabled className="relative w-full h-9 rounded-xl bg-white/25 text-white/60 text-[13px] font-bold cursor-not-allowed">
         가입하기
       </button>
     </div>
   )
 }
 
-// 028(030)-SL-MY-01 MY (마이페이지)
 export function MyHomeScreen() {
   const navigate = useNavigate()
   const [cardIndex, setCardIndex] = useState(0)
@@ -70,18 +70,17 @@ export function MyHomeScreen() {
   }
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-8">
-      {/* 케이스 전환 (와이어프레임 전용) */}
-      <div className="flex items-center gap-2 px-4 py-2 bg-white border-b border-[#DDE1EC]">
-        <span className="text-[10px] text-[#EF4444] font-bold">케이스 전환</span>
-        <CaseSelect
-          value={'로그인 상태' as '로그인 상태' | '비로그인'}
-          options={['로그인 상태', { value: '비로그인', label: '비로그인 → 로그인 페이지' }]}
-          onChange={(v) => { if (v === '비로그인') navigate('/login') }}
-        />
-        <span className="text-[10px] text-[#64748B]">카드 5종은 좌우로 넘겨 확인</span>
-      </div>
       {/* Player theme hero banner — GNB 포함 */}
       <div className="relative w-full h-[270px] bg-gradient-to-br from-[#1B5BF0] to-[#0E2F80] overflow-hidden mb-4">
+        {/* 케이스 전환 (와이어프레임 전용) — KV 좌측 상단 */}
+        <div className="absolute top-0 left-4 z-20 h-14 flex items-center">
+          <CaseSelect
+            variant="dark"
+            value={'로그인 상태' as '로그인 상태' | '비로그인'}
+            options={['로그인 상태', { value: '비로그인', label: '비로그인' }]}
+            onChange={(v) => { if (v === '비로그인') navigate('/login') }}
+          />
+        </div>
         {/* Floating GNB */}
         <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-end px-4 h-14 gap-1">
           <button onClick={() => navigate('/notifications')} className="w-8 h-8 flex items-center justify-center">
@@ -144,7 +143,7 @@ export function MyHomeScreen() {
         </div>
       </div>
 
-      {/* Membership card — carousel */}
+      {/* Membership card — carousel (9:16 세로형) */}
       <div className="mb-4 overflow-hidden"
         onTouchStart={e => { touchStartX.current = e.touches[0].clientX }}
         onTouchEnd={e => {
@@ -154,89 +153,81 @@ export function MyHomeScreen() {
         }}
       >
         <div
-          className="flex transition-transform duration-300 ease-out"
-          style={{ transform: `translateX(calc(${-cardIndex * 88}% - ${cardIndex * -16}px))` }}
+          className="flex ml-4 transition-transform duration-300 ease-out"
+          style={{ transform: `translateX(${-cardIndex * 60}%)` }}
         >
           {/* 카드 1 — 블루멤버십 */}
-          <div className="shrink-0 pl-4 pr-2" style={{ width: '88%' }}>
-            <div onClick={() => navigate('/my/membership')} className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1B5BF0] to-[#0E2F80] p-5 cursor-pointer active:opacity-90">
-              <div className="absolute -right-6 -top-6 w-32 h-32 rounded-full bg-white/5 pointer-events-none" />
-              <div className="absolute -right-2 top-8 w-20 h-20 rounded-full bg-white/5 pointer-events-none" />
-              <div className="flex items-start justify-between mb-4">
+          <div className="shrink-0 pr-3" style={{ width: '60%' }}>
+            <div onClick={() => navigate('/my/membership')} className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1B5BF0] to-[#0E2F80] p-5 cursor-pointer active:opacity-90 aspect-[9/16] flex flex-col justify-between">
+              <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/5 pointer-events-none" />
+              <div className="absolute -left-10 bottom-24 w-32 h-32 rounded-full bg-white/5 pointer-events-none" />
+              <div className="relative flex items-start justify-between">
                 <div>
                   <p className="text-white/60 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
-                  <p className="text-white text-[16px] font-bold">블루멤버십</p>
+                  <p className="text-white text-[18px] font-bold">블루멤버십</p>
                 </div>
                 <span className="text-[10px] font-bold text-[#F0A500] bg-[#F0A500]/20 border border-[#F0A500]/40 rounded-full px-2.5 py-0.5">GOLD</span>
               </div>
-              <div>
+              <div className="relative">
                 <p className="text-white/40 text-[9px] mb-0.5">MEMBER</p>
-                <p className="text-white text-[13px] font-semibold tracking-wider">홍 길 동</p>
+                <p className="text-white text-[14px] font-semibold tracking-wider">홍 길 동</p>
                 <p className="text-white/40 text-[9px] mt-1.5">유효기간 · 27.12.31</p>
               </div>
             </div>
           </div>
 
           {/* 카드 2 — 프리미엄 블루 시즌권 */}
-          <div className="shrink-0 pl-2 pr-2" style={{ width: '88%' }}>
-            <div onClick={() => navigate('/my/membership')} className="relative overflow-hidden rounded-2xl p-5 cursor-pointer active:opacity-90"
+          <div className="shrink-0 pr-3" style={{ width: '60%' }}>
+            <div onClick={() => navigate('/my/membership')} className="relative overflow-hidden rounded-2xl p-5 cursor-pointer active:opacity-90 aspect-[9/16] flex flex-col justify-between"
               style={{ background: 'linear-gradient(135deg, #0A1A4E 0%, #0E2F80 55%, #1B5BF0 100%)' }}>
-              {/* 배경 패턴 */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full border border-white/10" />
-                <div className="absolute -right-4 -top-2 w-28 h-28 rounded-full border border-white/8" />
+                <div className="absolute -right-4 -top-2 w-28 h-28 rounded-full border border-white/10" />
                 <div className="absolute right-6 bottom-0 w-16 h-16 rounded-full bg-[#1B5BF0]/40" />
               </div>
-              <div className="flex items-start justify-between mb-4">
+              <div className="relative flex items-start justify-between">
                 <div>
                   <p className="text-white/50 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
-                  <p className="text-white text-[16px] font-bold">프리미엄 블루 시즌권</p>
+                  <p className="text-white text-[18px] font-bold leading-snug">프리미엄 블루<br />시즌권</p>
                 </div>
                 <span className="text-[10px] font-bold text-white bg-white/15 border border-white/25 rounded-full px-2.5 py-0.5">SEASON</span>
               </div>
-              <div className="flex items-end justify-between">
-                <div>
-                  <p className="text-white/40 text-[9px] mb-0.5">MEMBER</p>
-                  <p className="text-white text-[13px] font-semibold tracking-wider">홍 길 동</p>
-                  <p className="text-white/40 text-[9px] mt-1.5">유효기간 · 27.12.31</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-white/40 text-[9px] mb-0.5">SEAT</p>
-                  <p className="text-white text-[12px] font-bold">1루 프리미엄석</p>
-                  <p className="text-white/50 text-[9px] mt-0.5">블록 A · 12열 · 7번</p>
-                </div>
+              <div className="relative">
+                <p className="text-white/40 text-[9px] mb-0.5">SEAT</p>
+                <p className="text-white text-[13px] font-bold">1루 프리미엄석</p>
+                <p className="text-white/50 text-[10px] mt-0.5">블록 A · 12열 · 7번</p>
+                <p className="text-white/40 text-[9px] mt-3 mb-0.5">MEMBER</p>
+                <p className="text-white text-[14px] font-semibold tracking-wider">홍 길 동</p>
+                <p className="text-white/40 text-[9px] mt-1.5">유효기간 · 27.12.31</p>
               </div>
             </div>
           </div>
 
           {/* 카드 3 — 어린이 멤버십 */}
-          <div className="shrink-0 pl-2 pr-2" style={{ width: '88%' }}>
-            <div onClick={() => navigate('/my/membership')} className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#F0A500] to-[#D48B00] p-5 cursor-pointer active:opacity-90">
-              <div className="absolute -right-6 -top-6 w-32 h-32 rounded-full bg-white/10 pointer-events-none" />
-              <div className="absolute -right-2 top-8 w-20 h-20 rounded-full bg-white/10 pointer-events-none" />
-              <div className="absolute right-5 top-1/2 -translate-y-1/2 text-[48px] opacity-20 pointer-events-none">🦁</div>
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <p className="text-white/70 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
-                  <p className="text-white text-[16px] font-bold">어린이 멤버십</p>
-                </div>
+          <div className="shrink-0 pr-3" style={{ width: '60%' }}>
+            <div onClick={() => navigate('/my/membership')} className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#F0A500] to-[#D48B00] p-5 cursor-pointer active:opacity-90 aspect-[9/16] flex flex-col justify-between">
+              <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10 pointer-events-none" />
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[64px] opacity-20 pointer-events-none">🦁</div>
+              <div className="relative">
+                <p className="text-white/70 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
+                <p className="text-white text-[18px] font-bold">어린이 멤버십</p>
               </div>
-              <div>
+              <div className="relative">
                 <p className="text-white/60 text-[9px] mb-0.5">MEMBER</p>
-                <p className="text-white text-[13px] font-semibold tracking-wider">홍 길 동 Jr.</p>
+                <p className="text-white text-[14px] font-semibold tracking-wider">홍 길 동 Jr.</p>
                 <p className="text-white/60 text-[9px] mt-1.5">유효기간 · 27.12.31</p>
               </div>
             </div>
           </div>
 
-          {/* 카드 4 — 멤버십 가입 기간 외 */}
-          <div className="shrink-0 pl-2 pr-2" style={{ width: '88%' }}>
-            <JoinClosedCard kind="member" title="블루멤버십 가입" tone="blue" />
+          {/* 카드 4 — 블루멤버십 모집 (모집 기간 외) */}
+          <div className="shrink-0 pr-3" style={{ width: '60%' }}>
+            <JoinClosedCard kind="member" title="2027 블루멤버십 모집" tone="blue" />
           </div>
 
-          {/* 카드 5 — 어린이 멤버십 가입 기간 외 */}
-          <div className="shrink-0 pl-2 pr-4" style={{ width: '88%' }}>
-            <JoinClosedCard kind="child" title="어린이 멤버십 가입" tone="gold" />
+          {/* 카드 5 — 어린이 회원 모집 (모집 기간 외) */}
+          <div className="shrink-0 pr-3" style={{ width: '60%' }}>
+            <JoinClosedCard kind="child" title="2027 어린이 회원 모집" tone="gold" />
           </div>
         </div>
 

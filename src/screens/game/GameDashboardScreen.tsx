@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { GameStateNotice } from '@/components/GameCaseBar'
 import { CaseSelect } from '@/components/CaseSelect'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useCaseState } from '@/data/caseStore'
 import { PH, PHCircle, PHSection } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
 import { AWAY_STADIUMS } from '@/data/game'
@@ -9,7 +10,14 @@ import { AWAY_STADIUMS } from '@/data/game'
 // 006-SL-GM-01 게임(GAME) 대시보드
 export function GameDashboardScreen() {
   const navigate = useNavigate()
-  const [matchType, setMatchType] = useState<'home' | 'away' | 'none'>('home')
+  const { phase } = useCaseState()
+  const [matchType, setMatchType] = useState<'home' | 'away' | 'none' | 'end'>(phase === '비시즌' ? 'end' : 'home')
+  // 전역 시즌 단계가 비시즌이면 시즌 종료 케이스, 아니면 홈 경기로 복귀
+  useEffect(() => {
+    setMatchType((m) => (phase === '비시즌' ? 'end' : m === 'end' ? 'home' : m))
+  }, [phase])
+  const seasonEnd = matchType === 'end'
+  const noMatch = matchType === 'none' || seasonEnd
   const [isStandingsExpanded, setIsStandingsExpanded] = useState(false)
   const [awaySelected, setAwaySelected] = useState(0)
 
@@ -38,16 +46,42 @@ export function GameDashboardScreen() {
         <div className="flex items-center justify-between mb-2">
           <div className="flex flex-col gap-0.5">
             <div className="flex items-center gap-2">
+              {seasonEnd ? (
+                <span className="text-[22px] font-black text-[#111827] leading-none">2026 시즌</span>
+              ) : (
               <span className="text-[22px] font-black text-[#111827] leading-none">9.18
-                <span className="text-[14px] font-semibold text-[#64748B] ml-1">{matchType !== 'none' ? '(수) 18:30' : '(수)'}</span>
+                <span className="text-[14px] font-semibold text-[#64748B] ml-1">{noMatch ? '(수)' : '(수) 18:30'}</span>
               </span>
+              )}
             </div>
           </div>
           {/* 홈 / 원정 / 미경기 칩 — 케이스 베리에이션용 토글 */}
-          <CaseSelect value={matchType} options={[{ value: 'home', label: '홈 경기' }, { value: 'away', label: '원정 경기' }, { value: 'none', label: '미경기' }] as const} onChange={setMatchType} />
+          <CaseSelect value={matchType} options={[{ value: 'home', label: '홈 경기' }, { value: 'away', label: '원정 경기' }, { value: 'none', label: '미경기' }, { value: 'end', label: '시즌 종료' }] as const} onChange={setMatchType} />
         </div>
 
-        {matchType !== 'none' && (
+        {/* 시즌 종료: 올해 결과 카드 (수치는 예시) */}
+        {seasonEnd && (
+          <div className="rounded-2xl bg-gradient-to-br from-[#0E1A40] to-[#1B3A80] p-5 text-white">
+            <span className="rounded-full bg-white/15 px-2.5 py-0.5 text-[10px] font-bold">2026 시즌 종료</span>
+            <p className="mt-3 text-[15px] font-black">2026 시즌 최종 결과</p>
+            <p className="mt-0.5 text-[11px] text-white/60">정규시즌 2위 (예시)</p>
+            <div className="mt-4 grid grid-cols-4 gap-2 text-center">
+              {[
+                { label: '승', value: '82' },
+                { label: '무', value: '3' },
+                { label: '패', value: '59' },
+                { label: '승률', value: '.582' },
+              ].map((r) => (
+                <div key={r.label} className="rounded-xl bg-white/10 py-2.5">
+                  <p className="text-[10px] text-white/60">{r.label}</p>
+                  <p className="text-[16px] font-black text-[#F0A500]">{r.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {!noMatch && (
           /* Match summary card */
           <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-4">
             <div className="flex items-center justify-between mb-3">
@@ -79,7 +113,7 @@ export function GameDashboardScreen() {
       </div>
 
       {/* 미경기: 달력 + 경기 일정 */}
-      {matchType === 'none' && (() => {
+      {noMatch && (() => {
         const days = ['일', '월', '화', '수', '목', '금', '토']
         const scheduleList = [
           { day: 13, dow: '토', home: true,  opp: 'LG',   time: '18:00', result: '승 5:3', done: true  },
@@ -98,7 +132,7 @@ export function GameDashboardScreen() {
               <button className="w-8 h-8 flex items-center justify-center">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 19l-7-7 7-7" stroke="#111827" strokeWidth="2" strokeLinecap="round"/></svg>
               </button>
-              <span className="text-[#111827] font-bold">2026년 9월</span>
+              <span className="text-[#111827] font-bold">{seasonEnd ? '2026년 10월' : '2026년 9월'}</span>
               <button className="w-8 h-8 flex items-center justify-center">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#111827" strokeWidth="2" strokeLinecap="round"/></svg>
               </button>
@@ -114,17 +148,18 @@ export function GameDashboardScreen() {
               {Array.from({length: 5}).map((_, row) => (
                 <div key={row} className="grid grid-cols-7 gap-y-1 mb-0.5">
                   {Array.from({length: 7}).map((_, col) => {
-                    const day = row * 7 + col - 5
-                    const hasGame = gameDays.includes(day)
-                    const isToday = day === 18
+                    const day = row * 7 + col - (seasonEnd ? 3 : 5)
+                    const monthDays = seasonEnd ? 31 : 30
+                    const hasGame = !seasonEnd && gameDays.includes(day)
+                    const isToday = !seasonEnd && day === 18
                     return (
                       <div key={col} className="flex flex-col items-center gap-0.5 py-1">
                         <div className={`w-7 h-7 rounded-full flex items-center justify-center ${isToday ? 'bg-[#1B5BF0]' : ''}`}>
-                          <span className={`text-xs ${day < 1 || day > 30 ? 'text-transparent' : isToday ? 'text-white font-bold' : col === 0 ? 'text-[#E53935]' : col === 6 ? 'text-[#1B5BF0]' : 'text-[#64748B]'}`}>
-                            {day > 0 && day <= 30 ? day : ''}
+                          <span className={`text-xs ${day < 1 || day > monthDays ? 'text-transparent' : isToday ? 'text-white font-bold' : col === 0 ? 'text-[#E53935]' : col === 6 ? 'text-[#1B5BF0]' : 'text-[#64748B]'}`}>
+                            {day > 0 && day <= monthDays ? day : ''}
                           </span>
                         </div>
-                        {hasGame && day > 0 && day <= 30 && (
+                        {hasGame && day > 0 && day <= monthDays && (
                           <div className="w-1.5 h-1.5 rounded-full bg-[#1B5BF0]" />
                         )}
                       </div>
@@ -134,7 +169,7 @@ export function GameDashboardScreen() {
               ))}
             </div>
             {/* Legend */}
-            <div className="flex gap-4 px-4 mb-3">
+            {!seasonEnd && <div className="flex gap-4 px-4 mb-3">
               <div className="flex items-center gap-1.5">
                 <div className="w-2 h-2 rounded-full bg-[#1B5BF0]" />
                 <span className="text-xs text-[#64748B]">홈 경기</span>
@@ -143,9 +178,10 @@ export function GameDashboardScreen() {
                 <div className="w-2 h-2 rounded-full bg-[#4A5570]" />
                 <span className="text-xs text-[#64748B]">원정 경기</span>
               </div>
-            </div>
+            </div>}
+            {seasonEnd && <p className="px-4 pt-2 text-center text-[12px] text-[#9CA3AF]">예정된 경기가 없어요</p>}
             {/* Schedule list */}
-            <div className="px-4 flex flex-col gap-2 mt-4">
+            {!seasonEnd && <div className="px-4 flex flex-col gap-2 mt-4">
               {scheduleList.map((g, i) => {
                 const isToday = g.day === 18
                 return (
@@ -178,13 +214,13 @@ export function GameDashboardScreen() {
                   </div>
                 )
               })}
-            </div>
+            </div>}
           </div>
         )
       })()}
 
       {/* 경기 프리뷰 */}
-      {matchType !== 'none' && (
+      {!noMatch && (
         <div className="px-4 pt-3 pb-1">
           <button onClick={() => navigate('/all/preview-detail')} className="w-full text-left">
             <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] flex items-center gap-3 p-3">
@@ -205,7 +241,7 @@ export function GameDashboardScreen() {
       )}
 
       {/* Lineup preview */}
-      {matchType !== 'none' && (
+      {!noMatch && (
         <div className="mb-4 pt-3">
           <div className="flex items-center justify-between mb-2 px-4">
             <span className="text-sm font-bold text-[#111827]">오늘의 라인업</span>
@@ -249,7 +285,7 @@ export function GameDashboardScreen() {
       )}
 
       {/* Cheerleader preview */}
-      {matchType !== 'none' && (
+      {!noMatch && (
         <div className="px-4 mb-5">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-bold text-[#111827]">오늘의 응원단</span>
@@ -362,7 +398,7 @@ export function GameDashboardScreen() {
       )}
 
       {/* 경기 일정 (홈/원정 탭에서만) */}
-      {matchType !== 'none' && (
+      {!noMatch && (
         <div className="px-4 mb-6">
           <PHSection label="경기 일정" right="전체보기 ›" onMore={() => navigate('/game/schedule')} />
           <div className="flex flex-col gap-2">

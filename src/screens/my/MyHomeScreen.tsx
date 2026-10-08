@@ -2,26 +2,14 @@ import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PH, PHCircle } from '@/components/Placeholder'
 import { CaseSelect } from '@/components/CaseSelect'
+import { MemberCard, StateBadge } from '@/components/MemberCard'
 import { joinInfo, type JoinKind, type JoinState } from '@/data/mock/membership'
 
 
-/**
- * 카드 우측 상단 상태 배지 — 멤버십 카드 타입 정리
- *  · 멤버십 모집 전: 모집 카드 2장 (D-day, 가입하기 비활성)
- *  · 멤버십 모집 중: 모집 카드 2장 (가입하기 활성)
- *  · 가입 완료: 가입된 카드 3장만 표시 (멤버십·시즌권·어린이), 모집 카드는 숨김
- */
-type CardState = '멤버십 모집 전' | '멤버십 모집 중' | '가입 완료'
 type MemberCase = '멤버십 모집 전' | '멤버십 모집 중' | '가입 완료'
-function StateBadge({ state }: { state: CardState }) {
-  const cls =
-    state === '멤버십 모집 전' ? 'bg-white/20 text-white border-white/30'
-    : state === '멤버십 모집 중' ? 'bg-[#4ADE80] text-[#064E3B] border-[#4ADE80]'
-    : 'bg-white text-[#0E2F80] border-white'
-  return <span className={`shrink-0 text-[10px] font-bold border rounded-full px-2.5 py-0.5 ${cls}`}>{state}</span>
-}
 
-// 모집 기간 외 카드 (가입하기 비활성) — 매년 특정 기간에만 모집
+// 가입 후 카드(가입 완료)는 components/MemberCard 공용 — 나의 멤버십/시즌권 화면과 같은 디자인
+// 모집 카드(멤버십 모집 전 / 멤버십 모집 중)는 아래 JoinClosedCard
 function JoinClosedCard({ kind, title, tone, state, onJoin }: { kind: JoinKind; title: string; tone: 'blue' | 'gold'; state: JoinState; onJoin: () => void }) {
   const { schedule, dday } = joinInfo(kind, state)
   const open = state === '모집 중'
@@ -191,73 +179,18 @@ export function MyHomeScreen() {
           {joined && (<>
           {/* 카드 1 — 블루멤버십 */}
           <div className="shrink-0 pr-3" style={{ width: '60%' }}>
-            <div onClick={() => navigate('/my/membership')} className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1B5BF0] to-[#0E2F80] p-5 cursor-pointer active:opacity-90 aspect-[9/16] flex flex-col justify-between">
-              <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/5 pointer-events-none" />
-              <div className="absolute -left-10 bottom-24 w-32 h-32 rounded-full bg-white/5 pointer-events-none" />
-              <div className="relative flex items-start justify-between">
-                <div>
-                  <p className="text-white/60 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
-                  <p className="text-white text-[18px] font-bold">블루멤버십</p>
-                  <span className="mt-1.5 inline-block text-[10px] font-bold text-[#F0A500] bg-[#F0A500]/20 border border-[#F0A500]/40 rounded-full px-2 py-0.5">GOLD</span>
-                </div>
-                <StateBadge state="가입 완료" />
-              </div>
-              <div className="relative">
-                <p className="text-white/40 text-[9px] mb-0.5">MEMBER</p>
-                <p className="text-white text-[14px] font-semibold tracking-wider">홍 길 동</p>
-                <p className="text-white/40 text-[9px] mt-1.5">유효기간 · 27.12.31</p>
-              </div>
-            </div>
+            <MemberCard kind="blue" onClick={() => navigate('/my/membership')} />
           </div>
 
           {/* 카드 2 — 프리미엄 블루 시즌권 */}
           <div className="shrink-0 pr-3" style={{ width: '60%' }}>
-            <div onClick={() => navigate('/my/membership')} className="relative overflow-hidden rounded-2xl p-5 cursor-pointer active:opacity-90 aspect-[9/16] flex flex-col justify-between"
-              style={{ background: 'linear-gradient(135deg, #0A1A4E 0%, #0E2F80 55%, #1B5BF0 100%)' }}>
-              <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full border border-white/10" />
-                <div className="absolute -right-4 -top-2 w-28 h-28 rounded-full border border-white/10" />
-                <div className="absolute right-6 bottom-0 w-16 h-16 rounded-full bg-[#1B5BF0]/40" />
-              </div>
-              <div className="relative flex items-start justify-between">
-                <div>
-                  <p className="text-white/50 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
-                  <p className="text-white text-[18px] font-bold leading-snug">프리미엄 블루<br />시즌권</p>
-                  <span className="mt-1.5 inline-block text-[10px] font-bold text-white bg-white/15 border border-white/25 rounded-full px-2 py-0.5">SEASON</span>
-                </div>
-                <StateBadge state="가입 완료" />
-              </div>
-              <div className="relative">
-                <p className="text-white/40 text-[9px] mb-0.5">SEAT</p>
-                <p className="text-white text-[13px] font-bold">1루 프리미엄석</p>
-                <p className="text-white/50 text-[10px] mt-0.5">블록 A · 12열 · 7번</p>
-                <p className="text-white/40 text-[9px] mt-3 mb-0.5">MEMBER</p>
-                <p className="text-white text-[14px] font-semibold tracking-wider">홍 길 동</p>
-                <p className="text-white/40 text-[9px] mt-1.5">유효기간 · 27.12.31</p>
-              </div>
-            </div>
+            <MemberCard kind="season" onClick={() => navigate('/my/membership')} />
           </div>
 
           {/* 카드 3 — 어린이 멤버십 */}
           <div className="shrink-0 pr-3" style={{ width: '60%' }}>
-            <div onClick={() => navigate('/my/membership')} className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#F0A500] to-[#D48B00] p-5 cursor-pointer active:opacity-90 aspect-[9/16] flex flex-col justify-between">
-              <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10 pointer-events-none" />
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[64px] opacity-20 pointer-events-none">🦁</div>
-              <div className="relative flex items-start justify-between gap-2">
-                <div>
-                  <p className="text-white/70 text-[10px] font-medium tracking-widest mb-1">SAMSUNG LIONS</p>
-                  <p className="text-white text-[18px] font-bold">어린이 멤버십</p>
-                </div>
-                <StateBadge state="가입 완료" />
-              </div>
-              <div className="relative">
-                <p className="text-white/60 text-[9px] mb-0.5">MEMBER</p>
-                <p className="text-white text-[14px] font-semibold tracking-wider">홍 길 동 Jr.</p>
-                <p className="text-white/60 text-[9px] mt-1.5">유효기간 · 27.12.31</p>
-              </div>
-            </div>
+            <MemberCard kind="kids" onClick={() => navigate('/my/membership')} />
           </div>
-
           </>)}
 
           {!joined && (<>

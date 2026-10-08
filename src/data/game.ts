@@ -151,14 +151,14 @@ export const VR_GESTURES = [
 ]
 /** VR 주제 4종 — 카드를 누르면 뷰어가 열리고, 뷰어 상단 버튼으로 세부 장소를 바꿈 */
 export const VR_TOPICS = [
-  { id: 'seat', title: '내 자리 미리 보기', desc: '내가 예매한 라팍 좌석에서 보이는 풍경을 미리 확인해요', items: ['내가 예매한 좌석'], imageLabel: '내 좌석 360° 이미지' },
+  { id: 'seat', title: '내 자리 미리 보기', desc: '좌석 종류별로 내 자리에서 보이는 풍경을 미리 확인해요', items: ['특별석', '테이블석', '내야석', 'SKY석', '외야석'], imageLabel: '좌석 시야 360° 이미지' },
   { id: 'player', title: '선수의 눈으로 보기', desc: '선수들이 머무는 공간에서 경기장을 바라봐요', items: ['선수 라커룸', '원정팀 라커룸', '덕아웃', '불펜'], imageLabel: '선수 시점 360° 이미지' },
   { id: 'space', title: '선수들의 공간 들여다보기', desc: '선수들이 서는 그 자리, 마운드와 타석에서 둘러봐요', items: ['마운드', '타석', '그라운드'], imageLabel: '그라운드 360° 이미지' },
   { id: 'explore', title: '라팍 곳곳 탐험하기', desc: '평소 들어가기 어려운 라팍 곳곳을 탐험해요', items: ['중계석', '기자실', '선수단 식당', '전광판 뒤'], imageLabel: '라팍 탐험 360° 이미지' },
 ] as const
 export type VrTopicId = (typeof VR_TOPICS)[number]['id']
 
-/** 내 자리 미리 보기 — 좌석 종류별 보기 */
+/** 내 자리 미리 보기 — 좌석 종류별 보기 (예매 정보와는 연결하지 않음) */
 export const VR_SEAT_GROUPS = [
   { group: '특별석', seats: ['VIP석', '특별석', '커플석', '중앙 테이블석'] },
   { group: '테이블석', seats: ['1루 테이블석', '3루 테이블석', '외야 테이블석', '외야 미니 테이블석'] },

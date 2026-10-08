@@ -48,7 +48,7 @@ export function VRScreen() {
             >
               <PHImage className="h-44" label={t.imageLabel} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/10 flex flex-col justify-end p-5">
-                <span className="text-xs text-white/80 mb-1">360° · {t.items.length === 1 ? t.items[0] : `${t.items.length}곳`}</span>
+                <span className="text-xs text-white/80 mb-1">360° · {t.id === 'seat' ? '좌석 20종' : `${t.items.length}곳`}</span>
                 <p className="text-white font-bold text-lg">{t.title}</p>
                 <p className="text-white/80 text-[12px] mt-0.5">{t.desc}</p>
                 <div className="mt-3">

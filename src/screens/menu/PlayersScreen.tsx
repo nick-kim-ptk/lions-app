@@ -3,7 +3,29 @@ import { useNavigate } from 'react-router-dom'
 import { PH } from '@/components/Placeholder'
 import { Header } from '@/components/Layout'
 import { PLAYERS, playerStatus } from '@/data/mock'
-import { COACHING_STAFF, MANAGER, TEAM_INTRO } from '@/data/club'
+import { COACHING_STAFF, MANAGER, TEAM_INTRO, type StaffInfo } from '@/data/club'
+
+// 감독·코칭스텝 카드 (16:9, 상세 페이지 없음)
+function StaffCard({ s }: { s: StaffInfo }) {
+  const rows = [
+    ['생년월일', s.birth],
+    ['키/몸무게', s.bodyInfo],
+    ['경력', s.career],
+    ['삼성입단', s.joined],
+  ]
+  return (
+    <div className="flex bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden aspect-video">
+      <PH className="h-full aspect-[9/16] rounded-none shrink-0" />
+      <div className="flex-1 min-w-0 p-3 flex flex-col justify-center gap-0.5">
+        <p className="text-[15px] font-bold text-[#111827] truncate">{s.name}</p>
+        <p className="text-[11px] font-semibold text-[#1B5BF0] mb-1.5">{s.role}</p>
+        {rows.map(([k, v]) => (
+          <p key={k} className="text-[10px] text-[#64748B] leading-snug"><span className="text-[#9CA3AF]">{k} : </span>{v}</p>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 const TABS = ['소개', '감독', '코칭스텝', '투수', '타자', '군입대', '신입단'] as const
 type Tab = (typeof TABS)[number]
@@ -62,30 +84,12 @@ export function PlayersScreen() {
         )}
 
         {/* 감독 */}
-        {tab === '감독' && (
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden">
-              <PH className="w-full aspect-[9/16] rounded-none" />
-              <div className="p-2.5 flex flex-col gap-0.5">
-                <span className="text-[13px] font-semibold text-[#111827]">{MANAGER.name}</span>
-                <span className="text-[11px] text-[#9CA3AF]">{MANAGER.role}</span>
-              </div>
-            </div>
-          </div>
-        )}
+        {tab === '감독' && <StaffCard s={MANAGER} />}
 
         {/* 코칭스텝 */}
         {tab === '코칭스텝' && (
-          <div className="grid grid-cols-2 gap-3">
-            {COACHING_STAFF.filter((c) => c.role !== '감독').map((c, i) => (
-              <div key={i} className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden">
-                <PH className="w-full aspect-[9/16] rounded-none" />
-                <div className="p-2.5 flex flex-col gap-0.5">
-                  <span className="text-[13px] font-semibold text-[#111827] truncate">{c.name}</span>
-                  <span className="text-[11px] text-[#9CA3AF]">{c.role}</span>
-                </div>
-              </div>
-            ))}
+          <div className="flex flex-col gap-3">
+            {COACHING_STAFF.map((c, i) => <StaffCard key={i} s={c} />)}
           </div>
         )}
 

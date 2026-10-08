@@ -157,7 +157,11 @@ export const PAST_MANAGERS = [
 ]
 
 // 065-SL-AL-09 선수단 소개 — 감독/코치 탭 (마스킹 예시)
-export const MANAGER = { name: '박진만', role: '감독' }
+export interface StaffInfo { name: string; role: string; birth: string; bodyInfo: string; career: string; joined: string }
+
+export const MANAGER: StaffInfo = {
+  name: '박진만', role: '감독', birth: '1976-11-30', bodyInfo: '178cm / 82kg', career: '서화초-상인천중-인천고-경기대', joined: '2016년',
+}
 
 /** 선수단 소개 > 소개 탭: 감독·주장·대표 타자·대표 투수 (사진은 더미 영역) */
 export const TEAM_INTRO = [
@@ -168,10 +172,10 @@ export const TEAM_INTRO = [
 ]
 
 /** 코칭스텝 (마스킹 예시) — 감독은 MANAGER */
-export const COACHING_STAFF = [
-  { name: '○○○', role: '수석코치' },
-  { name: '○○○', role: '투수코치' },
-  { name: '○○○', role: '타격코치' },
-  { name: '○○○', role: '수비코치' },
-  { name: '○○○', role: '배터리코치' },
+export const COACHING_STAFF: StaffInfo[] = [
+  { name: '○○○', role: '수석코치', birth: '1978-03-12', bodyInfo: '181cm / 85kg', career: '○○초-○○중-○○고-○○대', joined: '2015년' },
+  { name: '○○○', role: '투수코치', birth: '1980-07-25', bodyInfo: '183cm / 88kg', career: '○○초-○○중-○○고', joined: '2018년' },
+  { name: '○○○', role: '타격코치', birth: '1981-05-09', bodyInfo: '180cm / 84kg', career: '○○초-○○중-○○고-○○대', joined: '2019년' },
+  { name: '○○○', role: '수비코치', birth: '1983-12-01', bodyInfo: '179cm / 82kg', career: '서석초-진흥중-진흥고', joined: '2017년' },
+  { name: '○○○', role: '배터리코치', birth: '1979-10-18', bodyInfo: '182cm / 90kg', career: '○○초-○○중-○○고-○○대', joined: '2020년' },
 ]

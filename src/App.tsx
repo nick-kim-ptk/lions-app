@@ -6,6 +6,8 @@ import {
   useLocation,
 } from "react-router-dom"
 
+import { TicketLinkScreen } from "@/screens/external/TicketLinkScreen"
+
 import { useEffect } from "react"
 
 import Layout, { ScreenIdBadge } from "./components/Layout"
@@ -153,6 +155,7 @@ export default function App() {
         <Route path="/permissions" element={<PermissionsScreen />} />
         <Route path="/notice" element={<NoticePopupScreen />} />
         <Route path="/login" element={<LoginScreen />} />
+        <Route path="/ticketlink" element={<TicketLinkScreen />} />
         <Route path="/signup" element={<SignupScreen />} />
         <Route path="/signup/terms" element={<TermsScreen />} />
         <Route path="/signup/privacy" element={<PrivacyConsentScreen />} />

@@ -10,7 +10,7 @@ import { ListCaseBar, type ListCase } from "@/components/ListCaseBar"
 
 import { CaseSelect } from "@/components/CaseSelect"
 
-import { EMBLEMS, EMBLEM_TOTAL } from "@/data/emblems"
+import { EMBLEMS, EMBLEM_TOTAL, type Emblem } from "@/data/emblems"
 
 // 기념 앰블럼(기간 한정 받기) 상태 — 어드민에서 기간·선착순 수량을 정해 등록
 
@@ -33,6 +33,8 @@ export function MyEmblemScreen() {
   const empty = listCase === "목록 없음"
 
   const [commCase, setCommCase] = useState<CommemorativeCase>("받기 가능")
+
+  const [sel, setSel] = useState<Emblem | null>(null)
 
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-4">
@@ -140,39 +142,76 @@ export function MyEmblemScreen() {
               className="py-8"
             />
           ) : (
-            <div className="flex flex-col divide-y divide-[#EEF0F6]">
+            <div className="grid grid-cols-3 gap-x-3 gap-y-5 lg:grid-cols-[repeat(auto-fill,140px)] lg:gap-x-5 lg:justify-start">
               {EMBLEMS.map((em) => (
-                <div
+                <button
                   key={em.name}
-                  className="flex items-center gap-3 py-3 first:pt-0 last:pb-0"
+                  type="button"
+                  onClick={() => setSel(em)}
+                  className="flex flex-col items-center gap-1.5 text-center"
                 >
                   <div
-                    className={`relative w-12 h-12 shrink-0 rounded-2xl bg-gradient-to-br ${em.color} flex items-center justify-center`}
+                    className={`relative w-full lg:w-[140px] aspect-square rounded-2xl bg-gradient-to-br ${em.color} flex items-center justify-center`}
                   >
-                    <span className="text-xl">{em.emoji}</span>
+                    <span className="text-3xl">{em.emoji}</span>
                     <div className="absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1 rounded-full bg-[#111827] border-2 border-white flex items-center justify-center">
                       <span className="text-[9px] font-bold text-white">
                         {em.count}
                       </span>
                     </div>
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-[13px] font-bold text-[#111827] leading-tight">
-                      {em.name}
-                    </p>
-                    <p className="mt-0.5 text-[12px] text-[#6B7280] leading-snug">
-                      {em.desc}
-                    </p>
-                    <p className="mt-1 text-[11px] text-[#1B5BF0] leading-snug">
-                      획득 조건 · {em.cond}
-                    </p>
-                  </div>
-                </div>
+                  <span className="text-[11px] font-medium text-[#374151] leading-tight">
+                    {em.name}
+                  </span>
+                </button>
               ))}
             </div>
           )}
         </div>
       </div>
+
+      {/* 앰블럼 상세 모달 — 설명·획득 조건 */}
+      {sel && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-7"
+          onClick={() => setSel(null)}
+        >
+          <div
+            className="w-full max-w-[320px] rounded-3xl bg-white px-6 pb-5 pt-7 text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              className={`relative mx-auto flex h-28 w-28 items-center justify-center rounded-3xl bg-gradient-to-br ${sel.color}`}
+            >
+              <span className="text-5xl">{sel.emoji}</span>
+              <div className="absolute -right-2 -top-2 flex h-6 min-w-6 items-center justify-center rounded-full border-2 border-white bg-[#111827] px-1.5">
+                <span className="text-[11px] font-bold text-white">
+                  {sel.count}
+                </span>
+              </div>
+            </div>
+            <p className="mt-4 text-[17px] font-bold text-[#111827]">
+              {sel.name}
+            </p>
+            <p className="mt-1 text-[13px] text-[#6B7280]">{sel.desc}</p>
+            <div className="mt-4 rounded-2xl bg-[#F5F7FB] px-4 py-3 text-left">
+              <p className="text-[11px] font-semibold text-[#64748B]">
+                획득 조건
+              </p>
+              <p className="mt-1 text-[13px] leading-snug text-[#1B5BF0]">
+                {sel.cond}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSel(null)}
+              className="mt-5 h-12 w-full rounded-2xl bg-[#1B5BF0] text-[15px] font-bold text-white"
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

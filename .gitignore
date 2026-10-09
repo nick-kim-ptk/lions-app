@@ -24,3 +24,8 @@ logs/
 .DS_Store
 .idea/
 .vscode/
+
+# 화면 캡처 결과·스크립트 의존성
+/captures/
+/scripts/node_modules/
+/scripts/package-lock.json

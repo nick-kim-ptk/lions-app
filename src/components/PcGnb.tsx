@@ -2,7 +2,7 @@ import React from "react"
 
 import { useLocation, useNavigate } from "react-router-dom"
 
-import { setLoggedIn, useLoggedIn } from "@/data/authStore"
+import { rememberReturnTo, setLoggedIn, useLoggedIn } from "@/data/authStore"
 
 import { FOOTER_COPYRIGHT, FOOTER_INFO } from "@/data/footer"
 
@@ -173,7 +173,10 @@ export function PcGnb() {
             </>
           ) : (
             <button
-              onClick={() => navigate("/login")}
+              onClick={() => {
+                rememberReturnTo()
+                navigate("/login")
+              }}
               className="px-4 h-9 rounded-full bg-[#1B5BF0] text-white font-semibold"
             >
               로그인

@@ -4,7 +4,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom"
 
 import { SCREENS } from "@/data/overview"
 
-import { requiresLogin, useLoggedIn } from "@/data/authStore"
+import { rememberReturnTo, requiresLogin, useLoggedIn } from "@/data/authStore"
 
 import { PcGnb, PcFooter } from "./PcGnb"
 
@@ -281,8 +281,10 @@ export default function Layout() {
 
   // 로그아웃 상태에서 로그인이 필요한 화면(MY 등)에 들어오면 로그인으로 보낸다
   useEffect(() => {
-    if (!loggedIn && requiresLogin(location.pathname))
+    if (!loggedIn && requiresLogin(location.pathname)) {
+      rememberReturnTo(location.pathname + location.search)
       navigate("/login", { replace: true })
+    }
   }, [loggedIn, location.pathname, navigate])
 
   return (

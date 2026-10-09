@@ -6,6 +6,8 @@ import { PH } from "@/components/Placeholder"
 
 import { ALL_MENU_SECTIONS } from "@/data/allMenu"
 
+import { FOOTER_COPYRIGHT, FOOTER_INFO } from "@/data/footer"
+
 // 055(057)-SL-AL-01 전체 메뉴 — 2분할 레이아웃
 
 export function AllMenuScreen() {
@@ -256,6 +258,16 @@ export function AllMenuScreen() {
                 ))}
               </div>
             ))}
+
+            {/* 구단 정보 — 라이온즈 메뉴 하단 (모바일 푸터 대체) */}
+            {sections[activeSection].title === "라이온즈" && (
+              <div className="mt-4 px-2 flex flex-col gap-0.5 text-[10px] leading-relaxed text-[#9CA3AF]">
+                {FOOTER_INFO.map((t) => (
+                  <span key={t}>{t}</span>
+                ))}
+                <span className="mt-1">{FOOTER_COPYRIGHT}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

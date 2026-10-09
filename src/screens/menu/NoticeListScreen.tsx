@@ -8,7 +8,7 @@ import { LABEL_STYLE, Notice, NOTICES } from "@/data/menu"
 
 type NoticeTab = "전체" | "구단 공지" | "앱 공지"
 
-// 075(077)-SL-AL-21 공지 목록
+// 075(077)-SL-AL-21 라이온즈 소식 목록
 
 export function NoticeListScreen() {
   const navigate = useNavigate()
@@ -65,7 +65,7 @@ export function NoticeListScreen() {
 
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-4">
-      <Header title="공지사항" />
+      <Header title="라이온즈 소식" />
 
       {/* 탭 */}
       <div className="flex px-4 pt-3 gap-5 border-b border-[#DDE1EC]">

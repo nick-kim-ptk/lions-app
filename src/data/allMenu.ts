@@ -189,7 +189,7 @@ export const ALL_MENU_SECTIONS: MenuSection[] = [
         title: "소식",
 
         items: [
-          { label: "공지사항", path: "/all/notice-list" },
+          { label: "라이온즈 소식", path: "/all/notice-list" },
 
           { label: "이벤트", path: "/all/event-list" },
 

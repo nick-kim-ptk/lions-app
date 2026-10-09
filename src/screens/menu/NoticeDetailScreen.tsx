@@ -2,12 +2,12 @@ import { PH } from "@/components/Placeholder"
 
 import { Header } from "@/components/Layout"
 
-// 076(078)-SL-AL-22 공지 상세보기
+// 076(078)-SL-AL-22 라이온즈 소식 상세보기
 
 export function NoticeDetailScreen() {
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-4">
-      <Header title="공지사항" />
+      <Header title="라이온즈 소식" />
       <div className="px-4 pt-5 flex flex-col gap-4">
         {/* 뱃지 + 날짜 */}
         <div className="flex items-center gap-2">

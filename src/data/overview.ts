@@ -663,7 +663,7 @@ export const SCREENS: ScreenMeta[] = [
 
   {
     id: "077-SL-AL-21",
-    name: "공지 목록",
+    name: "라이온즈 소식 목록",
     path: "/all/notice-list",
     group: "전체메뉴",
     layout: "list",
@@ -671,7 +671,7 @@ export const SCREENS: ScreenMeta[] = [
 
   {
     id: "078-SL-AL-22",
-    name: "공지 상세보기",
+    name: "라이온즈 소식 상세보기",
     path: "/all/notice-detail",
     group: "전체메뉴",
     layout: "detail",
@@ -1198,11 +1198,11 @@ export const IA_TREE: { group: Group; screens: IATreeNode[] }[] = [
             path: "/all/partners",
           },
 
-          { id: "077-SL-AL-21", name: "공지 목록", path: "/all/notice-list" },
+          { id: "077-SL-AL-21", name: "라이온즈 소식 목록", path: "/all/notice-list" },
 
           {
             id: "078-SL-AL-22",
-            name: "공지 상세보기",
+            name: "라이온즈 소식 상세보기",
             path: "/all/notice-detail",
           },
 

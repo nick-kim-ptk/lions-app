@@ -999,7 +999,7 @@ export function HomeScreen() {
       {/* Notice */}
       <div className="px-4 mb-6">
         <PHSection
-          label="공지사항"
+          label="라이온즈 소식"
           onMore={() => navigate("/all/notice-list")}
         />
         <div className="flex flex-col">

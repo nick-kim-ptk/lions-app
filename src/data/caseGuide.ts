@@ -1323,11 +1323,11 @@ export const NOTIFICATION_PLAN: {
   {
     group: "공지·마케팅",
     title: "앱 공지·점검·업데이트",
-    when: "공지 등록 시",
+    when: "라이온즈 소식 등록 시",
     example: "[공지] 앱 업데이트 안내 (v3.2.1)",
     type: "선택",
     setting: "공지 알림",
-    link: "공지사항",
+    link: "라이온즈 소식",
   },
 
   {

@@ -1122,12 +1122,6 @@ export function HomeScreen() {
         </button>
       </div>
 
-      {/* Copyright */}
-      <div className="px-4 pt-2 pb-4 text-center">
-        <p className="text-[10px] text-[#9CA3AF]">
-          © 2026 Samsung Lions. All rights reserved.
-        </p>
-      </div>
 
       {showNotice && <NoticePopup onClose={() => setShowNotice(false)} />}
 

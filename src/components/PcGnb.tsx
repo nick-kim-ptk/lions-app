@@ -221,6 +221,16 @@ export function PcGnb() {
   )
 }
 
+// 하단 푸터 — 모바일·PC 공통 (구단 사업자 정보)
+
+const FOOTER_INFO = [
+  "대표이사: 유정근",
+  "사업자번호: 504-81-03755",
+  "개인정보취급방침관리자: 삼성 라이온즈",
+  "전화번호: 053-780-3300",
+  "주소: 대구광역시 수성구 야구전설로 1",
+]
+
 export function PcFooter() {
   const navigate = useNavigate()
 
@@ -233,24 +243,31 @@ export function PcFooter() {
   ]
 
   return (
-    <footer className="hidden lg:block mt-16 bg-white border-t border-[#DDE1EC]">
-      <div className={`${PC_CONTAINER} py-8`}>
-        <div className="flex flex-wrap gap-x-6 gap-y-2 mb-4">
+    <footer className="mt-10 lg:mt-16 bg-white border-t border-[#DDE1EC]">
+      <div className={`${PC_CONTAINER} py-6 lg:py-8`}>
+        <div className="flex flex-wrap gap-x-4 gap-y-1.5 lg:gap-x-6 lg:gap-y-2 mb-3 lg:mb-4">
           {links.map((l) => (
             <button
               key={l.label}
               onClick={() => navigate(l.path)}
-              className="text-[13px] text-[#475569] hover:text-[#1B5BF0]"
+              className="text-[11px] lg:text-[13px] text-[#475569] hover:text-[#1B5BF0]"
             >
               {l.label}
             </button>
           ))}
         </div>
 
-        <p className="text-[12px] text-[#94A3B8] leading-relaxed">
-          삼성 라이온즈 · 대구광역시 수성구 야구전설로 1 대구삼성라이온즈파크
-          <br />
-          본 화면은 프로토타입이며 모든 데이터는 더미입니다.
+        <p className="text-[10px] lg:text-[12px] text-[#94A3B8] leading-relaxed">
+          {FOOTER_INFO.map((t, i) => (
+            <span key={t}>
+              {i > 0 && <span className="mx-1.5 text-[#CBD5E1]">/</span>}
+              {t}
+            </span>
+          ))}
+        </p>
+
+        <p className="mt-2 text-[10px] lg:text-[12px] text-[#94A3B8]">
+          Copyright©Samsung Lions. All Right Reserved.
         </p>
       </div>
     </footer>

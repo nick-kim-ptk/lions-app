@@ -139,8 +139,8 @@ export function SettingsScreen() {
       <Header title="설정" />
 
       <div className="px-4 pt-4 flex flex-col gap-4 flex-1">
-        {/* 알림 설정 카드 */}
-        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] px-4 pb-1">
+        {/* 알림 설정 카드 — 앱 전용(푸시 권한·기기 알림)이라 PC에서는 숨김 */}
+        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] px-4 pb-1 lg:hidden">
           <div className="flex items-center justify-between py-3">
             <p className="text-xs text-[#9CA3AF]">알림 설정</p>
             <CaseSelect

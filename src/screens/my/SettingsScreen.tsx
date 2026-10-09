@@ -202,7 +202,7 @@ export function SettingsScreen() {
           </div>
 
           {/* 개별 알림 리스트 */}
-          {(Object.keys(notifs) as keyof typeof notifs[]).map((n) => (
+          {(Object.keys(notifs) as (keyof typeof notifs)[]).map((n) => (
             <div
               key={n}
               className="flex items-center justify-between py-3 border-t border-[#DDE1EC]"

@@ -17,7 +17,7 @@ export function CheerSquadScreen() {
 
       {/* 탭 */}
       <div className="flex px-4 pt-3 gap-2 border-b border-[#DDE1EC]">
-        {(Object.keys(CHEER_MEMBERS) as keyof typeof CHEER_MEMBERS[]).map(
+        {(Object.keys(CHEER_MEMBERS) as (keyof typeof CHEER_MEMBERS)[]).map(
           (t) => (
             <button
               key={t}

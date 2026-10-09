@@ -174,33 +174,33 @@ export function MyHomeScreen() {
       >
         <div
           className="flex ml-4 transition-transform duration-300 ease-out"
-          style={{ transform: `translateX(${-cardIndex * 60}%)` }}
+          style={{ transform: `translateX(${-cardIndex * 50}%)` }}
         >
           {joined && (<>
           {/* 카드 1 — 라이온즈 멤버십 */}
-          <div className="shrink-0 pr-3" style={{ width: '60%' }}>
+          <div className="shrink-0 pr-3" style={{ width: '50%' }}>
             <MemberCard kind="blue" onClick={() => navigate('/my/membership')} />
           </div>
 
           {/* 카드 2 — 프리미엄 블루 시즌권 */}
-          <div className="shrink-0 pr-3" style={{ width: '60%' }}>
+          <div className="shrink-0 pr-3" style={{ width: '50%' }}>
             <MemberCard kind="season" onClick={() => navigate('/my/membership')} />
           </div>
 
           {/* 카드 3 — 어린이 멤버십 */}
-          <div className="shrink-0 pr-3" style={{ width: '60%' }}>
+          <div className="shrink-0 pr-3" style={{ width: '50%' }}>
             <MemberCard kind="kids" onClick={() => navigate('/my/membership')} />
           </div>
           </>)}
 
           {!joined && (<>
           {/* 카드 4 — 라이온즈 멤버십 모집 */}
-          <div className="shrink-0 pr-3" style={{ width: '60%' }}>
+          <div className="shrink-0 pr-3" style={{ width: '50%' }}>
             <JoinClosedCard kind="member" title="2027 라이온즈 멤버십 모집" tone="blue" state={joinState} onJoin={() => navigate('/my/membership-guide')} />
           </div>
 
           {/* 카드 5 — 어린이 회원 모집 (모집 기간 외) */}
-          <div className="shrink-0 pr-3" style={{ width: '60%' }}>
+          <div className="shrink-0 pr-3" style={{ width: '50%' }}>
             <JoinClosedCard kind="child" title="2027 어린이 회원 모집" tone="gold" state={joinState} onJoin={() => navigate('/my/child-register')} />
           </div>
           </>)}

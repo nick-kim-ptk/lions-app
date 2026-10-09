@@ -62,7 +62,7 @@ export function MembershipScreen() {
         {SECTIONS.map((sec) => (
           <div key={sec.kind} className="flex flex-col gap-3">
             {/* MY 홈과 같은 9:16 카드 */}
-            <div className="mx-auto w-[62%]">
+            <div className="mx-auto w-[50%]">
               <MemberCard kind={sec.kind} />
             </div>
             <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-4 shadow-2xs">

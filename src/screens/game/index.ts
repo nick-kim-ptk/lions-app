@@ -1,10 +1,19 @@
-export { GameDashboardScreen } from './GameDashboardScreen'
-export { LineupScreen } from './LineupScreen'
-export { LionsNewsScreen } from './LionsNewsScreen'
-export { ScheduleScreen } from './ScheduleScreen'
-export { StatsScreen } from './StatsScreen'
-export { StadiumScreen } from './StadiumScreen'
-export { MagazineScreen } from './MagazineScreen'
-export { AwayScreen } from './AwayScreen'
-export { VRScreen } from './VRScreen'
-export { VRViewerScreen } from './VRViewerScreen'
+export { GameDashboardScreen } from "./GameDashboardScreen"
+
+export { LineupScreen } from "./LineupScreen"
+
+export { LionsNewsScreen } from "./LionsNewsScreen"
+
+export { ScheduleScreen } from "./ScheduleScreen"
+
+export { StatsScreen } from "./StatsScreen"
+
+export { StadiumScreen } from "./StadiumScreen"
+
+export { MagazineScreen } from "./MagazineScreen"
+
+export { AwayScreen } from "./AwayScreen"
+
+export { VRScreen } from "./VRScreen"
+
+export { VRViewerScreen } from "./VRViewerScreen"

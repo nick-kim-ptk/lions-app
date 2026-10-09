@@ -1,1 +1,1 @@
-export { TicketScreen } from './TicketScreen'
+export { TicketScreen } from "./TicketScreen"

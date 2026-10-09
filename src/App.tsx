@@ -1,14 +1,27 @@
-import { HashRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
-import Layout, { ScreenIdBadge } from './components/Layout'
+import {
+  HashRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom"
+
+import { useEffect } from "react"
+
+import Layout, { ScreenIdBadge } from "./components/Layout"
 
 function ScrollToTop() {
   const { pathname } = useLocation()
-  useEffect(() => { window.scrollTo(0, 0) }, [pathname])
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
   return null
 }
 
 // Onboarding & Auth
+
 import {
   SplashScreen,
   PermissionsScreen,
@@ -21,12 +34,14 @@ import {
   FindAccountScreen,
   FindCompleteScreen,
   SetNewPasswordScreen,
-} from './screens/onboarding'
+} from "./screens/onboarding"
 
 // Home
-import { HomeScreen, NotificationsScreen } from './screens/home'
+
+import { HomeScreen, NotificationsScreen } from "./screens/home"
 
 // Game
+
 import {
   GameDashboardScreen,
   LineupScreen,
@@ -38,12 +53,14 @@ import {
   AwayScreen,
   VRScreen,
   VRViewerScreen,
-} from './screens/game'
+} from "./screens/game"
 
 // Ticket
-import { TicketScreen } from './screens/ticket'
+
+import { TicketScreen } from "./screens/ticket"
 
 // Lounge
+
 import {
   LoungeDashboardScreen,
   ExclusiveContentScreen,
@@ -55,9 +72,10 @@ import {
   DigitalGuideScreen,
   SNSScreen,
   BlueSignalScreen,
-} from './screens/lounge'
+} from "./screens/lounge"
 
 // My Page
+
 import {
   MyHomeScreen,
   SettingsScreen,
@@ -84,9 +102,10 @@ import {
   MembershipHistoryScreen,
   ChildRegisterScreen,
   PressApplicationScreen,
-} from './screens/my'
+} from "./screens/my"
 
 // All Menu
+
 import {
   AllMenuScreen,
   AboutClubScreen,
@@ -113,15 +132,15 @@ import {
   MediaPressCenterDetailScreen,
   EventListScreen,
   EventDetailScreen,
-
   EventHistoryScreen,
   PreviewListScreen,
   PreviewDetailScreen,
   FAQScreen,
-} from './screens/menu'
+} from "./screens/menu"
 
 // Overview
-import { OverviewScreen, CaseGuideScreen } from './screens/dev'
+
+import { OverviewScreen, CaseGuideScreen } from "./screens/dev"
 
 export default function App() {
   return (
@@ -141,7 +160,10 @@ export default function App() {
         <Route path="/find-account" element={<FindAccountScreen />} />
         <Route path="/find-complete" element={<FindCompleteScreen />} />
         <Route path="/set-new-password" element={<SetNewPasswordScreen />} />
-        <Route path="/my/withdraw-complete" element={<WithdrawCompleteScreen />} />
+        <Route
+          path="/my/withdraw-complete"
+          element={<WithdrawCompleteScreen />}
+        />
         <Route path="/overview" element={<OverviewScreen />} />
         <Route path="/case-guide" element={<CaseGuideScreen />} />
         <Route path="/all-menu" element={<AllMenuScreen />} />
@@ -170,13 +192,22 @@ export default function App() {
 
           {/* Lounge */}
           <Route path="/lounge" element={<LoungeDashboardScreen />} />
-          <Route path="/lounge/exclusive" element={<ExclusiveContentScreen />} />
+          <Route
+            path="/lounge/exclusive"
+            element={<ExclusiveContentScreen />}
+          />
 
           <Route path="/my/diary" element={<DiaryScreen />} />
           <Route path="/lounge/cheer-board" element={<CheerBoardScreen />} />
           <Route path="/lounge/fortune" element={<FortuneScreen />} />
-          <Route path="/lounge/digital-goods" element={<DigitalGoodsScreen />} />
-          <Route path="/lounge/digital-guide" element={<DigitalGuideScreen />} />
+          <Route
+            path="/lounge/digital-goods"
+            element={<DigitalGoodsScreen />}
+          />
+          <Route
+            path="/lounge/digital-guide"
+            element={<DigitalGuideScreen />}
+          />
           <Route path="/lounge/sns" element={<SNSScreen />} />
           <Route path="/lounge/blue-signal" element={<BlueSignalScreen />} />
 
@@ -187,14 +218,23 @@ export default function App() {
           <Route path="/my/cctv-policy" element={<CCTVPolicyScreen />} />
           <Route path="/my/email-refuse" element={<EmailRefuseScreen />} />
           <Route path="/my/edit-profile" element={<EditProfileScreen />} />
-          <Route path="/my/change-password" element={<ChangePasswordScreen />} />
-          <Route path="/my/press-application" element={<PressApplicationScreen />} />
+          <Route
+            path="/my/change-password"
+            element={<ChangePasswordScreen />}
+          />
+          <Route
+            path="/my/press-application"
+            element={<PressApplicationScreen />}
+          />
           <Route path="/my/withdraw" element={<WithdrawScreen />} />
           <Route path="/my/ticket-qr" element={<MobileTicketQRScreen />} />
           <Route path="/my/emblem" element={<MyEmblemScreen />} />
           <Route path="/my/emblem-detail" element={<EmblemDetailScreen />} />
           <Route path="/my/theme" element={<ThemeChangeScreen />} />
-          <Route path="/my/booking-history" element={<BookingHistoryScreen />} />
+          <Route
+            path="/my/booking-history"
+            element={<BookingHistoryScreen />}
+          />
           <Route path="/my/booking-detail" element={<BookingDetailScreen />} />
           <Route path="/my/booking-cancel" element={<BookingCancelScreen />} />
           <Route path="/my/booking-guide" element={<BookingGuideScreen />} />
@@ -202,8 +242,14 @@ export default function App() {
           <Route path="/my/coupons" element={<CouponsScreen />} />
           <Route path="/my/coupon-use" element={<CouponUseScreen />} />
           <Route path="/my/membership" element={<MembershipScreen />} />
-          <Route path="/my/membership-guide" element={<MembershipGuideScreen />} />
-          <Route path="/my/membership-history" element={<MembershipHistoryScreen />} />
+          <Route
+            path="/my/membership-guide"
+            element={<MembershipGuideScreen />}
+          />
+          <Route
+            path="/my/membership-history"
+            element={<MembershipHistoryScreen />}
+          />
           <Route path="/my/child-register" element={<ChildRegisterScreen />} />
 
           {/* All Menu */}
@@ -219,16 +265,28 @@ export default function App() {
           <Route path="/all/history" element={<HistoryScreen />} />
           <Route path="/all/past-managers" element={<PastManagersScreen />} />
           <Route path="/all/lions-21" element={<Lions21Screen />} />
-          <Route path="/all/history-moments" element={<HistoryMomentsScreen />} />
+          <Route
+            path="/all/history-moments"
+            element={<HistoryMomentsScreen />}
+          />
           <Route path="/all/club-news" element={<ClubNewsListScreen />} />
           <Route path="/all/audit-report" element={<AuditReportScreen />} />
           <Route path="/all/partners" element={<PartnersScreen />} />
           <Route path="/all/notice-list" element={<NoticeListScreen />} />
           <Route path="/all/notice-detail" element={<NoticeDetailScreen />} />
           <Route path="/all/press-center" element={<PressCenterScreen />} />
-          <Route path="/all/press-center-detail" element={<PressCenterDetailScreen />} />
-          <Route path="/all/media-press-center" element={<MediaPressCenterScreen />} />
-          <Route path="/all/media-press-center-detail" element={<MediaPressCenterDetailScreen />} />
+          <Route
+            path="/all/press-center-detail"
+            element={<PressCenterDetailScreen />}
+          />
+          <Route
+            path="/all/media-press-center"
+            element={<MediaPressCenterScreen />}
+          />
+          <Route
+            path="/all/media-press-center-detail"
+            element={<MediaPressCenterDetailScreen />}
+          />
           <Route path="/all/event-list" element={<EventListScreen />} />
           <Route path="/all/event-detail" element={<EventDetailScreen />} />
 

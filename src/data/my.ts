@@ -1,118 +1,370 @@
-import ticketKv from '@/assets/images/ticket-kv.png'
-import { KBO_TEAM_NAMES, NOW_MINUTES, bookableHomeGames, SMART_TICKET_BOOKINGS, TEAMS, fmtDotMDW, fmtMDW, gameOf, seatText, toMinutes } from '@/data/mock'
+import ticketKv from "@/assets/images/ticket-kv.png"
+
+import {
+  KBO_TEAM_NAMES,
+  NOW_MINUTES,
+  bookableHomeGames,
+  SMART_TICKET_BOOKINGS,
+  TEAMS,
+  fmtDotMDW,
+  fmtMDW,
+  gameOf,
+  seatText,
+  toMinutes,
+} from "@/data/mock"
 
 // 029(031)-SL-MY-02 설정
+
 // 211x61 PNG — 아이콘 3개 가로 배열: 카카오(0~70), 네이버(70~140), 구글(140~211)
+
 export const SOCIAL_ICONS = [
-  { label: '카카오', bgX: 0 },
-  { label: '네이버', bgX: -71 },
-  { label: '구글',   bgX: -142 },
+  { label: "카카오", bgX: 0 },
+
+  { label: "네이버", bgX: -71 },
+
+  { label: "구글", bgX: -142 },
 ]
 
 // 033(035)-SL-MY-06 내 정보 수정
+
 export const KBO_TEAMS = KBO_TEAM_NAMES
 
 // 037(039)-SL-MY-10 스마트티켓 (QR) — 전체화면
+
 // 발권된 예매(data/mock/bookings)를 좌석 1매 = 티켓 1장으로 펼친 목록
+
 export const MOBILE_TICKETS = [...SMART_TICKET_BOOKINGS]
-  .sort((a, b) => toMinutes(gameOf(a).date, gameOf(a).time) - toMinutes(gameOf(b).date, gameOf(b).time)) // 경기 날짜순
+
+  .sort(
+    (a, b) =>
+      toMinutes(gameOf(a).date, gameOf(a).time) -
+      toMinutes(gameOf(b).date, gameOf(b).time),
+  ) // 경기 날짜순
+
   .flatMap((b) => {
-  const g = gameOf(b)
-  const seats = b.status === '부분 취소' ? b.seats.slice(0, 1) : b.seats
-  return seats.map((seat) => ({
-    opponent: TEAMS[g.opp].name,
-    date: `${fmtDotMDW(g.date)} ${g.time}`,
-    gate: b.gate,
-    zone: b.zone,
-    seat: seatText(b, [seat]),
-    ticketNo: `TK-${g.date.replace(/-/g, '')}-${b.no.slice(-4)}`,
-    barcode: `SL-${g.date}-${b.no.slice(-4)}-S${seat}`,
-    kvImage: ticketKv,
-    // 입장 QR은 경기 시작 2시간 전부터 노출
-    barcodeOpen: NOW_MINUTES >= toMinutes(g.date, g.time) - 120,
-    barcodeOpenLabel: `${fmtMDW(g.date)} ${String(Number(g.time.slice(0, 2)) - 2).padStart(2, '0')}:${g.time.slice(3)}`,
-  }))
-}).map((t, i) => ({ id: i + 1, ...t }))
+    const g = gameOf(b)
+
+    const seats = b.status === "부분 취소" ? b.seats.slice(0, 1) : b.seats
+
+    return seats.map((seat) => ({
+      opponent: TEAMS[g.opp].name,
+
+      date: `${fmtDotMDW(g.date)} ${g.time}`,
+
+      gate: b.gate,
+
+      zone: b.zone,
+
+      seat: seatText(b, [seat]),
+
+      ticketNo: `TK-${g.date.replace(/-/g, "")}-${b.no.slice(-4)}`,
+
+      barcode: `SL-${g.date}-${b.no.slice(-4)}-S${seat}`,
+
+      kvImage: ticketKv,
+
+      // 입장 QR은 경기 시작 2시간 전부터 노출
+
+      barcodeOpen: NOW_MINUTES >= toMinutes(g.date, g.time) - 120,
+
+      barcodeOpenLabel: `${fmtMDW(g.date)} ${String(Number(g.time.slice(0, 2)) - 2).padStart(2, "0")}:${g.time.slice(3)}`,
+    }))
+  })
+  .map((t, i) => ({ id: i + 1, ...t }))
 
 // 시즌권 스마트 티켓 — 시즌권 회원은 본인 고정석으로 홈경기마다 자동 발급 (경기 1건 = 카드 1장)
-export const SEASON_PASS = { name: '2027 프리미엄 블루 시즌권', memberNo: 'SL-2027-PRE-07', holder: '홍 길 동', zone: '1루 프리미엄석', seat: 'A블록 12열 7번', gate: '1루 프리미엄 게이트' }
-export const SEASON_PASS_TICKETS = bookableHomeGames().slice(0, 4).map((g, i) => ({
-  id: 101 + i,
-  opponent: TEAMS[g.opp].name,
-  date: `${fmtDotMDW(g.date)} ${g.time}`,
-  gate: SEASON_PASS.gate,
-  zone: SEASON_PASS.zone,
-  seat: SEASON_PASS.seat,
-  ticketNo: SEASON_PASS.memberNo,
-  barcode: `SP-${g.date}-${SEASON_PASS.memberNo}`,
-  kvImage: ticketKv,
-  barcodeOpen: NOW_MINUTES >= toMinutes(g.date, g.time) - 120,
-  barcodeOpenLabel: `${fmtMDW(g.date)} ${String(Number(g.time.slice(0, 2)) - 2).padStart(2, '0')}:${g.time.slice(3)}`,
-}))
+
+export const SEASON_PASS = {
+  name: "2027 프리미엄 블루 시즌권",
+  memberNo: "SL-2027-PRE-07",
+  holder: "홍 길 동",
+  zone: "1루 프리미엄석",
+  seat: "A블록 12열 7번",
+  gate: "1루 프리미엄 게이트",
+}
+
+export const SEASON_PASS_TICKETS = bookableHomeGames()
+  .slice(0, 4)
+  .map((g, i) => ({
+    id: 101 + i,
+
+    opponent: TEAMS[g.opp].name,
+
+    date: `${fmtDotMDW(g.date)} ${g.time}`,
+
+    gate: SEASON_PASS.gate,
+
+    zone: SEASON_PASS.zone,
+
+    seat: SEASON_PASS.seat,
+
+    ticketNo: SEASON_PASS.memberNo,
+
+    barcode: `SP-${g.date}-${SEASON_PASS.memberNo}`,
+
+    kvImage: ticketKv,
+
+    barcodeOpen: NOW_MINUTES >= toMinutes(g.date, g.time) - 120,
+
+    barcodeOpenLabel: `${fmtMDW(g.date)} ${String(Number(g.time.slice(0, 2)) - 2).padStart(2, "0")}:${g.time.slice(3)}`,
+  }))
 
 // 046-SL-MY-17 예매 안내
-export const BOOKING_GUIDE_TABS = ['예매 일정', '예매 방법', '취소/환불', '주의사항'] as const
-export const BOOKING_GUIDE: Record<(typeof BOOKING_GUIDE_TABS)[number], { title: string; lines: string[] }[]> = {
-  '예매 일정': [
-    { title: '선예매 (멤버십 회원)', lines: ['경기 7일 전 오전 10:00부터 예매할 수 있습니다.', '라이온즈 멤버십 회원과 시즌권 회원 대상이며, 보유한 매수권만큼(경기당 최대 4매) 예매할 수 있습니다.'] },
-    { title: '일반 예매', lines: ['경기 7일 전 오전 11:00부터 전체 회원이 예매할 수 있습니다.', '경기당 1인 최대 6매(선예매 매수 포함)입니다.', '예매 오픈 5분 전에 알림을 보내드립니다.'] },
-    { title: '경기 시작 시각', lines: ['평일 18:30, 토요일 17:00, 일요일 14:00 (월요일은 경기가 없습니다).', '우천·혹서 등으로 변경될 수 있으며 변경 시 앱 알림으로 안내합니다.'] },
+
+export const BOOKING_GUIDE_TABS = [
+  "예매 일정",
+  "예매 방법",
+  "취소/환불",
+  "주의사항",
+] as const
+
+export const BOOKING_GUIDE: Record<typeof BOOKING_GUIDE_TABS[number], {
+  title: string
+  lines: string[]
+}[]> = {
+  "예매 일정": [
+    {
+      title: "선예매 (멤버십 회원)",
+      lines: [
+        "경기 7일 전 오전 10:00부터 예매할 수 있습니다.",
+        "라이온즈 멤버십 회원과 시즌권 회원 대상이며, 보유한 매수권만큼(경기당 최대 4매) 예매할 수 있습니다.",
+      ],
+    },
+
+    {
+      title: "일반 예매",
+      lines: [
+        "경기 7일 전 오전 11:00부터 전체 회원이 예매할 수 있습니다.",
+        "경기당 1인 최대 6매(선예매 매수 포함)입니다.",
+        "예매 오픈 5분 전에 알림을 보내드립니다.",
+      ],
+    },
+
+    {
+      title: "경기 시작 시각",
+      lines: [
+        "평일 18:30, 토요일 17:00, 일요일 14:00 (월요일은 경기가 없습니다).",
+        "우천·혹서 등으로 변경될 수 있으며 변경 시 앱 알림으로 안내합니다.",
+      ],
+    },
   ],
-  '예매 방법': [
-    { title: '예매 절차', lines: ['티켓+ 또는 경기 일정에서 경기를 선택합니다.', '좌석을 선택하고 결제를 완료하면 예매가 확정됩니다.', '예매 완료 후 MY > 예매 내역에서 확인할 수 있습니다.'] },
-    { title: '1인 예매 가능 매수 (경기당)', lines: ['멤버십 선예매는 보유한 매수권만큼(최대 4매) 예매할 수 있습니다.', '일반 예매는 1인 최대 6매까지 예매할 수 있으며, 선예매 매수를 포함해 합산합니다.', '예) 선예매로 4매를 예매했다면 일반 예매에서는 2매까지 예매할 수 있습니다.'] },
-    { title: '스마트티켓', lines: ['예매한 티켓은 스마트티켓(QR)으로 발권됩니다.', '입장 시 MY > 스마트티켓(QR) 화면을 제시해 주세요.'] },
+
+  "예매 방법": [
+    {
+      title: "예매 절차",
+      lines: [
+        "티켓+ 또는 경기 일정에서 경기를 선택합니다.",
+        "좌석을 선택하고 결제를 완료하면 예매가 확정됩니다.",
+        "예매 완료 후 MY > 예매 내역에서 확인할 수 있습니다.",
+      ],
+    },
+
+    {
+      title: "1인 예매 가능 매수 (경기당)",
+      lines: [
+        "멤버십 선예매는 보유한 매수권만큼(최대 4매) 예매할 수 있습니다.",
+        "일반 예매는 1인 최대 6매까지 예매할 수 있으며, 선예매 매수를 포함해 합산합니다.",
+        "예) 선예매로 4매를 예매했다면 일반 예매에서는 2매까지 예매할 수 있습니다.",
+      ],
+    },
+
+    {
+      title: "스마트티켓",
+      lines: [
+        "예매한 티켓은 스마트티켓(QR)으로 발권됩니다.",
+        "입장 시 MY > 스마트티켓(QR) 화면을 제시해 주세요.",
+      ],
+    },
   ],
-  '취소/환불': [
-    { title: '취소 가능 시간', lines: ['경기 시작 4시간 전까지 취소할 수 있습니다.', '경기 당일에는 마감 시각이 지나면 취소가 불가합니다.'] },
-    { title: '수수료 안내', lines: ['예매 수수료는 예매 당일 자정까지 취소할 때만 환불되며, 이후 취소 시에는 환불되지 않습니다.', '티켓 금액은 결제 수단으로 환불되며, 환불까지 영업일 기준 3~5일이 걸릴 수 있습니다.'] },
-    { title: '우천 취소·순연', lines: ['우천 등으로 경기가 취소되면 티켓 금액과 수수료가 전액 자동 환불됩니다.', '순연된 경기는 기존 예매 내역이 그대로 유지됩니다.'] },
+
+  "취소/환불": [
+    {
+      title: "취소 가능 시간",
+      lines: [
+        "경기 시작 4시간 전까지 취소할 수 있습니다.",
+        "경기 당일에는 마감 시각이 지나면 취소가 불가합니다.",
+      ],
+    },
+
+    {
+      title: "수수료 안내",
+      lines: [
+        "예매 수수료는 예매 당일 자정까지 취소할 때만 환불되며, 이후 취소 시에는 환불되지 않습니다.",
+        "티켓 금액은 결제 수단으로 환불되며, 환불까지 영업일 기준 3~5일이 걸릴 수 있습니다.",
+      ],
+    },
+
+    {
+      title: "우천 취소·순연",
+      lines: [
+        "우천 등으로 경기가 취소되면 티켓 금액과 수수료가 전액 자동 환불됩니다.",
+        "순연된 경기는 기존 예매 내역이 그대로 유지됩니다.",
+      ],
+    },
   ],
-  '주의사항': [
-    { title: '스마트티켓 발권 후', lines: ['스마트티켓을 발권한 이후에는 종이(지류) 티켓을 발권할 수 없습니다.', '선물한 티켓은 상대방이 수락하기 전까지 취소할 수 있습니다.'] },
-    { title: '부정 예매 금지', lines: ['예매 매크로 등 부정한 방법으로 예매한 티켓은 사전 안내 없이 취소될 수 있습니다.', '암표 거래는 법에 따라 처벌받을 수 있습니다.'] },
-    { title: '문의', lines: ['예매 관련 문의는 고객센터를 이용해 주세요.', '운영시간: 평일 09:00~18:00 (경기 당일 현장 운영)'] },
+
+  주의사항: [
+    {
+      title: "스마트티켓 발권 후",
+      lines: [
+        "스마트티켓을 발권한 이후에는 종이(지류) 티켓을 발권할 수 없습니다.",
+        "선물한 티켓은 상대방이 수락하기 전까지 취소할 수 있습니다.",
+      ],
+    },
+
+    {
+      title: "부정 예매 금지",
+      lines: [
+        "예매 매크로 등 부정한 방법으로 예매한 티켓은 사전 안내 없이 취소될 수 있습니다.",
+        "암표 거래는 법에 따라 처벌받을 수 있습니다.",
+      ],
+    },
+
+    {
+      title: "문의",
+      lines: [
+        "예매 관련 문의는 고객센터를 이용해 주세요.",
+        "운영시간: 평일 09:00~18:00 (경기 당일 현장 운영)",
+      ],
+    },
   ],
 }
 
 // 법적 고지 화면 공통 안내 — 더미 문구
-export const LEGAL_DUMMY_NOTE = '※ 본문은 화면 구성을 위한 예시 문구입니다. 서비스 적용 전 법무 검토를 거친 확정 문구로 교체해야 합니다.'
+
+export const LEGAL_DUMMY_NOTE =
+  "※ 본문은 화면 구성을 위한 예시 문구입니다. 서비스 적용 전 법무 검토를 거친 확정 문구로 교체해야 합니다."
 
 // 032-SL-MY-03 개인정보 처리방침
+
 export const PRIVACY_POLICY = {
-  version: '시행일 2026.01.01',
-  intro: '삼성라이온즈(이하 "구단")는 이용자의 개인정보를 소중하게 생각하며, 관련 법령에 따라 안전하게 보호하기 위해 최선을 다하고 있습니다.',
+  version: "시행일 2026.01.01",
+
+  intro:
+    '삼성라이온즈(이하 "구단")는 이용자의 개인정보를 소중하게 생각하며, 관련 법령에 따라 안전하게 보호하기 위해 최선을 다하고 있습니다.',
+
   sections: [
-    { title: '1. 수집하는 개인정보 항목', lines: ['(필수) 이름, 휴대폰 번호, 생년월일, 이메일, 아이디, 비밀번호', '(선택) 주소, 응원 팀·선수 정보, 마케팅 수신 동의 여부', '서비스 이용 과정에서 기기 정보, 접속 로그가 자동으로 수집될 수 있습니다.'] },
-    { title: '2. 수집 및 이용 목적', lines: ['회원 가입 및 본인 확인, 서비스 제공', '티켓 예매 내역 조회, 이벤트 참여 및 경품 제공', '공지사항 전달, 민원 처리, 서비스 개선'] },
-    { title: '3. 보유 및 이용 기간', lines: ['회원 탈퇴 시까지 보유하며, 관련 법령에 따라 보존이 필요한 정보는 해당 기간 동안 보관합니다.', '마지막 로그인 후 3년간 이용 기록이 없으면 탈퇴 처리되며, 처리 전에 사전 안내합니다.'] },
-    { title: '4. 개인정보의 제3자 제공', lines: ['이용자의 동의가 있거나 법령에 근거가 있는 경우를 제외하고 외부에 제공하지 않습니다.', '티켓 예매 서비스 이용 시 예매 처리에 필요한 최소한의 정보가 제공될 수 있습니다.'] },
-    { title: '5. 개인정보 처리의 위탁', lines: ['서비스 운영을 위해 필요한 범위에서 전문 업체에 업무를 위탁할 수 있으며, 위탁 시 관련 법령에 따라 관리·감독합니다.'] },
-    { title: '6. 이용자의 권리', lines: ['이용자는 언제든지 개인정보 열람, 정정, 삭제, 처리정지를 요청할 수 있습니다.', 'MY > 내 정보 수정 또는 고객센터를 통해 요청할 수 있습니다.'] },
-    { title: '7. 개인정보의 안전성 확보 조치', lines: ['접근 권한 관리, 암호화, 접근 기록 보관 등 기술적·관리적 보호 조치를 시행합니다.'] },
-    { title: '8. 개인정보 보호책임자', lines: ['개인정보 보호책임자: ○○○ (구단 ○○팀)', '문의: privacy@example.com (예시)'] },
+    {
+      title: "1. 수집하는 개인정보 항목",
+      lines: [
+        "(필수) 이름, 휴대폰 번호, 생년월일, 이메일, 아이디, 비밀번호",
+        "(선택) 주소, 응원 팀·선수 정보, 마케팅 수신 동의 여부",
+        "서비스 이용 과정에서 기기 정보, 접속 로그가 자동으로 수집될 수 있습니다.",
+      ],
+    },
+
+    {
+      title: "2. 수집 및 이용 목적",
+      lines: [
+        "회원 가입 및 본인 확인, 서비스 제공",
+        "티켓 예매 내역 조회, 이벤트 참여 및 경품 제공",
+        "공지사항 전달, 민원 처리, 서비스 개선",
+      ],
+    },
+
+    {
+      title: "3. 보유 및 이용 기간",
+      lines: [
+        "회원 탈퇴 시까지 보유하며, 관련 법령에 따라 보존이 필요한 정보는 해당 기간 동안 보관합니다.",
+        "마지막 로그인 후 3년간 이용 기록이 없으면 탈퇴 처리되며, 처리 전에 사전 안내합니다.",
+      ],
+    },
+
+    {
+      title: "4. 개인정보의 제3자 제공",
+      lines: [
+        "이용자의 동의가 있거나 법령에 근거가 있는 경우를 제외하고 외부에 제공하지 않습니다.",
+        "티켓 예매 서비스 이용 시 예매 처리에 필요한 최소한의 정보가 제공될 수 있습니다.",
+      ],
+    },
+
+    {
+      title: "5. 개인정보 처리의 위탁",
+      lines: [
+        "서비스 운영을 위해 필요한 범위에서 전문 업체에 업무를 위탁할 수 있으며, 위탁 시 관련 법령에 따라 관리·감독합니다.",
+      ],
+    },
+
+    {
+      title: "6. 이용자의 권리",
+      lines: [
+        "이용자는 언제든지 개인정보 열람, 정정, 삭제, 처리정지를 요청할 수 있습니다.",
+        "MY > 내 정보 수정 또는 고객센터를 통해 요청할 수 있습니다.",
+      ],
+    },
+
+    {
+      title: "7. 개인정보의 안전성 확보 조치",
+      lines: [
+        "접근 권한 관리, 암호화, 접근 기록 보관 등 기술적·관리적 보호 조치를 시행합니다.",
+      ],
+    },
+
+    {
+      title: "8. 개인정보 보호책임자",
+      lines: [
+        "개인정보 보호책임자: ○○○ (구단 ○○팀)",
+        "문의: privacy@example.com (예시)",
+      ],
+    },
   ],
 }
 
 // 033-SL-MY-04 영상정보처리기기 운영관리방침
+
 export const CCTV_POLICY = {
-  version: '시행일 2026.01.01',
-  intro: '구단은 경기장 및 구단 시설의 안전과 질서 유지를 위해 영상정보처리기기를 설치·운영하고 있습니다.',
+  version: "시행일 2026.01.01",
+
+  intro:
+    "구단은 경기장 및 구단 시설의 안전과 질서 유지를 위해 영상정보처리기기를 설치·운영하고 있습니다.",
+
   sections: [
-    { title: '1. 설치 목적', lines: ['시설 안전 및 화재 예방, 범죄 예방, 관람객 안전 확보'] },
-    { title: '2. 설치 대수 및 위치', lines: ['출입구, 관람석 통로, 주차장 등 주요 지점 (상세 대수·위치 입력)', '탈의실·화장실 등 사생활을 현저히 침해할 우려가 있는 장소에는 설치하지 않습니다.'] },
-    { title: '3. 촬영 범위 및 시간', lines: ['설치 장소 주변 상시 촬영', '녹음 기능은 사용하지 않습니다.'] },
-    { title: '4. 보관 기간', lines: ['촬영된 영상은 촬영일로부터 30일 이내 보관 후 자동 삭제됩니다.'] },
-    { title: '5. 열람 및 제공', lines: ['정보주체는 본인이 촬영된 영상의 열람을 요청할 수 있습니다.', '수사기관 등 법령에 근거한 요청이 있는 경우 외에는 제3자에게 제공하지 않습니다.'] },
-    { title: '6. 관리책임자 및 문의', lines: ['관리책임자: ○○○ (구단 ○○팀)', '문의: 고객센터 (예시)'] },
+    {
+      title: "1. 설치 목적",
+      lines: ["시설 안전 및 화재 예방, 범죄 예방, 관람객 안전 확보"],
+    },
+
+    {
+      title: "2. 설치 대수 및 위치",
+      lines: [
+        "출입구, 관람석 통로, 주차장 등 주요 지점 (상세 대수·위치 입력)",
+        "탈의실·화장실 등 사생활을 현저히 침해할 우려가 있는 장소에는 설치하지 않습니다.",
+      ],
+    },
+
+    {
+      title: "3. 촬영 범위 및 시간",
+      lines: ["설치 장소 주변 상시 촬영", "녹음 기능은 사용하지 않습니다."],
+    },
+
+    {
+      title: "4. 보관 기간",
+      lines: ["촬영된 영상은 촬영일로부터 30일 이내 보관 후 자동 삭제됩니다."],
+    },
+
+    {
+      title: "5. 열람 및 제공",
+      lines: [
+        "정보주체는 본인이 촬영된 영상의 열람을 요청할 수 있습니다.",
+        "수사기관 등 법령에 근거한 요청이 있는 경우 외에는 제3자에게 제공하지 않습니다.",
+      ],
+    },
+
+    {
+      title: "6. 관리책임자 및 문의",
+      lines: ["관리책임자: ○○○ (구단 ○○팀)", "문의: 고객센터 (예시)"],
+    },
   ],
 }
 
 // 034-SL-MY-05 이메일 무단수집거부
+
 export const EMAIL_REFUSE = {
   paragraphs: [
-    '본 서비스에 게시된 이메일 주소가 전자우편 수집 프로그램이나 그 밖의 기술적 장치를 이용하여 무단으로 수집되는 것을 거부합니다.',
-    '이를 위반할 경우 「정보통신망 이용촉진 및 정보보호 등에 관한 법률」에 따라 형사처벌을 받을 수 있습니다.',
+    "본 서비스에 게시된 이메일 주소가 전자우편 수집 프로그램이나 그 밖의 기술적 장치를 이용하여 무단으로 수집되는 것을 거부합니다.",
+
+    "이를 위반할 경우 「정보통신망 이용촉진 및 정보보호 등에 관한 법률」에 따라 형사처벌을 받을 수 있습니다.",
   ],
-  date: '게시일 2026.01.01',
+
+  date: "게시일 2026.01.01",
 }

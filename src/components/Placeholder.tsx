@@ -1,61 +1,123 @@
-import React from 'react'
+import React from "react"
 
 // Base rectangle placeholder
-export function PH({ className = '' }: { className?: string }) {
+
+export function PH({ className = "" }: { className?: string }) {
   return <div className={`bg-[#E8EBF4] rounded-xl ${className}`} />
 }
 
 // 이미지 자리 — 어떤 이미지가 들어가는지 설명 캡션을 함께 표시 (화면설계서/디자인 인계용)
-export function PHImage({ label, className = 'h-44', rounded = 'rounded-none' }: { label?: string; className?: string; rounded?: string }) {
+
+export function PHImage({
+  label,
+  className = "h-44",
+  rounded = "rounded-none",
+}: {
+  label?: string
+  className?: string
+  rounded?: string
+}) {
   return (
-    <div className={`relative w-full bg-[#E4E8F5] overflow-hidden flex items-center justify-center ${rounded} ${className}`}>
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="opacity-40">
-        <rect x="3" y="4" width="18" height="16" rx="2" stroke="#8595AB" strokeWidth="1.6" />
+    <div
+      className={`relative w-full bg-[#E4E8F5] overflow-hidden flex items-center justify-center ${rounded} ${className}`}
+    >
+      <svg
+        width="28"
+        height="28"
+        viewBox="0 0 24 24"
+        fill="none"
+        className="opacity-40"
+      >
+        <rect
+          x="3"
+          y="4"
+          width="18"
+          height="16"
+          rx="2"
+          stroke="#8595AB"
+          strokeWidth="1.6"
+        />
         <circle cx="9" cy="10" r="1.8" stroke="#8595AB" strokeWidth="1.6" />
-        <path d="M21 16l-5-5-8 8" stroke="#8595AB" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+        <path
+          d="M21 16l-5-5-8 8"
+          stroke="#8595AB"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
-      {label && <span className="absolute bottom-2 left-3 right-3 text-center text-[10px] text-[#8595AB] leading-snug">{label}</span>}
-    </div>
-  )
-}
-
-// Circle placeholder (avatars, icons)
-export function PHCircle({ className = 'w-10 h-10' }: { className?: string }) {
-  return <div className={`${className} bg-[#E8EBF4] rounded-full shrink-0`} />
-}
-
-// Text line placeholder
-export function PHText({ className = 'w-full' }: { className?: string }) {
-  return <div className={`h-[10px] bg-[#E8EBF4] rounded-full ${className}`} />
-}
-
-// Section header with label and arrow
-export function PHSection({ label, right = '전체보기 ›', onMore }: { label: string; right?: string; onMore?: () => void }) {
-  return (
-    <div className="flex items-center justify-between mb-3">
-      <span className="text-[#111827] font-bold text-[15px]">{label}</span>
-      {right && (
-        onMore
-          ? <button onClick={onMore} className="text-[#64748B] text-xs">{right}</button>
-          : <span className="text-[#64748B] text-xs">{right}</span>
+      {label && (
+        <span className="absolute bottom-2 left-3 right-3 text-center text-[10px] text-[#8595AB] leading-snug">
+          {label}
+        </span>
       )}
     </div>
   )
 }
 
-// Card wrapper
-export function PHCard({ children, className = '' }: { children?: React.ReactNode; className?: string }) {
+// Circle placeholder (avatars, icons)
+
+export function PHCircle({ className = "w-10 h-10" }: { className?: string }) {
+  return <div className={`${className} bg-[#E8EBF4] rounded-full shrink-0`} />
+}
+
+// Text line placeholder
+
+export function PHText({ className = "w-full" }: { className?: string }) {
+  return <div className={`h-[10px] bg-[#E8EBF4] rounded-full ${className}`} />
+}
+
+// Section header with label and arrow
+
+export function PHSection({
+  label,
+  right = "전체보기 ›",
+  onMore,
+}: {
+  label: string
+  right?: string
+  onMore?: () => void
+}) {
   return (
-    <div className={`bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] ${className}`}>
+    <div className="flex items-center justify-between mb-3">
+      <span className="text-[#111827] font-bold text-[15px]">{label}</span>
+      {right &&
+        (onMore ? (
+          <button onClick={onMore} className="text-[#64748B] text-xs">
+            {right}
+          </button>
+        ) : (
+          <span className="text-[#64748B] text-xs">{right}</span>
+        ))}
+    </div>
+  )
+}
+
+// Card wrapper
+
+export function PHCard({
+  children,
+  className = "",
+}: {
+  children?: React.ReactNode
+  className?: string
+}) {
+  return (
+    <div
+      className={`bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] ${className}`}
+    >
       {children}
     </div>
   )
 }
 
 // Hero image placeholder (full-width)
-export function PHHero({ className = 'h-64' }: { className?: string }) {
+
+export function PHHero({ className = "h-64" }: { className?: string }) {
   return (
-    <div className={`relative w-full bg-[#E4E8F5] overflow-hidden ${className}`}>
+    <div
+      className={`relative w-full bg-[#E4E8F5] overflow-hidden ${className}`}
+    >
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 opacity-30">
         <div className="w-16 h-16 rounded-full bg-[#D8DCE9]" />
         <div className="w-24 h-2 rounded-full bg-[#D8DCE9]" />
@@ -66,6 +128,7 @@ export function PHHero({ className = 'h-64' }: { className?: string }) {
 }
 
 // List item: thumbnail + text lines
+
 export function PHListItem({ showImage = true }: { showImage?: boolean }) {
   return (
     <div className="flex gap-3 py-3 border-b border-[#DDE1EC]">
@@ -80,9 +143,16 @@ export function PHListItem({ showImage = true }: { showImage?: boolean }) {
 }
 
 // Horizontal scroll card
-export function PHScrollCard({ className = 'w-36 h-48' }: { className?: string }) {
+
+export function PHScrollCard({
+  className = "w-36 h-48",
+}: {
+  className?: string
+}) {
   return (
-    <div className={`${className} bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] shrink-0 flex flex-col p-3 gap-2`}>
+    <div
+      className={`${className} bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] shrink-0 flex flex-col p-3 gap-2`}
+    >
       <PH className="flex-1 rounded-xl" />
       <PHText className="w-3/4" />
       <PHText className="w-1/2" />
@@ -91,9 +161,12 @@ export function PHScrollCard({ className = 'w-36 h-48' }: { className?: string }
 }
 
 // Grid card (2-col)
-export function PHGridCard({ className = '' }: { className?: string }) {
+
+export function PHGridCard({ className = "" }: { className?: string }) {
   return (
-    <div className={`bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden ${className}`}>
+    <div
+      className={`bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden ${className}`}
+    >
       <PH className="w-full h-28 rounded-none" />
       <div className="p-3 flex flex-col gap-1.5">
         <PHText className="w-3/4" />
@@ -104,35 +177,61 @@ export function PHGridCard({ className = '' }: { className?: string }) {
 }
 
 // Badge / chip
-export function PHBadge({ label, active = false }: { label: string; active?: boolean }) {
+
+export function PHBadge({
+  label,
+  active = false,
+}: {
+  label: string
+  active?: boolean
+}) {
   return (
-    <span className={`px-3 py-1 rounded-full text-xs font-medium border ${
-      active
-        ? 'bg-[#1B5BF0] border-[#1B5BF0] text-white'
-        : 'bg-transparent border-[#DDE1EC] text-[#64748B]'
-    }`}>
+    <span
+      className={`px-3 py-1 rounded-full text-xs font-medium border ${
+        active
+          ? "bg-[#1B5BF0] border-[#1B5BF0] text-white"
+          : "bg-transparent border-[#DDE1EC] text-[#64748B]"
+      }`}
+    >
       {label}
     </span>
   )
 }
 
 // Button placeholder
-export function PHButton({ label = '', variant = 'primary', className = '' }: {
+
+export function PHButton({
+  label = "",
+  variant = "primary",
+  className = "",
+}: {
   label?: string
-  variant?: 'primary' | 'outline' | 'ghost'
+
+  variant?: "primary" | "outline" | "ghost"
+
   className?: string
 }) {
-  const base = 'h-12 rounded-xl text-sm font-semibold flex items-center justify-center'
+  const base =
+    "h-12 rounded-xl text-sm font-semibold flex items-center justify-center"
+
   const variants = {
-    primary: 'bg-[#1B5BF0] text-white',
-    outline: 'border border-[#1B5BF0] text-[#1B5BF0]',
-    ghost: 'bg-[#E8EBF4] text-[#64748B]',
+    primary: "bg-[#1B5BF0] text-white",
+
+    outline: "border border-[#1B5BF0] text-[#1B5BF0]",
+
+    ghost: "bg-[#E8EBF4] text-[#64748B]",
   }
-  return <div className={`${base} ${variants[variant]} ${className}`}>{label || <PH className="w-20 h-3" />}</div>
+
+  return (
+    <div className={`${base} ${variants[variant]} ${className}`}>
+      {label || <PH className="w-20 h-3" />}
+    </div>
+  )
 }
 
 // Input field placeholder
-export function PHInput({ label = '' }: { label?: string }) {
+
+export function PHInput({ label = "" }: { label?: string }) {
   return (
     <div className="flex flex-col gap-1.5">
       {label && <span className="text-xs text-[#64748B]">{label}</span>}
@@ -144,6 +243,7 @@ export function PHInput({ label = '' }: { label?: string }) {
 }
 
 // Avatar row (players, cheerleaders)
+
 export function PHAvatarRow() {
   return (
     <div className="flex gap-3 overflow-x-auto pb-1">
@@ -158,6 +258,7 @@ export function PHAvatarRow() {
 }
 
 // Tab bar
+
 export function PHTabBar({ tabs }: { tabs: string[] }) {
   return (
     <div className="flex border-b border-[#DDE1EC] overflow-x-auto">
@@ -166,8 +267,8 @@ export function PHTabBar({ tabs }: { tabs: string[] }) {
           key={i}
           className={`shrink-0 px-4 py-3 text-sm font-medium border-b-2 ${
             i === 0
-              ? 'border-[#1B5BF0] text-[#1B5BF0]'
-              : 'border-transparent text-[#64748B]'
+              ? "border-[#1B5BF0] text-[#1B5BF0]"
+              : "border-transparent text-[#64748B]"
           }`}
         >
           {tab}
@@ -178,21 +279,31 @@ export function PHTabBar({ tabs }: { tabs: string[] }) {
 }
 
 // Stat row (for tables)
+
 export function PHStatRow({ cols = 4 }: { cols?: number }) {
   return (
     <div className="flex gap-2 py-2.5 border-b border-[#DDE1EC]">
       {Array.from({ length: cols }).map((_, i) => (
-        <PHText key={i} className={`flex-1 ${i === 0 ? 'w-20' : ''}`} />
+        <PHText key={i} className={`flex-1 ${i === 0 ? "w-20" : ""}`} />
       ))}
     </div>
   )
 }
 
 // Notification item
+
 export function PHNotifItem({ read = false }: { read?: boolean }) {
   return (
-    <div className={`flex gap-3 p-4 border-b border-[#DDE1EC] ${!read ? 'bg-[#FFFFFF]' : ''}`}>
-      <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${!read ? 'bg-[#1B5BF0]' : 'bg-transparent'}`} />
+    <div
+      className={`flex gap-3 p-4 border-b border-[#DDE1EC] ${
+        !read ? "bg-[#FFFFFF]" : ""
+      }`}
+    >
+      <div
+        className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${
+          !read ? "bg-[#1B5BF0]" : "bg-transparent"
+        }`}
+      />
       <div className="flex-1 flex flex-col gap-2">
         <PHText className="w-3/4" />
         <PHText className="w-full" />
@@ -203,6 +314,7 @@ export function PHNotifItem({ read = false }: { read?: boolean }) {
 }
 
 // Screen ID label (small, bottom-right)
+
 export function ScreenID({ id }: { id: string }) {
   return (
     <div className="fixed bottom-24 right-4 z-50 bg-[#1B5BF0]/20 border border-[#1B5BF0]/40 rounded-full px-2 py-0.5">

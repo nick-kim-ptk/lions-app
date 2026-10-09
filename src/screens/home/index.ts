@@ -1,2 +1,3 @@
-export { HomeScreen } from './HomeScreen'
-export { NotificationsScreen } from './NotificationsScreen'
+export { HomeScreen } from "./HomeScreen"
+
+export { NotificationsScreen } from "./NotificationsScreen"

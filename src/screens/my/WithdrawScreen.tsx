@@ -1,11 +1,16 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Header } from '@/components/Layout'
+import { useState } from "react"
+
+import { useNavigate } from "react-router-dom"
+
+import { Header } from "@/components/Layout"
 
 // 035(037)-SL-MY-08 회원 탈퇴
+
 export function WithdrawScreen() {
   const navigate = useNavigate()
-  const [password, setPassword] = useState('')
+
+  const [password, setPassword] = useState("")
+
   const canWithdraw = password.length > 0
 
   return (
@@ -16,14 +21,29 @@ export function WithdrawScreen() {
         <div className="flex flex-col items-center gap-3 py-4">
           <div className="w-16 h-16 rounded-full bg-[#E53935]/20 border border-[#E53935]/30 flex items-center justify-center">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-              <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="#E53935" strokeWidth="1.8"/>
-              <path d="M12 9v4M12 17h.01" stroke="#E53935" strokeWidth="2" strokeLinecap="round"/>
+              <path
+                d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+                stroke="#E53935"
+                strokeWidth="1.8"
+              />
+              <path
+                d="M12 9v4M12 17h.01"
+                stroke="#E53935"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
             </svg>
           </div>
           <p className="text-[#111827] font-semibold">탈퇴 시 주의사항</p>
         </div>
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-4 flex flex-col gap-3">
-          {['보유 중인 앰블럼이 모두 삭제됩니다', '예매 내역 및 쿠폰이 소멸됩니다 (취소하지 않은 예매 티켓은 먼저 취소해 주세요)', '멤버십 혜택이 즉시 종료됩니다', '탈퇴 후 30일간 재가입이 불가합니다', '마지막 로그인 후 3년간 이용하지 않으면 자동 탈퇴되며, 탈퇴 전에 미리 안내해 드립니다'].map((w, i) => (
+          {[
+            "보유 중인 앰블럼이 모두 삭제됩니다",
+            "예매 내역 및 쿠폰이 소멸됩니다 (취소하지 않은 예매 티켓은 먼저 취소해 주세요)",
+            "멤버십 혜택이 즉시 종료됩니다",
+            "탈퇴 후 30일간 재가입이 불가합니다",
+            "마지막 로그인 후 3년간 이용하지 않으면 자동 탈퇴되며, 탈퇴 전에 미리 안내해 드립니다",
+          ].map((w, i) => (
             <div key={i} className="flex items-start gap-2">
               <span className="text-[#E53935] text-xs mt-0.5">•</span>
               <span className="text-sm text-[#64748B]">{w}</span>
@@ -33,7 +53,9 @@ export function WithdrawScreen() {
 
         {/* 비밀번호 확인 */}
         <div className="flex flex-col gap-2">
-          <p className="text-sm font-semibold text-[#111827]">비밀번호 확인 <span className="text-[#E53935]">*</span></p>
+          <p className="text-sm font-semibold text-[#111827]">
+            비밀번호 확인 <span className="text-[#E53935]">*</span>
+          </p>
           <input
             type="password"
             placeholder="비밀번호를 입력해 주세요"
@@ -47,8 +69,12 @@ export function WithdrawScreen() {
       <div className="px-4 pt-6">
         <button
           disabled={!canWithdraw}
-          onClick={() => canWithdraw && navigate('/my/withdraw-complete')}
-          className={`w-full h-14 rounded-2xl font-semibold transition-all ${canWithdraw ? 'bg-[#E53935] text-white' : 'bg-[#E53935]/20 border border-[#E53935]/30 text-[#E53935]/40'}`}
+          onClick={() => canWithdraw && navigate("/my/withdraw-complete")}
+          className={`w-full h-14 rounded-2xl font-semibold transition-all ${
+            canWithdraw
+              ? "bg-[#E53935] text-white"
+              : "bg-[#E53935]/20 border border-[#E53935]/30 text-[#E53935]/40"
+          }`}
         >
           탈퇴하기
         </button>

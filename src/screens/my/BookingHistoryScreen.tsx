@@ -1,145 +1,225 @@
-import { useCaseState, isSeasonEndPhase } from '@/data/caseStore'
-import { EmptyState } from '@/components/EmptyState'
-import { ListCaseBar, type ListCase } from '@/components/ListCaseBar'
-import { useState } from 'react'
-import { GameStateNotice } from '@/components/GameCaseBar'
-import { useNavigate } from 'react-router-dom'
-import { Header } from '@/components/Layout'
+import { useCaseState, isSeasonEndPhase } from "@/data/caseStore"
+
+import { EmptyState } from "@/components/EmptyState"
+
+import { ListCaseBar, type ListCase } from "@/components/ListCaseBar"
+
+import { useState } from "react"
+
+import { GameStateNotice } from "@/components/GameCaseBar"
+
+import { useNavigate } from "react-router-dom"
+
+import { Header } from "@/components/Layout"
+
 import {
-  CANCELLED_BOOKINGS, LEAGUE_LABEL, MOCK_TODAY, UPCOMING_BOOKINGS, addDays,
-  fmtCancelUntil, fmtViewingAt, gameOf, matchTitle, type Booking,
-} from '@/data/mock'
+  CANCELLED_BOOKINGS,
+  LEAGUE_LABEL,
+  MOCK_TODAY,
+  UPCOMING_BOOKINGS,
+  addDays,
+  fmtCancelUntil,
+  fmtViewingAt,
+  gameOf,
+  matchTitle,
+  type Booking,
+} from "@/data/mock"
 
 // 041(043)-SL-MY-14 예매 내역
+
 export function BookingHistoryScreen() {
   const navigate = useNavigate()
-  const [tab, setTab] = useState<'예매 확인' | '예매 취소'>('예매 확인')
-  const [listCase, setListCase] = useState<ListCase>('목록 있음')
+
+  const [tab, setTab] = useState<"예매 확인" | "예매 취소">("예매 확인")
+
+  const [listCase, setListCase] = useState<ListCase>("목록 있음")
+
   const [isCancelGuideOpen, setIsCancelGuideOpen] = useState(false)
-  const [isSmartTicketConfirmOpen, setIsSmartTicketConfirmOpen] = useState(false)
-  const [bookingPeriod, setBookingPeriod] = useState<'1개월' | '3개월' | '6개월' | '1년' | '날짜 지정'>('1개월')
-  const [bookingStartDate, setBookingStartDate] = useState(addDays(MOCK_TODAY, -30))
+
+  const [isSmartTicketConfirmOpen, setIsSmartTicketConfirmOpen] =
+    useState(false)
+
+  const [bookingPeriod, setBookingPeriod] =
+    useState<"1개월" | "3개월" | "6개월" | "1년" | "날짜 지정">("1개월")
+
+  const [bookingStartDate, setBookingStartDate] = useState(
+    addDays(MOCK_TODAY, -30),
+  )
+
   const [bookingEndDate, setBookingEndDate] = useState(MOCK_TODAY)
 
   // 예매 더미(data/mock/bookings)를 목록 카드 형태로 변환
+
   const toCard = (b: Booking) => {
     const g = gameOf(b)
+
     return {
       no: b.no,
+
       league: LEAGUE_LABEL,
+
       match: matchTitle(g),
+
       viewingAt: fmtViewingAt(g),
+
       cancelUntil: fmtCancelUntil(g),
+
       status: b.status,
+
       issued: b.issued,
+
       memo: b.memo,
     }
   }
+
   // 시즌 종료(탈락·우승·비시즌)에는 앞으로 볼 경기가 없으므로 관람 완료 내역만 남김
+
   const { phase } = useCaseState()
-  const UPCOMING = UPCOMING_BOOKINGS.filter((b) => !isSeasonEndPhase(phase) || b.status === '관람 완료').map(toCard)
+
+  const UPCOMING = UPCOMING_BOOKINGS.filter(
+    (b) => !isSeasonEndPhase(phase) || b.status === "관람 완료",
+  ).map(toCard)
+
   const CANCELLED = CANCELLED_BOOKINGS.map(toCard)
 
-  const UpcomingBookingCard = ({ no, league, match, viewingAt, cancelUntil, status, issued, memo }: typeof UPCOMING[0]) => {
+  const UpcomingBookingCard = ({
+    no,
+    league,
+    match,
+    viewingAt,
+    cancelUntil,
+    status,
+    issued,
+    memo,
+  }: typeof UPCOMING[0]) => {
     const isUnissued = !issued
+
     return (
-    <div className="overflow-hidden rounded-2xl border border-[#DDE1EC] bg-[#FFFFFF]">
-      <div className="divide-y divide-[#F1F3F8] px-4">
-        <div className="flex items-center justify-between py-3.5">
-          <span className="text-[11px] text-[#9CA3AF]">예매 번호</span>
-          <button
-            type="button"
-            onClick={() => navigate('/my/booking-detail')}
-            className="font-mono text-[13px] font-semibold text-[#111827] underline underline-offset-2"
-          >
-            {no}
-          </button>
+      <div className="overflow-hidden rounded-2xl border border-[#DDE1EC] bg-[#FFFFFF]">
+        <div className="divide-y divide-[#F1F3F8] px-4">
+          <div className="flex items-center justify-between py-3.5">
+            <span className="text-[11px] text-[#9CA3AF]">예매 번호</span>
+            <button
+              type="button"
+              onClick={() => navigate("/my/booking-detail")}
+              className="font-mono text-[13px] font-semibold text-[#111827] underline underline-offset-2"
+            >
+              {no}
+            </button>
+          </div>
+          <div className="py-3.5">
+            <p className="mb-1.5 text-[11px] text-[#9CA3AF]">티켓명</p>
+            <p className="text-[12px] font-medium text-[#64748B]">{league}</p>
+            <p className="mt-0.5 text-[15px] font-bold text-[#111827]">
+              {match}
+            </p>
+          </div>
+          <div className="flex items-center justify-between py-3.5">
+            <span className="text-[11px] text-[#9CA3AF]">관람일시</span>
+            <span className="text-[13px] font-semibold text-[#111827]">
+              {viewingAt}
+            </span>
+          </div>
+          <div className="flex items-center justify-between py-3.5">
+            <span className="text-[11px] text-[#9CA3AF]">취소 가능일</span>
+            <span className="text-[13px] font-semibold text-[#111827]">
+              {cancelUntil}
+            </span>
+          </div>
+          <div className="flex items-center justify-between py-3.5">
+            <span className="text-[11px] text-[#9CA3AF]">상태</span>
+            <span
+              className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${
+                status === "예매 완료"
+                  ? "bg-[#EBF0FF] text-[#1B5BF0]"
+                  : status === "관람 완료"
+                    ? "bg-[#F0F2F7] text-[#64748B]"
+                    : status === "전체 취소" || status === "경기 취소"
+                      ? "bg-[#FFF1F1] text-[#E53935]"
+                      : "bg-[#FFF8E1] text-[#B45309]"
+              }`}
+            >
+              {status}
+            </span>
+          </div>
+          {memo && (
+            <div className="flex items-start justify-between gap-4 py-3.5">
+              <span className="shrink-0 text-[11px] text-[#9CA3AF]">비고</span>
+              <span className="text-right text-[12px] font-medium leading-relaxed text-[#64748B]">
+                {memo}
+              </span>
+            </div>
+          )}
         </div>
-        <div className="py-3.5">
-          <p className="mb-1.5 text-[11px] text-[#9CA3AF]">티켓명</p>
-          <p className="text-[12px] font-medium text-[#64748B]">{league}</p>
-          <p className="mt-0.5 text-[15px] font-bold text-[#111827]">{match}</p>
-        </div>
-        <div className="flex items-center justify-between py-3.5">
-          <span className="text-[11px] text-[#9CA3AF]">관람일시</span>
-          <span className="text-[13px] font-semibold text-[#111827]">{viewingAt}</span>
-        </div>
-        <div className="flex items-center justify-between py-3.5">
-          <span className="text-[11px] text-[#9CA3AF]">취소 가능일</span>
-          <span className="text-[13px] font-semibold text-[#111827]">{cancelUntil}</span>
-        </div>
-        <div className="flex items-center justify-between py-3.5">
-          <span className="text-[11px] text-[#9CA3AF]">상태</span>
-          <span className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${
-            status === '예매 완료'
-              ? 'bg-[#EBF0FF] text-[#1B5BF0]'
-              : status === '관람 완료'
-                ? 'bg-[#F0F2F7] text-[#64748B]'
-                : status === '전체 취소' || status === '경기 취소'
-                  ? 'bg-[#FFF1F1] text-[#E53935]'
-                  : 'bg-[#FFF8E1] text-[#B45309]'
-          }`}>{status}</span>
-        </div>
-        {memo && (
-          <div className="flex items-start justify-between gap-4 py-3.5">
-            <span className="shrink-0 text-[11px] text-[#9CA3AF]">비고</span>
-            <span className="text-right text-[12px] font-medium leading-relaxed text-[#64748B]">{memo}</span>
+        {status === "예매 완료" && (
+          <div className="border-t border-[#DDE1EC] p-4">
+            {isUnissued && (
+              <p className="mb-2.5 text-center text-[12px] font-medium leading-relaxed text-[#374151]">
+                스마트티켓을 발권한 이후에는 종이(지류) 티켓을 일절 발권할 수
+                없습니다.
+              </p>
+            )}
+            <button
+              type="button"
+              onClick={() => setIsSmartTicketConfirmOpen(true)}
+              className={`flex h-11 w-full items-center justify-center gap-1.5 rounded-xl border text-[13px] font-semibold ${
+                isUnissued
+                  ? "border-[#1B5BF0] bg-white text-[#1B5BF0]"
+                  : "border-[#1B5BF0] bg-[#1B5BF0] text-white"
+              }`}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <rect
+                  x="3"
+                  y="3"
+                  width="18"
+                  height="18"
+                  rx="3"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                />
+                <path
+                  d="M7 7h4v4H7zM13 7h4v4h-4zM7 13h4v4H7zM15 15h2v2h-2z"
+                  fill="currentColor"
+                />
+              </svg>
+              {isUnissued ? "스마트 티켓 발권 받기" : "스마트 티켓"}
+            </button>
           </div>
         )}
       </div>
-      {status === '예매 완료' && (
-        <div className="border-t border-[#DDE1EC] p-4">
-          {isUnissued && (
-            <p className="mb-2.5 text-center text-[12px] font-medium leading-relaxed text-[#374151]">
-              스마트티켓을 발권한 이후에는 종이(지류) 티켓을 일절 발권할 수 없습니다.
-            </p>
-          )}
-          <button
-            type="button"
-            onClick={() => setIsSmartTicketConfirmOpen(true)}
-            className={`flex h-11 w-full items-center justify-center gap-1.5 rounded-xl border text-[13px] font-semibold ${
-              isUnissued
-                ? 'border-[#1B5BF0] bg-white text-[#1B5BF0]'
-                : 'border-[#1B5BF0] bg-[#1B5BF0] text-white'
-            }`}
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-              <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" strokeWidth="1.8" />
-              <path d="M7 7h4v4H7zM13 7h4v4h-4zM7 13h4v4H7zM15 15h2v2h-2z" fill="currentColor" />
-            </svg>
-            {isUnissued ? '스마트 티켓 발권 받기' : '스마트 티켓'}
-          </button>
-        </div>
-      )}
-    </div>
     )
   }
 
   const PeriodFilter = () => (
     <div className="rounded-2xl border border-[#DDE1EC] bg-white p-4">
-      <p className="mb-3 text-[12px] font-semibold text-[#374151]">기간별 조회</p>
+      <p className="mb-3 text-[12px] font-semibold text-[#374151]">
+        기간별 조회
+      </p>
       <div className="flex flex-wrap gap-2">
-        {(['1개월', '3개월', '6개월', '1년', '날짜 지정'] as const).map(period => (
-          <button
-            type="button"
-            key={period}
-            onClick={() => setBookingPeriod(period)}
-            className={`h-8 rounded-full px-3 text-[11px] font-semibold transition-colors ${
-              bookingPeriod === period
-                ? 'bg-[#1B5BF0] text-white'
-                : 'border border-[#DDE1EC] bg-[#F5F7FB] text-[#64748B]'
-            }`}
-          >
-            {period === '날짜 지정' ? '날짜 지정 조회' : period}
-          </button>
-        ))}
+        {(["1개월", "3개월", "6개월", "1년", "날짜 지정"] as const).map(
+          (period) => (
+            <button
+              type="button"
+              key={period}
+              onClick={() => setBookingPeriod(period)}
+              className={`h-8 rounded-full px-3 text-[11px] font-semibold transition-colors ${
+                bookingPeriod === period
+                  ? "bg-[#1B5BF0] text-white"
+                  : "border border-[#DDE1EC] bg-[#F5F7FB] text-[#64748B]"
+              }`}
+            >
+              {period === "날짜 지정" ? "날짜 지정 조회" : period}
+            </button>
+          ),
+        )}
       </div>
-      {bookingPeriod === '날짜 지정' && (
+      {bookingPeriod === "날짜 지정" && (
         <div className="mt-3 flex items-center gap-2 border-t border-[#F1F3F8] pt-3">
           <input
             type="date"
             value={bookingStartDate}
-            onChange={event => setBookingStartDate(event.target.value)}
+            onChange={(event) => setBookingStartDate(event.target.value)}
             aria-label="조회 시작일"
             className="h-9 min-w-0 flex-1 rounded-lg border border-[#DDE1EC] bg-[#F9FAFB] px-2 text-[11px] text-[#374151] outline-none"
           />
@@ -147,7 +227,7 @@ export function BookingHistoryScreen() {
           <input
             type="date"
             value={bookingEndDate}
-            onChange={event => setBookingEndDate(event.target.value)}
+            onChange={(event) => setBookingEndDate(event.target.value)}
             aria-label="조회 종료일"
             className="h-9 min-w-0 flex-1 rounded-lg border border-[#DDE1EC] bg-[#F9FAFB] px-2 text-[11px] text-[#374151] outline-none"
           />
@@ -173,9 +253,26 @@ export function BookingHistoryScreen() {
             className="flex items-center gap-1 text-[12px] font-semibold text-[#64748B]"
           >
             티켓 취소 안내
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
-              <path d="M12 11v5M12 8h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+                stroke="currentColor"
+                strokeWidth="1.8"
+              />
+              <path
+                d="M12 11v5M12 8h.01"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
             </svg>
           </button>
         }
@@ -186,33 +283,63 @@ export function BookingHistoryScreen() {
 
       {/* 탭 */}
       <div className="flex border-b border-[#DDE1EC]">
-        {(['예매 확인', '예매 취소'] as const).map((t) => (
-          <button key={t} onClick={() => setTab(t)}
-            className={`flex-1 py-3 text-[13px] font-semibold border-b-2 transition-colors ${tab === t ? 'border-[#1B5BF0] text-[#1B5BF0]' : 'border-transparent text-[#9CA3AF]'}`}>
+        {(["예매 확인", "예매 취소"] as const).map((t) => (
+          <button
+            key={t}
+            onClick={() => setTab(t)}
+            className={`flex-1 py-3 text-[13px] font-semibold border-b-2 transition-colors ${
+              tab === t
+                ? "border-[#1B5BF0] text-[#1B5BF0]"
+                : "border-transparent text-[#9CA3AF]"
+            }`}
+          >
             {t}
           </button>
         ))}
       </div>
 
       <div className="px-4 pt-4 flex flex-col gap-3">
-        {tab === '예매 취소' && <PeriodFilter />}
+        {tab === "예매 취소" && <PeriodFilter />}
 
-        {tab === '예매 확인' && (
+        {tab === "예매 확인" && (
           <div className="rounded-2xl border border-[#DDE1EC] bg-[#F5F7FB] px-4 py-3">
             <p className="text-[12px] leading-relaxed text-[#64748B]">
-              신용카드 단일 결제 시 부분 취소가 가능합니다.<br />
-              단, 복합 결제 및 다른 결제 수단으로 예매 시에는 부분 취소가 불가합니다.
+              신용카드 단일 결제 시 부분 취소가 가능합니다.
+              <br />
+              단, 복합 결제 및 다른 결제 수단으로 예매 시에는 부분 취소가
+              불가합니다.
             </p>
           </div>
         )}
-        {tab === '예매 확인' && <PeriodFilter />}
-        {tab === '예매 확인' && (listCase === '목록 없음' || UPCOMING.length === 0
-          ? <EmptyState icon="🎫" title="예매 내역이 없어요" desc="라이온즈 경기를 예매해 보세요." actionLabel="티켓 예매하기" onAction={() => navigate('/ticket')} className="py-12" />
-          : UPCOMING.map((item) => <UpcomingBookingCard key={item.no} {...item} />))}
+        {tab === "예매 확인" && <PeriodFilter />}
+        {tab === "예매 확인" &&
+          (listCase === "목록 없음" || UPCOMING.length === 0 ? (
+            <EmptyState
+              icon="🎫"
+              title="예매 내역이 없어요"
+              desc="라이온즈 경기를 예매해 보세요."
+              actionLabel="티켓 예매하기"
+              onAction={() => navigate("/ticket")}
+              className="py-12"
+            />
+          ) : (
+            UPCOMING.map((item) => (
+              <UpcomingBookingCard key={item.no} {...item} />
+            ))
+          ))}
 
-        {tab === '예매 취소' && (listCase === '목록 없음'
-          ? <EmptyState icon="🎫" title="취소한 예매 내역이 없어요" className="py-12" />
-          : CANCELLED.map((item) => <UpcomingBookingCard key={item.no} {...item} />))}
+        {tab === "예매 취소" &&
+          (listCase === "목록 없음" ? (
+            <EmptyState
+              icon="🎫"
+              title="취소한 예매 내역이 없어요"
+              className="py-12"
+            />
+          ) : (
+            CANCELLED.map((item) => (
+              <UpcomingBookingCard key={item.no} {...item} />
+            ))
+          ))}
       </div>
 
       {isCancelGuideOpen && (
@@ -225,10 +352,15 @@ export function BookingHistoryScreen() {
             aria-modal="true"
             aria-labelledby="cancel-guide-title"
             className="flex max-h-full w-full max-w-md flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
-            onClick={event => event.stopPropagation()}
+            onClick={(event) => event.stopPropagation()}
           >
             <div className="flex shrink-0 items-center justify-between border-b border-[#DDE1EC] px-5 py-4">
-              <p id="cancel-guide-title" className="text-[17px] font-bold text-[#111827]">티켓 취소 안내</p>
+              <p
+                id="cancel-guide-title"
+                className="text-[17px] font-bold text-[#111827]"
+              >
+                티켓 취소 안내
+              </p>
               <button
                 type="button"
                 onClick={() => setIsCancelGuideOpen(false)}
@@ -236,26 +368,39 @@ export function BookingHistoryScreen() {
                 className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F1F3F8] text-[#64748B]"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <path
+                    d="M18 6L6 18M6 6l12 12"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
                 </svg>
               </button>
             </div>
             <div className="flex flex-col gap-4 overflow-y-auto px-5 py-5 text-[13px] leading-relaxed text-[#374151]">
               <p>
-                · 예매한 티켓 전체 취소, 혹은 신용카드 결제 시 부분 취소가 가능합니다.<br />
+                · 예매한 티켓 전체 취소, 혹은 신용카드 결제 시 부분 취소가
+                가능합니다.
+                <br />
                 단, 일부 상품 및 스마트티켓 발권 시 부분취소가 불가합니다.
               </p>
               <p>
-                · 예매 당일 자정까지 취소하실 경우는 예매수수료도 환불되며, 취소수수료가 부과되지 않습니다. 그 이후 취소하실 경우에는 예매수수료가 환불되지 않으며, 취소수수료는 정책에 따라 부과됩니다.
+                · 예매 당일 자정까지 취소하실 경우는 예매수수료도 환불되며,
+                취소수수료가 부과되지 않습니다. 그 이후 취소하실 경우에는
+                예매수수료가 환불되지 않으며, 취소수수료는 정책에 따라
+                부과됩니다.
               </p>
               <p>
-                · 일부 경기의 경우 상황에 따라 일괄 취소 건이 발생할 수 있으며, 일괄 취소 시에는 취소수수료가 부과되지 않습니다.
+                · 일부 경기의 경우 상황에 따라 일괄 취소 건이 발생할 수 있으며,
+                일괄 취소 시에는 취소수수료가 부과되지 않습니다.
               </p>
               <p>
-                · 티켓의 날짜/시간/좌석 등급/좌석 위치 변경은 불가합니다. 자세한 안내가 필요할 경우 고객센터를 이용해주세요.
+                · 티켓의 날짜/시간/좌석 등급/좌석 위치 변경은 불가합니다. 자세한
+                안내가 필요할 경우 고객센터를 이용해주세요.
               </p>
               <p>
-                · 구단 홈페이지에서 예매한 내역은 구단 홈페이지에서만 확인이 가능합니다.
+                · 구단 홈페이지에서 예매한 내역은 구단 홈페이지에서만 확인이
+                가능합니다.
               </p>
             </div>
             <div className="shrink-0 border-t border-[#DDE1EC] p-4">
@@ -281,14 +426,18 @@ export function BookingHistoryScreen() {
             aria-modal="true"
             aria-labelledby="smart-ticket-confirm-title"
             className="w-full max-w-sm overflow-hidden rounded-2xl bg-white shadow-2xl"
-            onClick={event => event.stopPropagation()}
+            onClick={(event) => event.stopPropagation()}
           >
             <div className="px-6 pb-5 pt-6 text-center">
-              <p id="smart-ticket-confirm-title" className="text-[17px] font-bold text-[#111827]">
+              <p
+                id="smart-ticket-confirm-title"
+                className="text-[17px] font-bold text-[#111827]"
+              >
                 스마트 티켓을 발권하시겠습니까?
               </p>
               <p className="mt-3 text-[13px] leading-relaxed text-[#64748B]">
-                발권하시면 종이(지류) 티켓은<br />
+                발권하시면 종이(지류) 티켓은
+                <br />
                 발권하실 수 없습니다.
               </p>
             </div>
@@ -302,7 +451,7 @@ export function BookingHistoryScreen() {
               </button>
               <button
                 type="button"
-                onClick={() => navigate('/my/ticket-qr')}
+                onClick={() => navigate("/my/ticket-qr")}
                 className="h-12 text-[14px] font-bold text-[#1B5BF0]"
               >
                 발권하기

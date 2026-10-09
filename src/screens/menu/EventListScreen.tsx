@@ -12,7 +12,7 @@ import { EVENT_LIST } from "@/data/menu"
 
 import { MOCK_TODAY, diffDays } from "@/data/mock"
 
-function getDday(endDateStr: string): { label: string active: boolean } {
+function getDday(endDateStr: string): { label: string; active: boolean } {
   const diff = diffDays(MOCK_TODAY, endDateStr)
 
   if (diff < 0) return { label: "종료", active: false }

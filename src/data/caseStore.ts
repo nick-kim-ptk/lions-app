@@ -101,7 +101,7 @@ export const POSTSEASON_INFO: Record<PostseasonPhase, {
   },
 }
 
-let state: { phase: SeasonPhase match: MatchState } = {
+let state: { phase: SeasonPhase; match: MatchState } = {
   phase: "정규시즌",
   match: "경기 전",
 }

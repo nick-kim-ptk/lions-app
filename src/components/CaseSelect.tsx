@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
-type Option<T extends string> = T | { value: T label: string }
+type Option<T extends string> = T | { value: T; label: string }
 
 /**
  * 케이스(상태) 전환용 드롭다운 — 와이어프레임 전용.

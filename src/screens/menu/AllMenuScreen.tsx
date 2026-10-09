@@ -55,12 +55,12 @@ export function AllMenuScreen() {
       path: string
       external?: boolean
       badge?: string
-      sub?: { label: string path: string external?: boolean }[]
+      sub?: { label: string; path: string; external?: boolean }[]
     }[]
 
     groups?: {
       title: string
-      items: { label: string path: string external?: boolean badge?: string }[]
+      items: { label: string; path: string; external?: boolean; badge?: string }[]
     }[]
   }[] = [
     {

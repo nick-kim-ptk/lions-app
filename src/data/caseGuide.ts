@@ -217,7 +217,7 @@ export type MatchGuide = {
 
   cause: string
 
-  effects: { screen: string text: string }[]
+  effects: { screen: string; text: string }[]
 
   ticket: string
 
@@ -605,7 +605,7 @@ export const OPEN_ITEMS: {
 
 /** 확정된 정책 (정의 필요에서 해결된 항목) */
 
-export const DECISIONS: { topic: string decision: string }[] = [
+export const DECISIONS: { topic: string; decision: string }[] = [
   {
     topic: "포스트시즌 홈·원정 표기",
     decision:
@@ -709,7 +709,7 @@ export const DECISIONS: { topic: string decision: string }[] = [
   },
 ]
 
-export const GLOSSARY: { term: string desc: string }[] = [
+export const GLOSSARY: { term: string; desc: string }[] = [
   {
     term: "정규시즌",
     desc: "10개 구단이 팀당 144경기를 치르는 기본 시즌. 순위로 가을야구 진출이 결정됨",
@@ -1343,7 +1343,7 @@ export const NOTIFICATION_PLAN: {
 
 /** 예상 토스트 메시지 — 짧은 결과·오류 안내 (문구는 예시) */
 
-export const TOAST_PLAN: { group: string trigger: string message: string }[] = [
+export const TOAST_PLAN: { group: string; trigger: string; message: string }[] = [
   {
     group: "공통",
     trigger: "네트워크 불안정",

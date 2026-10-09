@@ -39,7 +39,7 @@ export interface Game {
 
   /** 삼성 득점 / 상대 득점 */
 
-  score?: { us: number them: number }
+  score?: { us: number; them: number }
 
   /** 연장/콜드 등으로 9회가 아닌 경우의 최종 이닝 */
 
@@ -81,7 +81,7 @@ function game(
 
   status: GameStatus,
 
-  extra: Partial<Game> & { us?: number them?: number } = {},
+  extra: Partial<Game> & { us?: number; them?: number } = {},
 ): Game {
   const { us, them, ...rest } = extra
 
@@ -359,9 +359,9 @@ export function recordOf(list: Game[] = pastGames()) {
 export type TicketState = "before" | "presale" | "open" | "soldout" | "closed" | "cancelled" | "away" // 선예매 오픈 전 // 선예매(라이온즈 멤버십) 중 // 일반 예매 중 // 매진 // 예매 마감(경기 시작 이후/종료) // 경기 취소·연기 // 원정 경기 (앱 예매 대상 아님)
 
 export interface TicketSale {
-  preSaleAt: { date: string time: string }
+  preSaleAt: { date: string; time: string }
 
-  generalAt: { date: string time: string }
+  generalAt: { date: string; time: string }
 }
 
 /** 선예매: 경기 7일 전 10:00 / 일반: 같은 날 11:00 (순연 경기도 동일 규칙을 가정) */
@@ -462,7 +462,7 @@ export interface LineupSet {
   batting: LineupEntry[]
 }
 
-export const TODAY_LINEUP: { us: LineupSet them: LineupSet } = {
+export const TODAY_LINEUP: { us: LineupSet; them: LineupSet } = {
   us: {
     announcedAt: "16:00",
 

@@ -208,7 +208,7 @@ export type NotifItem = {
   time: string
   read: boolean
 
-  link: { label: string path: string } | null
+  link: { label: string; path: string } | null
 
   /** 필수 알림 — 설정에서 끌 수 없고 항상 발송 (예매·취소·환불, 예매자 대상 경기 변경) */
 

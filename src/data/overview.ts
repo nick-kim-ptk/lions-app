@@ -806,7 +806,7 @@ export interface IATreeNode {
   children?: IATreeNode[]
 }
 
-export const IA_TREE: { group: Group screens: IATreeNode[] }[] = [
+export const IA_TREE: { group: Group; screens: IATreeNode[] }[] = [
   {
     group: "공통",
 

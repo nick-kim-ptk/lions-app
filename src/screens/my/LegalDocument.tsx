@@ -8,7 +8,7 @@ export function LegalDocument({
   doc: {
     version: string
     intro: string
-    sections: { title: string lines: string[] }[]
+    sections: { title: string; lines: string[] }[]
   }
 }) {
   return (

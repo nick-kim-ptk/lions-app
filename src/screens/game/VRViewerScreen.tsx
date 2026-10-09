@@ -31,7 +31,7 @@ export function VRViewerScreen() {
 
   const [zoom, setZoom] = useState(1)
 
-  const drag = useRef<{ x: number y: number } | null>(null)
+  const drag = useRef<{ x: number; y: number } | null>(null)
 
   const resetView = () => {
     setPan({ x: 0, y: 0 })

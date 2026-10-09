@@ -21,7 +21,7 @@ export function FAQScreen() {
     "기타",
   ]
 
-  const faqData: Record<string, { q: string a: string }[]> = {
+  const faqData: Record<string, { q: string; a: string }[]> = {
     전체: [
       {
         q: "티켓 예매는 어떻게 하나요?",

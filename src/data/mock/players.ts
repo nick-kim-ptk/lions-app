@@ -509,7 +509,7 @@ export interface PlayerProfile {
 
   cheer: string
 
-  history: { season: string avg: string hr: number rbi: number h: number }[]
+  history: { season: string; avg: string; hr: number; rbi: number; h: number }[]
 }
 
 export const PLAYER_PROFILES: Record<string, PlayerProfile> = {

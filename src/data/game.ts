@@ -108,20 +108,20 @@ export const AWAY_INFO: {
 
   tips: string[]
 
-  subway: { line: string detail: string }[]
+  subway: { line: string; detail: string }[]
 
-  bus: { type: string numbers: string }[]
+  bus: { type: string; numbers: string }[]
 
-  extraTransit?: { title: string detail: string }
+  extraTransit?: { title: string; detail: string }
 
   parking: {
     open: string
     fee: string
     reserve: string
-    nearby: { name: string fee: string }[]
+    nearby: { name: string; fee: string }[]
   }
 
-  facilities: { icon: string title: string desc: string }[]
+  facilities: { icon: string; title: string; desc: string }[]
 }[] = [
   {
     address: "서울특별시 송파구 올림픽로 25",

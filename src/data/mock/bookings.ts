@@ -32,7 +32,7 @@ export interface Booking {
 
   /** 예매일 (일반 예매 오픈일 = 경기 7일 전 같은 날) */
 
-  bookedAt: { date: string time: string }
+  bookedAt: { date: string; time: string }
 
   status: BookingStatus
 
@@ -169,7 +169,7 @@ export const matchTitle = (g: Game) =>
 
 /** 경기 시작 4시간 전 (KBO 구단 예매 취소 마감 기준을 가정) */
 
-export function cancelDeadline(g: Game): { date: string time: string } {
+export function cancelDeadline(g: Game): { date: string; time: string } {
   const start = toMinutes(g.date, g.time) - 4 * 60
 
   const dayOffset = Math.floor((start - toMinutes(g.date, "00:00")) / (24 * 60))

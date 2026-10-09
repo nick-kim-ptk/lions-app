@@ -138,6 +138,18 @@ export const MAGAZINE_ITEMS = [
     title: "신인들의 반란, 새로운 라이온즈",
     date: "2026.05.04",
   },
+  {
+    id: 4,
+    issue: "Vol.19",
+    title: "봄, 개막 — 2026 라이온즈 프리뷰",
+    date: "2026.04.04",
+  },
+  {
+    id: 5,
+    issue: "Vol.18",
+    title: "라이온즈파크 100배 즐기기",
+    date: "2026.03.04",
+  },
 ]
 
 export const LIONS_TV_ITEMS = [
@@ -171,6 +183,13 @@ export const LIONS_TV_ITEMS = [
     title: "[SHORTS] 라이온즈파크를 뒤흔든 떼창 순간",
     duration: "00:57",
     views: "1.2만회",
+  },
+  {
+    id: 4,
+    format: "long",
+    title: "[인터뷰] 원태인 \"오늘 승리는 팬 여러분 덕분입니다\"",
+    duration: "03:21",
+    views: "1.1만회",
   },
 ]
 

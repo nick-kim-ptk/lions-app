@@ -33,6 +33,12 @@ export const AUTHENTIC_SHOP_ITEMS = [
     name: "박병호 입단 기념 어센틱 저지",
     price: "199,000원",
   },
+  {
+    id: 5,
+    player: "이재현",
+    name: "이재현 골든글러브 후보 기념 어센틱 저지",
+    price: "179,000원",
+  },
 ]
 
 export const BEERYS_SHOP_ITEMS = [
@@ -63,6 +69,19 @@ export const BEERYS_SHOP_ITEMS = [
     name: "강민호 한정판 아크릴 스탠드",
     price: "35,000원",
   },
+  {
+    id: 4,
+    player: "박병호",
+    name: "박병호 입단 기념 로고 볼캡",
+    price: "32,000원",
+  },
+  {
+    id: 5,
+    player: "이재현",
+    name: "이재현 유니폼 키링 세트",
+    price: "15,000원",
+  },
 ]
+
 
 export const DURATION = 1 * 60 * 1000

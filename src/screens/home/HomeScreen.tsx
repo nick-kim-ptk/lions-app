@@ -847,11 +847,11 @@ export function HomeScreen() {
             onMore={() => navigate("/game/magazine")}
           />
         </div>
-        <div className="flex gap-3 overflow-x-auto px-4 pb-1">
+        <div className="flex gap-3 overflow-x-auto px-4 pb-1 lg:grid lg:grid-cols-6 lg:overflow-visible">
           {MAGAZINE_ITEMS.map((item) => (
-            <div key={item.id} className="shrink-0 w-44 flex flex-col">
+            <div key={item.id} className="shrink-0 w-44 lg:w-auto flex flex-col">
               <div
-                className="w-44 rounded-2xl mb-2 overflow-hidden bg-gradient-to-b from-[#1A2A5E] to-[#0D1117]"
+                className="w-44 lg:w-full rounded-2xl mb-2 overflow-hidden bg-gradient-to-b from-[#1A2A5E] to-[#0D1117]"
                 style={{ aspectRatio: "9/16" }}
               />
               <span className="text-[10px] font-bold text-[#1B5BF0] bg-[#EBF0FF] rounded-full px-2 py-0.5 self-start mb-1">
@@ -951,14 +951,14 @@ export function HomeScreen() {
             LIONS TV
           </button>
         </div>
-        <div className="flex items-start gap-3 overflow-x-auto px-4 pb-1">
+        <div className="flex items-start gap-3 overflow-x-auto px-4 pb-1 lg:justify-between lg:overflow-visible">
           {LIONS_TV_ITEMS.map((item) => (
             <button
               type="button"
               key={item.id}
               onClick={() => setSelectedLionsVideo(item)}
               className={`shrink-0 flex flex-col text-left ${
-                item.format === "short" ? "w-32" : "w-52"
+                item.format === "short" ? "w-32 lg:w-40" : "w-52 lg:w-64"
               }`}
             >
               <div

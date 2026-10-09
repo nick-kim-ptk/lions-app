@@ -394,6 +394,8 @@ export function Header({
   return (
     <div
       className={`sticky top-0 z-20 flex items-center px-4 h-14 gap-3 ${
+        rightSlot ? "" : "lg:hidden"
+      } ${
         dark
           ? "bg-[#0E1A40]/95 backdrop-blur-sm border-b border-white/10"
           : transparent

@@ -70,6 +70,50 @@ export const EMBLEMS: Emblem[] = [
     color: "from-[#00B894] to-[#6EE7B7]",
     count: 1,
   },
+  {
+    name: "개막 지킴이",
+    cond: "시즌 개막전 직관 인증 시 1개 지급 (예시)",
+    desc: "첫 경기부터 함께한 팬",
+    emoji: "🏟️",
+    color: "from-[#0E2F80] to-[#6EC6FF]",
+    count: 1,
+  },
+
+  {
+    name: "응원단장",
+    cond: "응원 이벤트 참여 5회 달성 시 지급 (예시)",
+    desc: "목청 높여 외치는 열정 팬",
+    emoji: "📣",
+    color: "from-[#E53935] to-[#FFB199]",
+    count: 2,
+  },
+
+  {
+    name: "포토 헌터",
+    cond: "팬 인증샷 이벤트 참여 시 1개 지급 (예시)",
+    desc: "순간을 남기는 기록가",
+    emoji: "📸",
+    color: "from-[#7B3FF0] to-[#FFB6E1]",
+    count: 4,
+  },
+
+  {
+    name: "승리 요정",
+    cond: "직관한 경기 승리 시 1개 지급 (예시)",
+    desc: "내가 가면 이긴다",
+    emoji: "🧚",
+    color: "from-[#F0A500] to-[#FFF0A8]",
+    count: 6,
+  },
+
+  {
+    name: "굿즈 수집가",
+    cond: "어센틱·베리즈 샵 구매 인증 시 지급 (예시)",
+    desc: "옷장은 이미 파란색",
+    emoji: "🛍️",
+    color: "from-[#00B894] to-[#A8F0D8]",
+    count: 1,
+  },
 ]
 
 export const EMBLEM_TOTAL = EMBLEMS.reduce((s, e) => s + e.count, 0)

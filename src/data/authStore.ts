@@ -25,5 +25,16 @@ export function setLoggedIn(v: boolean) {
   listeners.forEach((fn) => fn())
 }
 
+export const getLoggedIn = () => loggedIn
+
+/** 로그아웃 상태에서 접근하면 로그인으로 보내는 화면 (약관·방침 페이지는 공개) */
+
+const PUBLIC_MY = ["/my/privacy", "/my/cctv-policy", "/my/email-refuse"]
+
+export const requiresLogin = (pathname: string) =>
+  (pathname.startsWith("/my") && !PUBLIC_MY.includes(pathname)) ||
+  pathname.startsWith("/notifications") ||
+  pathname.startsWith("/lounge")
+
 export const useLoggedIn = () =>
   useSyncExternalStore(subscribe, () => loggedIn)

@@ -563,10 +563,10 @@ export function TicketScreen() {
       {/* Authentic Shop preview */}
       <div className="px-4 mb-6">
         <PHSection label="어센틱 샵" />
-        <div className="flex gap-3 overflow-x-auto pb-1 lg:grid lg:grid-cols-6 lg:overflow-visible">
+        <div className="flex gap-3 overflow-x-auto pb-1">
           {AUTHENTIC_SHOP_ITEMS.map((item) => (
-            <div key={item.id} className="shrink-0 w-32 lg:w-auto flex flex-col">
-              <PH className="w-32 h-32 lg:w-full lg:h-auto lg:aspect-square rounded-2xl mb-2" />
+            <div key={item.id} className="shrink-0 w-32 lg:w-[184px] flex flex-col">
+              <PH className="w-32 h-32 lg:w-[184px] lg:h-[184px] rounded-2xl mb-2" />
               <span className="text-[10px] font-semibold text-[#1B5BF0] mb-0.5 leading-none">
                 {item.player}
               </span>
@@ -619,7 +619,7 @@ export function TicketScreen() {
       {/* Beerys Shop */}
       <div className="px-4 mb-6">
         <PHSection label="베리즈 샵" />
-        <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-[repeat(auto-fill,184px)]">
           {BEERYS_SHOP_ITEMS.map((item, i) => (
             <div
               key={item.id}

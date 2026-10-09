@@ -1,8 +1,10 @@
-import React from "react"
+import React, { useEffect } from "react"
 
 import { Outlet, useLocation, useNavigate } from "react-router-dom"
 
 import { SCREENS } from "@/data/overview"
+
+import { requiresLogin, useLoggedIn } from "@/data/authStore"
 
 import { PcGnb, PcFooter } from "./PcGnb"
 
@@ -275,6 +277,14 @@ export default function Layout() {
 
   const activeTab = getActiveTab(location.pathname)
 
+  const loggedIn = useLoggedIn()
+
+  // 로그아웃 상태에서 로그인이 필요한 화면(MY 등)에 들어오면 로그인으로 보낸다
+  useEffect(() => {
+    if (!loggedIn && requiresLogin(location.pathname))
+      navigate("/login", { replace: true })
+  }, [loggedIn, location.pathname, navigate])
+
   return (
     <div className="flex flex-col h-full bg-[#F5F7FB] lg:max-w-[1440px] lg:mx-auto lg:w-full">
       {/* PC(1024px~): 전체 최대 폭 1440px, 상단 메뉴 */}
@@ -355,7 +365,11 @@ export function Header({
 
   if (bare) {
     return (
-      <div className="sticky top-0 z-20 flex items-center justify-end px-4 h-14 gap-1 bg-transparent">
+      <div
+        className={`sticky top-0 z-20 flex items-center justify-end px-4 h-14 gap-1 bg-transparent ${
+          rightSlot ? "" : "lg:hidden"
+        }`}
+      >
         {showNotif && (
           <button
             className="w-8 h-8 flex items-center justify-center lg:hidden"

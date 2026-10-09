@@ -847,11 +847,11 @@ export function HomeScreen() {
             onMore={() => navigate("/game/magazine")}
           />
         </div>
-        <div className="flex gap-3 overflow-x-auto px-4 pb-1 lg:grid lg:grid-cols-6 lg:overflow-visible">
+        <div className="flex gap-3 overflow-x-auto px-4 pb-1">
           {MAGAZINE_ITEMS.map((item) => (
-            <div key={item.id} className="shrink-0 w-44 lg:w-auto flex flex-col">
+            <div key={item.id} className="shrink-0 w-44 lg:w-[184px] flex flex-col">
               <div
-                className="w-44 lg:w-full rounded-2xl mb-2 overflow-hidden bg-gradient-to-b from-[#1A2A5E] to-[#0D1117]"
+                className="w-44 lg:w-[184px] rounded-2xl mb-2 overflow-hidden bg-gradient-to-b from-[#1A2A5E] to-[#0D1117]"
                 style={{ aspectRatio: "9/16" }}
               />
               <span className="text-[10px] font-bold text-[#1B5BF0] bg-[#EBF0FF] rounded-full px-2 py-0.5 self-start mb-1">
@@ -951,7 +951,7 @@ export function HomeScreen() {
             LIONS TV
           </button>
         </div>
-        <div className="flex items-start gap-3 overflow-x-auto px-4 pb-1 lg:justify-between lg:overflow-visible">
+        <div className="flex items-start gap-3 overflow-x-auto px-4 pb-1 lg:gap-5">
           {LIONS_TV_ITEMS.map((item) => (
             <button
               type="button"

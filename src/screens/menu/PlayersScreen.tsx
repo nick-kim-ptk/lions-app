@@ -166,7 +166,7 @@ export function PlayersScreen() {
                 해당하는 선수가 없어요
               </p>
             )}
-            <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 gap-3 lg:grid-cols-[repeat(auto-fill,184px)]">
               {list.map((p) => {
                 const st = playerStatus(p)
 

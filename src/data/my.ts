@@ -12,15 +12,6 @@ export const SOCIAL_ICONS = [
 // 033(035)-SL-MY-06 내 정보 수정
 export const KBO_TEAMS = KBO_TEAM_NAMES
 
-export const WITHDRAW_REASONS = [
-  '앱 사용 빈도가 낮아서',
-  '원하는 콘텐츠가 부족해서',
-  '개인정보 보호가 걱정돼서',
-  '다른 계정으로 재가입하려고',
-  '서비스에 불만족해서',
-  '기타',
-]
-
 // 037(039)-SL-MY-10 스마트티켓 (QR) — 전체화면
 // 발권된 예매(data/mock/bookings)를 좌석 1매 = 티켓 1장으로 펼친 목록
 export const MOBILE_TICKETS = [...SMART_TICKET_BOOKINGS]

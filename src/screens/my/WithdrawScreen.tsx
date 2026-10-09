@@ -1,14 +1,12 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Header } from '@/components/Layout'
-import { WITHDRAW_REASONS } from '@/data/my'
 
 // 035(037)-SL-MY-08 회원 탈퇴
 export function WithdrawScreen() {
   const navigate = useNavigate()
-  const [reason, setReason] = useState('')
   const [password, setPassword] = useState('')
-  const canWithdraw = reason !== '' && password.length > 0
+  const canWithdraw = password.length > 0
 
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-8">
@@ -31,30 +29,6 @@ export function WithdrawScreen() {
               <span className="text-sm text-[#64748B]">{w}</span>
             </div>
           ))}
-        </div>
-
-        {/* 탈퇴 사유 */}
-        <div className="flex flex-col gap-2">
-          <p className="text-sm font-semibold text-[#111827]">탈퇴 사유 <span className="text-[#E53935]">*</span></p>
-          <div className="flex flex-col gap-2">
-            {WITHDRAW_REASONS.map((r) => (
-              <button
-                key={r}
-                type="button"
-                onClick={() => setReason(r)}
-                className={`w-full h-12 rounded-2xl border px-4 flex items-center justify-between text-sm transition-colors ${
-                  reason === r
-                    ? 'border-[#1B5BF0] bg-[#EBF0FF] text-[#1B5BF0] font-semibold'
-                    : 'border-[#DDE1EC] bg-[#FFFFFF] text-[#111827]'
-                }`}
-              >
-                <span>{r}</span>
-                <span className={`w-4 h-4 rounded-full border flex items-center justify-center ${reason === r ? 'border-[#1B5BF0]' : 'border-[#C4C9D6]'}`}>
-                  {reason === r && <span className="w-2 h-2 rounded-full bg-[#1B5BF0]" />}
-                </span>
-              </button>
-            ))}
-          </div>
         </div>
 
         {/* 비밀번호 확인 */}

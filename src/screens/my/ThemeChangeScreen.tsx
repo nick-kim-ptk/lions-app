@@ -93,14 +93,23 @@ export function ThemeChangeScreen() {
     { label: "최성훈", headerBg: "#581C87", cardBg: "#F3E8FF" },
   ]
 
+  const applyBtn = (
+    <button className="h-9 px-4 rounded-full bg-[#1B5BF0] text-white text-[13px] font-semibold">
+      적용
+    </button>
+  )
+
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-4">
-      <Header title="테마 변경" />
+      {/* 모바일: 헤더 우측 "적용" / PC: 제목 줄 우측 "적용". PC는 앱 아이콘·시작화면(앱 전용)을 빼고 마이페이지 테마만 노출 */}
+      <div className="lg:hidden">
+        <Header title="테마 변경" rightSlot={applyBtn} />
+      </div>
 
-      {/* PC: 앱 아이콘·시작화면은 앱 전용이라 제외 — 마이페이지 테마만 6개 노출 */}
-      <h1 className="hidden lg:block px-4 pt-6 text-[20px] font-bold text-[#111827]">
-        테마 변경
-      </h1>
+      <div className="hidden lg:flex items-center justify-between px-4 pt-6">
+        <h1 className="text-[20px] font-bold text-[#111827]">테마 변경</h1>
+        {applyBtn}
+      </div>
 
       {/* Tab bar */}
       <div className="flex border-b border-[#DDE1EC] bg-white lg:hidden">
@@ -123,7 +132,7 @@ export function ThemeChangeScreen() {
       {activeTab === 0 && (
         <div className="px-4 pt-4 lg:hidden">
           <div className="grid grid-cols-3 gap-3">
-            {iconThemes.map((theme, i) => (
+            {iconThemes.slice(0, 6).map((theme, i) => (
               <button
                 key={i}
                 onClick={() => setSelectedIcon(i)}
@@ -198,7 +207,7 @@ export function ThemeChangeScreen() {
       {activeTab === 1 && (
         <div className="px-4 pt-4 lg:hidden">
           <div className="grid grid-cols-3 gap-3">
-            {splashThemes.map((theme, i) => (
+            {splashThemes.slice(0, 6).map((theme, i) => (
               <button
                 key={i}
                 onClick={() => setSelectedSplash(i)}
@@ -269,11 +278,11 @@ export function ThemeChangeScreen() {
       {/* 마이페이지 탭 */}
       <div className={`px-4 pt-4 ${activeTab === 2 ? "" : "max-lg:hidden"}`}>
           <div className="grid grid-cols-3 gap-3 lg:grid-cols-[repeat(auto-fill,184px)]">
-            {mypageThemes.map((theme, i) => (
+            {mypageThemes.slice(0, 6).map((theme, i) => (
               <button
                 key={i}
                 onClick={() => setSelectedMypage(i)}
-                className={`${i >= 6 ? "lg:hidden " : ""}rounded-2xl border-2 overflow-hidden text-left transition-colors ${
+                className={`rounded-2xl border-2 overflow-hidden text-left transition-colors ${
                   selectedMypage === i ? "border-[#1B5BF0]" : "border-[#DDE1EC]"
                 }`}
               >
@@ -337,19 +346,6 @@ export function ThemeChangeScreen() {
             ))}
           </div>
         </div>
-
-      <div className="sticky bottom-0 bg-white border-t border-[#DDE1EC] px-4 pt-4 pb-10 lg:pb-4 lg:mt-6">
-        <button className="w-full h-14 rounded-2xl bg-[#1B5BF0] text-white font-bold">
-          <span className="lg:hidden">
-            {activeTab === 0
-              ? "아이콘 적용하기"
-              : activeTab === 1
-                ? "시작화면 적용하기"
-                : "상단 테마 적용하기"}
-          </span>
-          <span className="max-lg:hidden">상단 테마 적용하기</span>
-        </button>
-      </div>
     </div>
   )
 }

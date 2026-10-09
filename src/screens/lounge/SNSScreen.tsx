@@ -9,9 +9,9 @@ import { BLUE_MATES, SNS_POSTS } from "@/data/lounge"
 export function SNSScreen() {
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-4">
-      <Header title="블루메이트 1기" />
+      <Header title="블루 메이트" />
 
-      {/* 블루메이트 1기 — 좌우로 드래그하는 프로필 카드 */}
+      {/* 블루 메이트 — 좌우로 드래그하는 프로필 카드 */}
       <div className="pt-4 mb-4">
         <p className="px-4 text-[13px] font-semibold text-[#111827] mb-3">
           블루메이트 1기로 선정되신 분들입니다

@@ -95,7 +95,7 @@ export const ALL_MENU_SECTIONS: MenuSection[] = [
 
           { label: "나의 승리 운세", path: "/lounge/fortune" },
 
-          { label: "블루메이트 1기", path: "/lounge/sns" },
+          { label: "블루 메이트", path: "/lounge/sns" },
         ],
       },
 

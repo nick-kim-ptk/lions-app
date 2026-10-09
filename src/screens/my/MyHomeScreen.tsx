@@ -384,7 +384,7 @@ export function MyHomeScreen() {
       </div>
 
       {/* 라이온즈 기록 */}
-      <div className="px-4 mb-5">
+      <div className="px-4 mb-5 lg:hidden">
         {/* V9 섹션 */}
         <div className="mt-5 flex items-center justify-between mb-3">
           <span className="text-[14px] font-bold text-[#111827]">

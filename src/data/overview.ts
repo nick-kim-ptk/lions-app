@@ -282,7 +282,7 @@ export const SCREENS: ScreenMeta[] = [
 
   {
     id: "029-SL-LG-12",
-    name: "블루메이트 1기",
+    name: "블루 메이트",
     path: "/lounge/sns",
     group: "라운지",
     layout: "grid",
@@ -972,7 +972,7 @@ export const IA_TREE: { group: Group; screens: IATreeNode[] }[] = [
             path: "/lounge/digital-guide",
           },
 
-          { id: "029-SL-LG-12", name: "블루메이트 1기", path: "/lounge/sns" },
+          { id: "029-SL-LG-12", name: "블루 메이트", path: "/lounge/sns" },
 
           {
             id: "098-SL-LG-10",

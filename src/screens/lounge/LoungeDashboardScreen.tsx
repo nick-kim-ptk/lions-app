@@ -274,7 +274,7 @@ export function LoungeDashboardScreen() {
                 emoji: "🎁",
               },
 
-              { label: "블루메이트 1기", path: "/lounge/sns", emoji: "📸" },
+              { label: "블루 메이트", path: "/lounge/sns", emoji: "📸" },
 
               {
                 label: "블루 시그널",

@@ -102,7 +102,7 @@ export const MOOD_OPTIONS = [
   { label: "전설이에요", emoji: "👑" },
 ]
 
-// 029-SL-LG-12 블루메이트 1기 — 선정 멤버 5명 (더미)
+// 029-SL-LG-12 블루 메이트 — 선정 멤버 5명 (더미)
 
 export const BLUE_MATES = [
   { name: "민아", handle: "samfan_mina", desc: "가족 직관 · 먹거리" },
@@ -120,7 +120,7 @@ export const BLUE_MATES = [
   },
 ]
 
-// 블루메이트 1기 피드 (더미)
+// 블루 메이트 피드 (더미)
 
 export const SNS_POSTS = [
   {

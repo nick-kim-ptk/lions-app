@@ -394,7 +394,7 @@ export function Header({
   return (
     <div
       className={`sticky top-0 z-20 flex items-center px-4 h-14 gap-3 ${
-        rightSlot ? "" : "lg:hidden"
+        rightSlot ? "lg:bg-transparent lg:border-0 lg:backdrop-blur-none" : "lg:hidden"
       } ${
         dark
           ? "bg-[#0E1A40]/95 backdrop-blur-sm border-b border-white/10"
@@ -406,7 +406,7 @@ export function Header({
       {showBack && (
         <button
           onClick={() => navigate(-1)}
-          className="w-8 h-8 flex items-center justify-center"
+          className="w-8 h-8 flex items-center justify-center lg:hidden"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path
@@ -421,7 +421,7 @@ export function Header({
       )}
       {title && (
         <h1
-          className={`flex-1 font-semibold text-[16px] ${
+          className={`flex-1 font-semibold text-[16px] lg:hidden ${
             dark ? "text-white" : "text-[#111827]"
           }`}
         >

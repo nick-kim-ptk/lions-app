@@ -38,11 +38,11 @@ body {
   100% { transform: translateX(-50%); }
 }
 
-/* PC(1024px~) — 콘텐츠는 최대 1200px 중앙 정렬. KV처럼 배경을 화면 끝까지 늘릴 영역에 쓴다. */
+/* PC(1024px~) — 전체 최대 폭 1440px(넘으면 좌우 여백), 콘텐츠는 1200px 중앙 정렬. KV처럼 배경을 화면 끝까지 늘릴 영역에 쓴다. */
 @media (min-width: 1024px) {
   .pc-bleed {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
+    width: min(100vw, 1440px);
+    margin-left: calc(50% - min(100vw, 1440px) / 2);
   }
 
   /* pc-bleed 안쪽에서 글자·버튼을 1200px 컨테이너 기준으로 맞춘다 */
@@ -59,15 +59,15 @@ body {
 @media (min-width: 1024px) {
   /* pc-bleed KV 안의 글자·그래픽·버튼을 1200px 컨테이너 좌우 끝에 맞춘다 */
   .pc-kv-pad {
-    padding-left: max(16px, calc((100vw - 1200px) / 2 + 16px));
-    padding-right: max(16px, calc((100vw - 1200px) / 2 + 16px));
+    padding-left: max(16px, calc((min(100vw, 1440px) - 1200px) / 2 + 16px));
+    padding-right: max(16px, calc((min(100vw, 1440px) - 1200px) / 2 + 16px));
   }
 
   .pc-kv-left {
-    left: max(16px, calc((100vw - 1200px) / 2 + 16px));
+    left: max(16px, calc((min(100vw, 1440px) - 1200px) / 2 + 16px));
   }
 
   .pc-kv-right {
-    right: max(16px, calc((100vw - 1200px) / 2 + 16px));
+    right: max(16px, calc((min(100vw, 1440px) - 1200px) / 2 + 16px));
   }
 }

@@ -73,7 +73,7 @@ export function MobileTicketQRScreen() {
 
   if (isSeasonEndPhase(phase)) {
     return (
-      <div className="fixed inset-0 z-50 bg-[#0E1A40] flex flex-col">
+      <div className="fixed inset-0 lg:inset-x-auto lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-[1440px] z-50 bg-[#0E1A40] flex flex-col">
         <div className="flex items-center justify-between px-5 pt-12 pb-4">
           <span className="text-white font-bold text-base">스마트 티켓</span>
           <button
@@ -103,7 +103,7 @@ export function MobileTicketQRScreen() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0E1A40] flex flex-col overflow-y-auto">
+    <div className="fixed inset-0 lg:inset-x-auto lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-[1440px] z-50 bg-[#0E1A40] flex flex-col overflow-y-auto">
       {/* 상단 닫기 */}
       <div className="flex items-center justify-between px-5 pt-12 pb-4">
         <div className="flex flex-col gap-0.5">

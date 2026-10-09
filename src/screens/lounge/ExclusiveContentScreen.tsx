@@ -32,7 +32,7 @@ export function ExclusiveContentScreen() {
   }
 
   return (
-    <div className="fixed inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
+    <div className="fixed inset-0 lg:inset-x-auto lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-[1440px] bg-[#0A0A0A] flex flex-col overflow-hidden">
       {/* Full-screen video area */}
       <div className="relative flex-1 bg-[#111111]">
         {/* Video placeholder — full bleed */}

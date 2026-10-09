@@ -31,7 +31,7 @@ export function EldoradoScreen() {
 
   return (
     <div
-      className="fixed inset-0 bg-[#0D1117] flex flex-col overflow-hidden"
+      className="fixed inset-0 lg:inset-x-auto lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-[1440px] bg-[#0D1117] flex flex-col overflow-hidden"
       style={{ zIndex: 50 }}
     >
       {/* Top bar with close */}

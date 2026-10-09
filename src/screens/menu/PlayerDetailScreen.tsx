@@ -10,7 +10,7 @@ export function PlayerDetailScreen() {
   const [params] = useSearchParams()
 
   return (
-    <div className="fixed inset-0 bg-[#F5F7FB] overflow-y-auto">
+    <div className="fixed inset-0 lg:top-[72px] lg:inset-x-auto lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-[1440px] bg-[#F5F7FB] overflow-y-auto">
       <PlayerDetailContent
         playerId={params.get("id") ?? undefined}
         onClose={() => navigate(-1)}

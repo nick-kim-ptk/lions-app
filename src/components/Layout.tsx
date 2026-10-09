@@ -276,8 +276,8 @@ export default function Layout() {
   const activeTab = getActiveTab(location.pathname)
 
   return (
-    <div className="flex flex-col h-full bg-[#F5F7FB]">
-      {/* PC(1024px~): 상단 메뉴 */}
+    <div className="flex flex-col h-full bg-[#F5F7FB] lg:max-w-[1440px] lg:mx-auto lg:w-full">
+      {/* PC(1024px~): 전체 최대 폭 1440px, 상단 메뉴 */}
       <PcGnb />
 
       <div className="flex-1 overflow-y-auto">

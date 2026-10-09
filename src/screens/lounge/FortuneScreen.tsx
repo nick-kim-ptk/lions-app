@@ -34,7 +34,7 @@ export function FortuneScreen() {
   }, [])
 
   return (
-    <div className="fixed inset-0 bg-[#070e22] flex flex-col overflow-hidden">
+    <div className="fixed inset-0 lg:inset-x-auto lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-[1440px] bg-[#070e22] flex flex-col overflow-hidden">
       {phase === "loading" ? (
         /* ── 로딩 — 풀스크린 ── */
 

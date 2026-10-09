@@ -49,7 +49,7 @@ export function VRViewerScreen() {
 
   return (
     <div
-      className="fixed inset-0 z-50 overflow-hidden bg-[#0E1A40] touch-none select-none"
+      className="fixed inset-0 lg:inset-x-auto lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-[1440px] z-50 overflow-hidden bg-[#0E1A40] touch-none select-none"
       onPointerDown={(e) => {
         drag.current = { x: e.clientX, y: e.clientY }
       }}

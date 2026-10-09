@@ -112,11 +112,11 @@ export function PlayersScreen() {
       <div className="px-4 pt-4">
         {/* 소개 — 감독·주장·대표 타자·대표 투수 */}
         {tab === "소개" && (
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 lg:grid lg:grid-cols-2">
             {TEAM_INTRO.map((m) => (
               <div
                 key={m.label}
-                className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#050B24] to-[#0E1F5C] aspect-[16/10] lg:aspect-auto lg:h-[360px]"
+                className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#050B24] to-[#0E1F5C] aspect-[16/10] lg:aspect-auto lg:h-[320px]"
               >
                 <p className="absolute left-4 top-3 text-[11px] font-bold tracking-wide text-white/50">
                   {m.label}
@@ -143,11 +143,15 @@ export function PlayersScreen() {
         )}
 
         {/* 감독 */}
-        {tab === "감독" && <StaffCard s={MANAGER} />}
+        {tab === "감독" && (
+          <div className="lg:grid lg:grid-cols-2 lg:gap-3">
+            <StaffCard s={MANAGER} />
+          </div>
+        )}
 
         {/* 코칭스텝 */}
         {tab === "코칭스텝" && (
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 lg:grid lg:grid-cols-2">
             {COACHING_STAFF.map((c, i) => (
               <StaffCard key={i} s={c} />
             ))}

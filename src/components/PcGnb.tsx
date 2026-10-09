@@ -2,6 +2,8 @@ import React from "react"
 
 import { useLocation, useNavigate } from "react-router-dom"
 
+import { setLoggedIn, useLoggedIn } from "@/data/authStore"
+
 import { ALL_MENU_SECTIONS, type MenuLink } from "@/data/allMenu"
 
 // PC(1024px~) 전용 상단 메뉴. 하단 탭바 대신 쓰고, 마우스를 올리면 하위 메뉴가 전체 폭 패널로 열린다.
@@ -62,6 +64,8 @@ function activeLabel(pathname: string) {
 
 export function PcGnb() {
   const navigate = useNavigate()
+
+  const loggedIn = useLoggedIn()
 
   const { pathname } = useLocation()
 
@@ -143,29 +147,36 @@ export function PcGnb() {
 
         {/* 로그인 상태 */}
         <div className="flex items-center gap-3 flex-shrink-0 text-[13px]">
-          <button
-            onClick={() => go("/my")}
-            className="flex items-center gap-2 text-[#111827]"
-          >
-            <span className="w-7 h-7 rounded-full bg-[#E8EBF4] flex items-center justify-center text-[11px] text-[#64748B]">
-              라
-            </span>
+          {loggedIn ? (
+            <>
+              <button
+                onClick={() => go("/my")}
+                className="flex items-center gap-2 text-[#111827]"
+              >
+                <span className="w-7 h-7 rounded-full bg-[#E8EBF4] flex items-center justify-center text-[11px] text-[#64748B]">
+                  라
+                </span>
 
-            <span className="font-semibold">김라이온 님</span>
+                <span className="font-semibold">김라이온 님</span>
+              </button>
 
-            <span className="px-2 py-0.5 rounded-full bg-[#EBF0FF] text-[#1B5BF0] text-[11px] font-semibold">
-              골드 멤버십
-            </span>
-          </button>
+              <span className="w-px h-3 bg-[#DDE1EC]" />
 
-          <span className="w-px h-3 bg-[#DDE1EC]" />
-
-          <button
-            onClick={() => navigate("/login")}
-            className="text-[#64748B]"
-          >
-            로그아웃
-          </button>
+              <button
+                onClick={() => setLoggedIn(false)}
+                className="text-[#64748B]"
+              >
+                로그아웃
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => navigate("/login")}
+              className="px-4 h-9 rounded-full bg-[#1B5BF0] text-white font-semibold"
+            >
+              로그인
+            </button>
+          )}
         </div>
       </div>
 

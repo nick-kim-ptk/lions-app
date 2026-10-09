@@ -4,6 +4,8 @@ import { PH } from "@/components/Placeholder"
 
 import { Page } from "@/components/Layout"
 
+import { setLoggedIn } from "@/data/authStore"
+
 // 089-SL-CM-04 로그인
 
 export function LoginScreen() {
@@ -43,7 +45,11 @@ export function LoginScreen() {
         </div>
 
         <button
-          onClick={() => navigate("/home")}
+          onClick={() => {
+            setLoggedIn(true)
+
+            navigate("/home")
+          }}
           className="h-14 rounded-2xl bg-[#1B5BF0] text-white font-bold text-[16px] mb-5"
         >
           로그인

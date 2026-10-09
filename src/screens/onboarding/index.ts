@@ -2,7 +2,6 @@ export { SplashScreen } from "./SplashScreen"
 
 export { PermissionsScreen } from "./PermissionsScreen"
 
-export { NoticePopupScreen } from "./NoticePopupScreen"
 
 export { LoginScreen } from "./LoginScreen"
 

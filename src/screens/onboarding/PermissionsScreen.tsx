@@ -79,7 +79,7 @@ export function PermissionsScreen() {
       {/* CTA */}
       <div className="px-5 pb-10 flex flex-col gap-3">
         <button
-          onClick={() => navigate("/notice")}
+          onClick={() => navigate("/home")}
           className="h-14 rounded-2xl bg-[#1B5BF0] text-white font-bold text-[16px]"
         >
           동의하고 시작하기

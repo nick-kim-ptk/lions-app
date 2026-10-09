@@ -1,13 +1,9 @@
-import { useNavigate } from "react-router-dom"
-
 import React from "react"
 
-import { Page } from "@/components/Layout"
+// 003-SL-CM-03 팝업(공지) — 홈 진입 시 홈 위에 딤드 모달로 표시. 3가지 형태 스와이프 캐러셀.
+// 와이어프레임이므로 "확인"·"오늘 하루 보지 않기" 모두 닫기만 한다.
 
-// 003-SL-CM-03 팝업(공지) — 3가지 형태 스와이프 캐러셀
-
-export function NoticePopupScreen() {
-  const navigate = useNavigate()
+export function NoticePopup({ onClose }: { onClose: () => void }) {
 
   const [current, setCurrent] = React.useState(0)
 
@@ -56,6 +52,7 @@ export function NoticePopupScreen() {
       }`}
     >
       <button
+        onClick={() => onClose()}
         className={`flex-1 py-4 text-sm ${
           dark ? "text-white/50" : "text-[#64748B]"
         }`}
@@ -64,7 +61,7 @@ export function NoticePopupScreen() {
       </button>
       <div className={`w-px ${dark ? "bg-white/10" : "bg-[#DDE1EC]"}`} />
       <button
-        onClick={() => navigate("/home")}
+        onClick={() => onClose()}
         className={`flex-1 py-4 text-sm font-semibold ${
           dark ? "text-white" : "text-[#1B5BF0]"
         }`}
@@ -75,11 +72,8 @@ export function NoticePopupScreen() {
   )
 
   return (
-    <Page className="justify-center items-center">
-      <div
-        className="absolute inset-0 bg-black/70"
-        onClick={() => navigate("/home")}
-      />
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/70" onClick={() => onClose()} />
 
       {/* 고정 높이 컨테이너 — 높이 흔들림 없음 */}
       <div
@@ -161,12 +155,15 @@ export function NoticePopupScreen() {
             <div className="relative">
               <Dots dark />
               <div className="flex border-t border-white/10">
-                <button className="flex-1 py-4 text-sm text-white/50">
+                <button
+                  onClick={() => onClose()}
+                  className="flex-1 py-4 text-sm text-white/50"
+                >
                   오늘 하루 보지 않기
                 </button>
                 <div className="w-px bg-white/10" />
                 <button
-                  onClick={() => navigate("/home")}
+                  onClick={() => onClose()}
                   className="flex-1 py-4 text-sm font-semibold text-white"
                 >
                   확인
@@ -227,6 +224,6 @@ export function NoticePopupScreen() {
           </div>
         </div>
       </div>
-    </Page>
+    </div>
   )
 }

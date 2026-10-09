@@ -27,7 +27,6 @@ function ScrollToTop() {
 import {
   SplashScreen,
   PermissionsScreen,
-  NoticePopupScreen,
   LoginScreen,
   SignupScreen,
   TermsScreen,
@@ -153,7 +152,6 @@ export default function App() {
         {/* ── Standalone (no bottom nav) ── */}
         <Route path="/splash" element={<SplashScreen />} />
         <Route path="/permissions" element={<PermissionsScreen />} />
-        <Route path="/notice" element={<NoticePopupScreen />} />
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/ticketlink" element={<TicketLinkScreen />} />
         <Route path="/signup" element={<SignupScreen />} />

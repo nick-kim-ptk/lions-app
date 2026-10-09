@@ -1,8 +1,12 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 
 import { bookTicket } from "@/utils/pc"
 
-import { useState, useRef, useSyncExternalStore } from "react"
+import { NoticePopup } from "@/components/NoticePopup"
+
+import { useScreenIdOverride } from "@/components/Layout"
+
+import { useState, useRef, useEffect, useSyncExternalStore } from "react"
 
 import { PH, PHCircle, PHSection } from "@/components/Placeholder"
 
@@ -98,8 +102,27 @@ function SeatRow({ onTicket }: { onTicket: () => void }) {
 
 // 004-SL-HM-01 홈
 
+// 003-SL-CM-03 팝업(공지): 앱을 연 뒤 처음 홈에 들어올 때 한 번 표시 (?popup=notice 로 다시 열 수 있음)
+let noticeShown = false
+
 export function HomeScreen() {
   const navigate = useNavigate()
+
+  const [searchParams] = useSearchParams()
+
+  const [showNotice, setShowNotice] = useState(
+    () => !noticeShown || searchParams.get("popup") === "notice",
+  )
+
+  const forceNotice = searchParams.get("popup") === "notice"
+
+  useEffect(() => {
+    noticeShown = true
+
+    if (forceNotice) setShowNotice(true)
+  }, [forceNotice])
+
+  useScreenIdOverride(showNotice ? "003-SL-CM-03" : null)
 
   const [kvIndex, setKvIndex] = useState(0)
 
@@ -1105,6 +1128,8 @@ export function HomeScreen() {
           © 2026 Samsung Lions. All rights reserved.
         </p>
       </div>
+
+      {showNotice && <NoticePopup onClose={() => setShowNotice(false)} />}
 
       {selectedLionsVideo && (
         <div

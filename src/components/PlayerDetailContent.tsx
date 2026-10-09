@@ -440,8 +440,8 @@ export function PlayerDetailContent({
                 price: "35,000원",
               },
             ].map((g) => (
-              <div key={g.name} className="shrink-0 w-32 flex flex-col">
-                <PH className="w-32 h-32 rounded-2xl mb-2" />
+              <div key={g.name} className="shrink-0 w-32 lg:w-[184px] flex flex-col">
+                <PH className="w-32 h-32 lg:w-[184px] lg:h-[184px] rounded-2xl mb-2" />
                 <span className="text-[10px] font-semibold text-[#1B5BF0] mb-0.5 leading-none">
                   {g.player}
                 </span>

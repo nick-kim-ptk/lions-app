@@ -1108,14 +1108,14 @@ export function HomeScreen() {
 
       {selectedLionsVideo && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-5"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-5 lg:px-0"
           onClick={() => setSelectedLionsVideo(null)}
         >
           <div
             role="dialog"
             aria-modal="true"
             aria-label="LIONS TV 영상"
-            className="w-full max-w-lg overflow-hidden rounded-2xl bg-[#111827] shadow-2xl"
+            className="w-full max-w-lg overflow-hidden rounded-2xl bg-[#111827] shadow-2xl lg:max-w-none lg:w-[min(1440px,100vw,calc((100vh-150px)*16/9))] lg:rounded-none"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="flex items-center justify-between px-4 py-3">

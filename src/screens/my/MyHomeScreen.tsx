@@ -499,26 +499,29 @@ export function MyHomeScreen() {
             전체보기 ›
           </button>
         </div>
-        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-4">
-          <div className="grid grid-cols-3 gap-3">
-            {EMBLEMS.slice(0, 3).map((em, i) => (
-              <div key={i} className="flex flex-col items-center gap-1.5">
-                <div
-                  className={`relative w-full lg:max-w-[160px] aspect-square rounded-2xl bg-gradient-to-br ${em.color} flex items-center justify-center`}
-                >
-                  <span className="text-2xl">{em.emoji}</span>
-                  <div className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#111827] border-2 border-white flex items-center justify-center">
-                    <span className="text-[9px] font-bold text-white">
-                      {em.count}
-                    </span>
-                  </div>
+        <div className="flex gap-3 overflow-x-auto pb-1 pt-2 pr-1">
+          {EMBLEMS.map((em) => (
+            <button
+              key={em.name}
+              type="button"
+              onClick={() => navigate("/my/emblem")}
+              className="shrink-0 w-24 lg:w-[140px] flex flex-col items-center gap-1.5"
+            >
+              <div
+                className={`relative w-24 h-24 lg:w-[140px] lg:h-[140px] rounded-2xl bg-gradient-to-br ${em.color} flex items-center justify-center`}
+              >
+                <span className="text-3xl">{em.emoji}</span>
+                <div className="absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1 rounded-full bg-[#111827] border-2 border-white flex items-center justify-center">
+                  <span className="text-[9px] font-bold text-white">
+                    {em.count}
+                  </span>
                 </div>
-                <span className="text-[11px] font-medium text-[#374151] text-center leading-tight">
-                  {em.name}
-                </span>
               </div>
-            ))}
-          </div>
+              <span className="text-[11px] font-medium text-[#374151] text-center leading-tight">
+                {em.name}
+              </span>
+            </button>
+          ))}
         </div>
       </div>
 

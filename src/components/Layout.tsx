@@ -4,6 +4,8 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom"
 
 import { SCREENS } from "@/data/overview"
 
+import { PcGnb, PcFooter } from "./PcGnb"
+
 const SCREEN_ID_MAP: Record<string, string> = Object.fromEntries(
   SCREENS.filter((s) => !s.variant).map((s) => [s.path, s.id]),
 )
@@ -275,12 +277,20 @@ export default function Layout() {
 
   return (
     <div className="flex flex-col h-full bg-[#F5F7FB]">
+      {/* PC(1024px~): 상단 메뉴 */}
+      <PcGnb />
+
       <div className="flex-1 overflow-y-auto">
-        <Outlet />
+        {/* PC: 콘텐츠 최대 폭 1200px 중앙 정렬. 전체 폭이 필요한 KV는 pc-bleed 사용 */}
+        <div className="lg:max-w-[1200px] lg:mx-auto lg:w-full">
+          <Outlet />
+        </div>
+
+        <PcFooter />
       </div>
 
-      {/* Bottom Navigation */}
-      <nav className="flex-shrink-0 h-[68px] bg-[#FFFFFF] border-t border-[#DDE1EC] flex items-center safe-area-bottom">
+      {/* Bottom Navigation (모바일·태블릿) */}
+      <nav className="lg:hidden flex-shrink-0 h-[68px] bg-[#FFFFFF] border-t border-[#DDE1EC] flex items-center safe-area-bottom">
         {NAV_ITEMS.map((item) => {
           const active = activeTab === item.path
 
@@ -348,7 +358,7 @@ export function Header({
       <div className="sticky top-0 z-20 flex items-center justify-end px-4 h-14 gap-1 bg-transparent">
         {showNotif && (
           <button
-            className="w-8 h-8 flex items-center justify-center"
+            className="w-8 h-8 flex items-center justify-center lg:hidden"
             onClick={() => navigate("/notifications")}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -363,7 +373,7 @@ export function Header({
         )}
         {showMenu && (
           <button
-            className="w-8 h-8 flex items-center justify-center"
+            className="w-8 h-8 flex items-center justify-center lg:hidden"
             onClick={() => navigate("/all-menu")}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -419,7 +429,7 @@ export function Header({
       {!title && <div className="flex-1" />}
       {showNotif && (
         <button
-          className="w-8 h-8 flex items-center justify-center"
+          className="w-8 h-8 flex items-center justify-center lg:hidden"
           onClick={() => navigate("/notifications")}
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -434,7 +444,7 @@ export function Header({
       )}
       {showMenu && (
         <button
-          className="w-8 h-8 flex items-center justify-center"
+          className="w-8 h-8 flex items-center justify-center lg:hidden"
           onClick={() => navigate("/all-menu")}
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -462,7 +472,9 @@ export function Page({
   className?: string
 }) {
   return (
-    <div className={`min-h-screen bg-[#F5F7FB] flex flex-col ${className}`}>
+    <div
+      className={`min-h-screen bg-[#F5F7FB] flex flex-col lg:max-w-[560px] lg:mx-auto lg:w-full ${className}`}
+    >
       {children}
     </div>
   )

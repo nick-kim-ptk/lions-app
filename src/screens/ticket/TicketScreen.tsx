@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom"
 
+import { bookTicket, isPc } from "@/utils/pc"
+
 import { useState, useEffect } from "react"
 
 import { PH, PHCircle, PHSection } from "@/components/Placeholder"
@@ -280,6 +282,9 @@ export function TicketScreen() {
                 </div>
                 <button
                   disabled={!heroCanBook}
+                  onClick={() => {
+                    if (isPc()) bookTicket(navigate)
+                  }}
                   className={`h-10 px-5 rounded-xl border text-sm font-bold shrink-0 ${
                     heroCanBook
                       ? "bg-white text-[#0E2F80] border-white"
@@ -409,7 +414,7 @@ export function TicketScreen() {
             </p>
           </div>
         )}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 lg:grid lg:grid-cols-2">
           {visibleGames.map((g) => {
             const opp = TEAMS[g.opp]
 
@@ -499,7 +504,12 @@ export function TicketScreen() {
                     {state !== "before" &&
                     state !== "cancelled" &&
                     state !== "away" ? (
-                      <button className="h-8 px-4 rounded-xl bg-[#1B5BF0] text-white text-[12px] font-semibold">
+                      <button
+                        onClick={() => {
+                          if (isPc()) bookTicket(navigate)
+                        }}
+                        className="h-8 px-4 rounded-xl bg-[#1B5BF0] text-white text-[12px] font-semibold"
+                      >
                         예매
                       </button>
                     ) : (

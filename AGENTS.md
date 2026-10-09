@@ -16,3 +16,4 @@ React 19 + Vite + Tailwind CSS v4 + react-router-dom(HashRouter). 모든 데이�
 - 경로 별칭 `@` = `src`. 점검: `pnpm typecheck`, 빌드: `pnpm build`.
 - 케이스(상태) 전환 컨트롤은 `components/CaseSelect`(빨간 점선 드롭다운)만 사용한다. 탭·필터 등 실제 UI와 구분하기 위함.
 - 시즌 단계·경기 상태·공통 시스템 상태 정의는 `src/data/caseGuide.ts`(가이드 페이지 `/case-guide`)가 단일 출처. 케이스를 추가하면 이 문서도 함께 갱신하고, `OPEN_ITEMS`(정의 필요)는 해결되면 삭제한다. 전역 케이스 상태는 `src/data/caseStore.ts`.
+- PC 뷰(1024px~, 기준 1440): 규칙과 숨김 항목은 `docs/pc-view.md`. 모바일 컴포넌트는 그대로 두고 `lg:` 클래스로 칸 수·여백만 바꾼다. 메뉴 데이터는 `src/data/allMenu.ts`(모바일 전체 메뉴와 PC 상단 메뉴 공용).

@@ -1,8 +1,12 @@
 import { useState } from "react"
 
+import { isPc } from "@/utils/pc"
+
 import { useNavigate } from "react-router-dom"
 
 import { Header } from "@/components/Layout"
+
+import { AppOnlyNotice } from "@/components/AppOnlyNotice"
 
 function RecipientSection() {
   const [query, setQuery] = useState("")
@@ -126,6 +130,9 @@ export function TicketGiftScreen() {
   const [confirmed, setConfirmed] = useState(false)
 
   const [activeTab, setActiveTab] = useState(0)
+
+  // PC에서는 선물 보내기를 앱 전용으로 안내
+  const [appOnly, setAppOnly] = useState(false)
 
   const [giftHistoryTab, setGiftHistoryTab] =
     useState<"보낸 티켓" | "받은 티켓">("보낸 티켓")
@@ -304,6 +311,8 @@ export function TicketGiftScreen() {
 
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-4">
+      <AppOnlyNotice open={appOnly} onClose={() => setAppOnly(false)} />
+
       <Header title="티켓 선물하기" />
       {/* Tab bar */}
       <div className="flex border-b border-[#DDE1EC]">
@@ -569,7 +578,7 @@ export function TicketGiftScreen() {
                   </div>
                 </div>
                 {item.pending && giftHistoryTab === "받은 티켓" && (
-                  <div className="border-t border-[#FBBF24]/30 px-4 py-3">
+                  <div className="border-t border-[#FBBF24]/30 px-4 py-3 lg:hidden">
                     <button
                       type="button"
                       onClick={() => navigate("/my/ticket-qr?mode=gift")}
@@ -582,7 +591,7 @@ export function TicketGiftScreen() {
                 {item.received &&
                   !item.past &&
                   giftHistoryTab === "받은 티켓" && (
-                    <div className="border-t border-[#DDE1EC] px-4 py-3">
+                    <div className="border-t border-[#DDE1EC] px-4 py-3 lg:hidden">
                       <button
                         type="button"
                         onClick={() => navigate("/my/ticket-qr")}
@@ -750,6 +759,9 @@ export function TicketGiftScreen() {
 
             <button
               disabled={!confirmed}
+              onClick={() => {
+                if (isPc()) setAppOnly(true)
+              }}
               className={`w-full h-14 rounded-2xl font-bold transition-colors ${
                 confirmed
                   ? "bg-[#1B5BF0] text-white"

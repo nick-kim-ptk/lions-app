@@ -60,7 +60,7 @@ export function MemberCard({
   return (
     <div
       onClick={onClick}
-      className={`relative overflow-hidden rounded-2xl p-5 aspect-[9/16] flex flex-col justify-between text-white ${bg} ${
+      className={`relative overflow-hidden rounded-2xl p-5 aspect-[9/16] lg:aspect-[16/10] flex flex-col justify-between text-white ${bg} ${
         onClick ? "cursor-pointer active:opacity-90" : ""
       }`}
       style={

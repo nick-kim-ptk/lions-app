@@ -45,7 +45,7 @@ function JoinClosedCard({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${bg} p-5 aspect-[9/16] flex flex-col justify-between`}
+      className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${bg} p-5 aspect-[9/16] lg:aspect-[16/10] flex flex-col justify-between`}
     >
       <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10 pointer-events-none" />
       <div className="absolute -left-10 bottom-24 w-32 h-32 rounded-full bg-white/5 pointer-events-none" />
@@ -167,9 +167,9 @@ export function MyHomeScreen() {
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-8">
       {/* Player theme hero banner — GNB 포함 */}
-      <div className="relative w-full h-[270px] bg-gradient-to-br from-[#1B5BF0] to-[#0E2F80] overflow-hidden mb-4">
+      <div className="relative w-full h-[270px] bg-gradient-to-br from-[#1B5BF0] to-[#0E2F80] overflow-hidden mb-4 pc-bleed">
         {/* 케이스 전환 (와이어프레임 전용) — KV 좌측 상단 */}
-        <div className="absolute top-0 left-4 z-20 h-14 flex items-center gap-1.5">
+        <div className="absolute top-0 left-4 z-20 h-14 flex items-center gap-1.5 pc-kv-left">
           <CaseSelect
             variant="dark"
             value={"로그인 상태" as "로그인 상태" | "비로그인"}
@@ -192,7 +192,7 @@ export function MyHomeScreen() {
         <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-end px-4 h-14 gap-1">
           <button
             onClick={() => navigate("/notifications")}
-            className="w-8 h-8 flex items-center justify-center"
+            className="w-8 h-8 flex items-center justify-center lg:hidden"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
               <path
@@ -205,7 +205,7 @@ export function MyHomeScreen() {
           </button>
           <button
             onClick={() => navigate("/all-menu")}
-            className="w-8 h-8 flex items-center justify-center"
+            className="w-8 h-8 flex items-center justify-center lg:hidden"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
               <path
@@ -220,12 +220,12 @@ export function MyHomeScreen() {
         <div className="absolute right-0 bottom-0 w-40 h-48">
           <PH className="w-full h-full rounded-none bg-[#FFFFFF]/10" />
         </div>
-        <div className="absolute left-4 top-4 opacity-10">
+        <div className="absolute left-4 top-4 opacity-10 pc-kv-left">
           <span className="text-[80px] font-black text-white leading-none">
             13
           </span>
         </div>
-        <div className="absolute inset-0 flex flex-col justify-end p-4">
+        <div className="absolute inset-0 flex flex-col justify-end p-4 pc-kv-pad">
           <div className="flex items-end gap-4">
             <div className="relative">
               <PHCircle className="w-16 h-16 border-2 border-white" />
@@ -504,7 +504,7 @@ export function MyHomeScreen() {
             {EMBLEMS.slice(0, 3).map((em, i) => (
               <div key={i} className="flex flex-col items-center gap-1.5">
                 <div
-                  className={`relative w-full aspect-square rounded-2xl bg-gradient-to-br ${em.color} flex items-center justify-center`}
+                  className={`relative w-full lg:max-w-[160px] aspect-square rounded-2xl bg-gradient-to-br ${em.color} flex items-center justify-center`}
                 >
                   <span className="text-2xl">{em.emoji}</span>
                   <div className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#111827] border-2 border-white flex items-center justify-center">

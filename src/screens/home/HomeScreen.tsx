@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom"
 
+import { bookTicket } from "@/utils/pc"
+
 import { useState, useRef, useSyncExternalStore } from "react"
 
 import { PH, PHCircle, PHSection } from "@/components/Placeholder"
@@ -68,7 +70,7 @@ function TeamBadge({
 
 function SeatRow({ onTicket }: { onTicket: () => void }) {
   return (
-    <div className="bg-[#F5F7FB] rounded-xl px-3 py-2.5 flex items-center gap-2 mb-3">
+    <div className="bg-[#F5F7FB] rounded-xl px-3 py-2.5 flex items-center gap-2 mb-3 lg:hidden">
       <svg
         width="14"
         height="14"
@@ -132,7 +134,7 @@ export function HomeScreen() {
     <div className="min-h-full bg-[#F5F7FB] pb-4">
       {/* KV Carousel — GNB 포함 */}
       <div
-        className="relative w-full h-[374px] overflow-hidden"
+        className="relative w-full h-[374px] overflow-hidden pc-bleed"
         onTouchStart={(e) => {
           touchStartX.current = e.touches[0].clientX
         }}
@@ -145,7 +147,7 @@ export function HomeScreen() {
         }}
       >
         {/* Floating GNB */}
-        <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-4 h-14 gap-1">
+        <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-4 h-14 gap-1 pc-kv-pad">
           <button
             onClick={() => navigate("/case-guide")}
             className="rounded-full border border-dashed border-red-400 bg-black/30 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-sm"
@@ -155,7 +157,7 @@ export function HomeScreen() {
           <div className="flex items-center gap-1">
             <button
               onClick={() => navigate("/notifications")}
-              className="w-8 h-8 flex items-center justify-center relative"
+              className="w-8 h-8 flex items-center justify-center relative lg:hidden"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                 <path
@@ -172,7 +174,7 @@ export function HomeScreen() {
             </button>
             <button
               onClick={() => navigate("/all-menu")}
-              className="w-8 h-8 flex items-center justify-center"
+              className="w-8 h-8 flex items-center justify-center lg:hidden"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                 <path
@@ -210,7 +212,7 @@ export function HomeScreen() {
 
               {/* Graphic */}
               <div
-                className={`absolute right-5 top-1/2 -translate-y-1/2 w-28 h-28 rounded-3xl ${slide.graphicBg} flex items-center justify-center`}
+                className={`absolute right-5 top-1/2 -translate-y-1/2 w-28 h-28 rounded-3xl ${slide.graphicBg} flex items-center justify-center pc-kv-right`}
               >
                 <span className="text-[72px] leading-none">
                   {slide.graphic}
@@ -218,7 +220,7 @@ export function HomeScreen() {
               </div>
 
               {/* Content — 하단 정렬, 버튼 없음 */}
-              <div className="absolute inset-0 flex flex-col justify-end p-5 pb-10">
+              <div className="absolute inset-0 flex flex-col justify-end p-5 pb-10 pc-kv-pad">
                 {!slide.hideBadge && (
                   <span
                     className={`self-start text-[10px] font-bold text-white ${slide.badgeColor} rounded-full px-2.5 py-0.5 mb-3`}
@@ -469,7 +471,7 @@ export function HomeScreen() {
                   </p>
                   <SeatRow onTicket={() => navigate("/my/ticket-qr")} />
                   <button
-                    onClick={() => navigate("/ticket")}
+                    onClick={() => bookTicket(navigate)}
                     className="w-full h-11 rounded-xl bg-[#1B5BF0] text-white text-[13px] font-bold"
                   >
                     티켓 예매하기
@@ -588,7 +590,7 @@ export function HomeScreen() {
                             ticketStateOf(upcoming),
                           ) && (
                             <button
-                              onClick={() => navigate("/ticket")}
+                              onClick={() => bookTicket(navigate)}
                               className="h-8 px-3 rounded-xl border border-[#1B5BF0] text-[#1B5BF0] text-[11px] font-bold"
                             >
                               예매
@@ -872,7 +874,7 @@ export function HomeScreen() {
           label="라이온즈 뉴스"
           onMore={() => navigate("/game/news")}
         />
-        <div className="flex flex-col">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-x-10">
           {[
             {
               title: "원태인, 시즌 15승 달성… 에이스 자리 굳혔다",
@@ -1228,7 +1230,7 @@ export function HomeScreen() {
       )}
 
       {/* Chatbot FAB */}
-      <button className="fixed bottom-24 right-4 z-30 w-12 h-12 rounded-full bg-[#1B5BF0] shadow-lg flex items-center justify-center">
+      <button className="fixed bottom-24 right-4 lg:bottom-8 lg:right-8 z-30 w-12 h-12 rounded-full bg-[#1B5BF0] shadow-lg flex items-center justify-center">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <path
             d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z"

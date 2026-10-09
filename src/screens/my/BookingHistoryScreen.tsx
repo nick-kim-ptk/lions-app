@@ -1,5 +1,7 @@
 import { useCaseState, isSeasonEndPhase } from "@/data/caseStore"
 
+import { bookTicket } from "@/utils/pc"
+
 import { EmptyState } from "@/components/EmptyState"
 
 import { ListCaseBar, type ListCase } from "@/components/ListCaseBar"
@@ -152,7 +154,7 @@ export function BookingHistoryScreen() {
           )}
         </div>
         {status === "예매 완료" && (
-          <div className="border-t border-[#DDE1EC] p-4">
+          <div className="border-t border-[#DDE1EC] p-4 lg:hidden">
             {isUnissued && (
               <p className="mb-2.5 text-center text-[12px] font-medium leading-relaxed text-[#374151]">
                 스마트티켓을 발권한 이후에는 종이(지류) 티켓을 일절 발권할 수
@@ -319,7 +321,7 @@ export function BookingHistoryScreen() {
               title="예매 내역이 없어요"
               desc="라이온즈 경기를 예매해 보세요."
               actionLabel="티켓 예매하기"
-              onAction={() => navigate("/ticket")}
+              onAction={() => bookTicket(navigate)}
               className="py-12"
             />
           ) : (

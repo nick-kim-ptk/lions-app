@@ -112,6 +112,8 @@ export function ScheduleScreen() {
         ))}
       </div>
 
+      <div className="lg:grid lg:grid-cols-[440px_1fr] lg:gap-x-8 lg:items-start lg:pt-2">
+      <div>
       {/* Month nav */}
       <div className="flex items-center justify-between px-4 py-3">
         <button
@@ -245,6 +247,7 @@ export function ScheduleScreen() {
         )}
       </div>
 
+      </div>
       {/* Schedule list */}
       <div className="px-4">
         <p className="text-xs text-[#9CA3AF] mb-3">{month}월 경기 일정</p>
@@ -390,6 +393,7 @@ export function ScheduleScreen() {
           {MY_TEAM.name} 경기 일정은 우천 등 사유로 변경될 수 있으며, 취소·순연
           경기는 확정 즉시 반영됩니다.
         </p>
+      </div>
       </div>
     </div>
   )

@@ -238,7 +238,7 @@ export function PressApplicationScreen() {
             </div>
           </div>
 
-          <div className="fixed inset-x-0 bottom-0 z-20 border-t border-[#DDE1EC] bg-white px-4 pb-8 pt-3">
+          <div className="fixed inset-x-0 bottom-0 z-20 lg:inset-x-auto lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-[1200px] border-t border-[#DDE1EC] bg-white px-4 pb-8 pt-3">
             <button
               type="button"
               disabled={!isComplete}

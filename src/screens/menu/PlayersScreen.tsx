@@ -29,7 +29,7 @@ function StaffCard({ s }: { s: StaffInfo }) {
   ]
 
   return (
-    <div className="flex bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden aspect-video">
+    <div className="flex bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden aspect-video lg:aspect-auto lg:h-[180px]">
       <PH className="h-full aspect-[9/16] rounded-none shrink-0" />
       <div className="flex-1 min-w-0 p-3 flex flex-col justify-center gap-0.5">
         <p className="text-[15px] font-bold text-[#111827] truncate">
@@ -116,7 +116,7 @@ export function PlayersScreen() {
             {TEAM_INTRO.map((m) => (
               <div
                 key={m.label}
-                className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#050B24] to-[#0E1F5C] aspect-[16/10]"
+                className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#050B24] to-[#0E1F5C] aspect-[16/10] lg:aspect-auto lg:h-[360px]"
               >
                 <p className="absolute left-4 top-3 text-[11px] font-bold tracking-wide text-white/50">
                   {m.label}
@@ -162,7 +162,7 @@ export function PlayersScreen() {
                 해당하는 선수가 없어요
               </p>
             )}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
               {list.map((p) => {
                 const st = playerStatus(p)
 

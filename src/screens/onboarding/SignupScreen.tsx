@@ -198,7 +198,7 @@ export function SignupScreen() {
 
           <div className="flex flex-col gap-3">
             {([
-              { key: 't1', label: '블루멤버십 이용약관 동의', required: true, path: '/signup/terms' },
+              { key: 't1', label: '라이온즈 멤버십 이용약관 동의', required: true, path: '/signup/terms' },
               { key: 't2', label: '개인정보 수집·이용 동의', required: true, path: '/signup/privacy' },
               { key: 't3', label: '마케팅 정보 수신 동의', required: false, path: '' },
               { key: 't4', label: '제3자 정보 제공 동의', required: false, path: '' },

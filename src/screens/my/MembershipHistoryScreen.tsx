@@ -9,13 +9,13 @@ export function MembershipHistoryScreen() {
   const navigate = useNavigate()
   const [listCase, setListCase] = useState<ListCase>('목록 있음')
   const allHistories = [
-    { year: '2026', type: '멤버십', name: '블루멤버십 (GOLD)', member: '홍길동', date: '2026.01.03', amount: '120,000원', status: '결제 완료' },
+    { year: '2026', type: '멤버십', name: '라이온즈 멤버십 (GOLD)', member: '홍길동', date: '2026.01.03', amount: '120,000원', status: '결제 완료' },
     { year: '2026', type: '시즌권', name: '프리미엄 블루 시즌권', member: '홍길동', date: '2026.01.03', amount: '1,500,000원', status: '결제 완료' },
     { year: '2026', type: '멤버십', name: '어린이 멤버십', member: '홍길동 Jr.', date: '2026.01.05', amount: '30,000원', status: '결제 완료' },
-    { year: '2025', type: '멤버십', name: '블루멤버십 (GOLD)', member: '홍길동', date: '2025.01.08', amount: '100,000원', status: '결제 완료' },
+    { year: '2025', type: '멤버십', name: '라이온즈 멤버십 (GOLD)', member: '홍길동', date: '2025.01.08', amount: '100,000원', status: '결제 완료' },
     { year: '2025', type: '시즌권', name: '프리미엄 블루 시즌권', member: '홍길동', date: '2025.01.08', amount: '1,300,000원', status: '결제 완료' },
     { year: '2025', type: '멤버십', name: '어린이 멤버십', member: '홍길동 Jr.', date: '2025.01.10', amount: '25,000원', status: '결제 완료' },
-    { year: '2024', type: '멤버십', name: '블루멤버십 (SILVER)', member: '홍길동', date: '2024.01.12', amount: '80,000원', status: '결제 완료' },
+    { year: '2024', type: '멤버십', name: '라이온즈 멤버십 (SILVER)', member: '홍길동', date: '2024.01.12', amount: '80,000원', status: '결제 완료' },
   ]
 
   const histories = listCase === '목록 없음' ? [] : allHistories
@@ -35,7 +35,7 @@ export function MembershipHistoryScreen() {
       <Header title="가입 내역" />
       <ListCaseBar value={listCase} onChange={setListCase} />
       {histories.length === 0 && (
-        <EmptyState icon="💙" title="가입 내역이 없어요" desc="블루멤버십과 시즌권 가입 내역이 여기에 표시돼요." actionLabel="멤버십 안내 보기" onAction={() => navigate('/my/membership-guide')} />
+        <EmptyState icon="💙" title="가입 내역이 없어요" desc="라이온즈 멤버십과 시즌권 가입 내역이 여기에 표시돼요." actionLabel="멤버십 안내 보기" onAction={() => navigate('/my/membership-guide')} />
       )}
       <div className="px-4 pt-4 flex flex-col gap-6">
         {Object.entries(grouped).sort(([a], [b]) => Number(b) - Number(a)).map(([year, items]) => (

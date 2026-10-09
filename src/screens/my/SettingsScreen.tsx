@@ -50,6 +50,7 @@ export function SettingsScreen() {
   const REQUIRED_NOTIFS = [
     { name: '예매·발권·취소·환불 알림', desc: '예매 확인, 티켓 발권, 취소·환불 처리 결과' },
     { name: '경기 변경 알림(예매자)', desc: '우천 지연·취소, 경기 연기·재편성 시 예매하신 경기 안내' },
+    { name: '계정·멤버십 안내', desc: '가입 완료, PRESS 승인·반려 결과' },
   ]
   const [isVersionModalOpen, setIsVersionModalOpen] = useState(false)
   const [notifs, setNotifs] = useState({
@@ -63,6 +64,9 @@ export function SettingsScreen() {
     '엘도라도 ZONE 알림': true,
     '블루 시그널 알림': true,
     '독점 콘텐츠 알림': true,
+    '선물 알림': true,
+    '직관 기록 리마인드': true,
+    '오늘의 미션': true,
   })
 
   function toggleOne(key: keyof typeof notifs) {
@@ -124,6 +128,9 @@ export function SettingsScreen() {
               <div className="min-w-0 pr-3">
                 <span className={`text-sm ${allowNotif && !denied ? 'text-[#111827]' : 'text-[#9CA3AF]'}`}>{n}</span>
                 {n === '경기 시작 알림' && <p className="text-[11px] text-[#9CA3AF] mt-0.5">경기 시작 30분 전에 알려드려요</p>}
+                {n === '선물 알림' && <p className="text-[11px] text-[#9CA3AF] mt-0.5">받은 선물 티켓이 자동 회수되기 1시간 전에 알려드려요</p>}
+                {n === '직관 기록 리마인드' && <p className="text-[11px] text-[#9CA3AF] mt-0.5">경기 당일 22시까지 기록하지 않았을 때 알려드려요</p>}
+                {n === '오늘의 미션' && <p className="text-[11px] text-[#9CA3AF] mt-0.5">미션 정답이 발표되면 알려드려요</p>}
                 {n === '마케팅 알림' && <p className="text-[11px] text-[#9CA3AF] mt-0.5">21시~08시에는 발송되지 않아요</p>}
               </div>
               <button

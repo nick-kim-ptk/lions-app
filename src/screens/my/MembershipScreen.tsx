@@ -6,10 +6,10 @@ import { MemberCard, type MemberCardKind } from '@/components/MemberCard'
 const SECTIONS: { kind: MemberCardKind; title: string; dot: string; benefits: string[] }[] = [
   {
     kind: 'blue',
-    title: '블루멤버십 혜택',
+    title: '라이온즈 멤버십 혜택',
     dot: 'bg-[#1B5BF0]',
     benefits: [
-      '홈경기 선예매 혜택 (경기 7일 전 10:00, 경기당 최대 4매)',
+      '홈경기 선예매 혜택 (경기 7일 전 10:00, 보유 매수권만큼, 경기당 최대 4매)',
       '티켓 결제 시 블루포인트 3% 적립',
       '구단 공식 쇼핑몰 5% 할인 쿠폰 제공',
       '멤버십 전용 독점 라이브 콘텐츠 시청권',

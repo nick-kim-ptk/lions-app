@@ -15,7 +15,7 @@ export function PrivacyConsentScreen() {
         <span className="text-[#111827] font-semibold">개인정보 수집·이용 동의</span>
       </div>
       <div className="flex-1 px-5 pb-8 overflow-y-auto">
-        <p className="text-sm text-[#64748B] mb-4">블루멤버십 가입을 위해 아래와 같이 개인정보를 수집·이용합니다.</p>
+        <p className="text-sm text-[#64748B] mb-4">라이온즈 멤버십 가입을 위해 아래와 같이 개인정보를 수집·이용합니다.</p>
 
         {/* 필수 항목 */}
         <p className="text-xs text-[#E53935] font-semibold mb-2">■ 필수 수집 항목</p>
@@ -26,9 +26,9 @@ export function PrivacyConsentScreen() {
             ))}
           </div>
           {[
-            ['이름, 이메일, 비밀번호', '회원 식별 및 서비스 제공', '회원 탈퇴 후 즉시 삭제'],
-            ['생년월일, 성별', '연령 확인 및 맞춤 서비스', '회원 탈퇴 후 즉시 삭제'],
-            ['휴대폰 번호', '본인 인증 및 고객 지원', '회원 탈퇴 후 즉시 삭제'],
+            ['이름, 이메일, 비밀번호', '회원 식별 및 서비스 제공', '회원 탈퇴 후 즉시 삭제 (3년 미이용 시 자동 탈퇴)'],
+            ['생년월일, 성별', '연령 확인 및 맞춤 서비스', '회원 탈퇴 후 즉시 삭제 (3년 미이용 시 자동 탈퇴)'],
+            ['휴대폰 번호', '본인 인증 및 고객 지원', '회원 탈퇴 후 즉시 삭제 (3년 미이용 시 자동 탈퇴)'],
           ].map((row, i) => (
             <div key={i} className="flex border-t border-[#DDE1EC]">
               {row.map((cell, j) => (

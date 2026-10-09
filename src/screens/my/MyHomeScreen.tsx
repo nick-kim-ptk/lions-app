@@ -177,7 +177,7 @@ export function MyHomeScreen() {
           style={{ transform: `translateX(${-cardIndex * 60}%)` }}
         >
           {joined && (<>
-          {/* 카드 1 — 블루멤버십 */}
+          {/* 카드 1 — 라이온즈 멤버십 */}
           <div className="shrink-0 pr-3" style={{ width: '60%' }}>
             <MemberCard kind="blue" onClick={() => navigate('/my/membership')} />
           </div>
@@ -194,9 +194,9 @@ export function MyHomeScreen() {
           </>)}
 
           {!joined && (<>
-          {/* 카드 4 — 블루멤버십 모집 */}
+          {/* 카드 4 — 라이온즈 멤버십 모집 */}
           <div className="shrink-0 pr-3" style={{ width: '60%' }}>
-            <JoinClosedCard kind="member" title="2027 블루멤버십 모집" tone="blue" state={joinState} onJoin={() => navigate('/my/membership-guide')} />
+            <JoinClosedCard kind="member" title="2027 라이온즈 멤버십 모집" tone="blue" state={joinState} onJoin={() => navigate('/my/membership-guide')} />
           </div>
 
           {/* 카드 5 — 어린이 회원 모집 (모집 기간 외) */}

@@ -6,11 +6,12 @@ export function EmblemDetailScreen() {
   const [activeTab, setActiveTab] = useState<'획득 내역' | '소진 내역'>('획득 내역')
 
   const earnList = [
+    { id: 7, name: '구자욱 30홈런 기념', location: '기념 앰블럼 받기', date: '2026.09.21', qty: 1 },
     { id: 6, name: '사지선다왕', location: '오늘의 미션 퀴즈 정답', date: '2026.09.18', qty: 1 },
     { id: 5, name: 'OX 감별사', location: '오늘의 미션 OX 퀴즈', date: '2026.09.15', qty: 1 },
     { id: 4, name: '승부사', location: '이벤트 참여 보상', date: '2026.09.10', qty: 1 },
     { id: 3, name: '예언가', location: '경기 결과 예측 적중', date: '2026.09.05', qty: 1 },
-    { id: 2, name: '블루 메이트', location: '블루메이트 1기 활동', date: '2026.08.28', qty: 1 },
+    { id: 2, name: '블루 메이트', location: '블루 시그널 이벤트 당첨', date: '2026.08.28', qty: 1 },
     { id: 1, name: '10번째 선수', location: '홈경기 직관 체크인', date: '2026.08.20', qty: 1 },
   ]
 

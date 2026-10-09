@@ -187,7 +187,7 @@ export function recordOf(list: Game[] = pastGames()) {
 
 export type TicketState =
   | 'before' // 선예매 오픈 전
-  | 'presale' // 선예매(블루멤버십) 중
+  | 'presale' // 선예매(라이온즈 멤버십) 중
   | 'open' // 일반 예매 중
   | 'soldout' // 매진
   | 'closed' // 예매 마감(경기 시작 이후/종료)

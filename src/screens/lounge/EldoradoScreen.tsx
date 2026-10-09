@@ -165,6 +165,7 @@ export function EldoradoScreen() {
             </button>
           ))}
         </div>
+        <p className="mb-2 text-[10px] text-white/40 leading-snug">채팅은 저장되지 않고 사라져요 · 선수와 팬에게 상처가 되는 표현은 전송할 수 없어요</p>
         <div className="flex gap-2">
           <div className="flex-1 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center px-3">
             <span className="text-white/30 text-sm">응원 메시지를 입력하세요</span>

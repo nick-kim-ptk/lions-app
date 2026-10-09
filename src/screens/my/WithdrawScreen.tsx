@@ -23,7 +23,7 @@ export function WithdrawScreen() {
           <p className="text-[#111827] font-semibold">탈퇴 시 주의사항</p>
         </div>
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-4 flex flex-col gap-3">
-          {['보유 중인 앰블럼이 모두 삭제됩니다', '예매 내역 및 쿠폰이 소멸됩니다 (취소하지 않은 예매 티켓은 먼저 취소해 주세요)', '멤버십 혜택이 즉시 종료됩니다', '탈퇴 후 30일간 재가입이 불가합니다'].map((w, i) => (
+          {['보유 중인 앰블럼이 모두 삭제됩니다', '예매 내역 및 쿠폰이 소멸됩니다 (취소하지 않은 예매 티켓은 먼저 취소해 주세요)', '멤버십 혜택이 즉시 종료됩니다', '탈퇴 후 30일간 재가입이 불가합니다', '마지막 로그인 후 3년간 이용하지 않으면 자동 탈퇴되며, 탈퇴 전에 미리 안내해 드립니다'].map((w, i) => (
             <div key={i} className="flex items-start gap-2">
               <span className="text-[#E53935] text-xs mt-0.5">•</span>
               <span className="text-sm text-[#64748B]">{w}</span>

@@ -5,7 +5,7 @@
 export type MemberCardKind = 'blue' | 'season' | 'kids'
 
 const CARDS: Record<MemberCardKind, { title: string[]; tag: string; tagCls: string; name: string; no: string; label: string }> = {
-  blue: { title: ['2027 블루멤버십'], tag: 'GOLD', tagCls: 'text-[#F0A500] bg-[#F0A500]/20 border-[#F0A500]/40', name: '홍 길 동', no: 'SL-2027-GOLD-88', label: 'text-white/60' },
+  blue: { title: ['2027 라이온즈 멤버십'], tag: 'GOLD', tagCls: 'text-[#F0A500] bg-[#F0A500]/20 border-[#F0A500]/40', name: '홍 길 동', no: 'SL-2027-GOLD-88', label: 'text-white/60' },
   season: { title: ['2027 프리미엄 블루', '시즌권'], tag: 'SEASON', tagCls: 'text-white bg-white/15 border-white/25', name: '홍 길 동', no: 'SL-2027-PRE-07', label: 'text-white/50' },
   kids: { title: ['2027 어린이 멤버십'], tag: 'KIDS', tagCls: 'text-white bg-white/20 border-white/40', name: '홍 길 동 Jr.', no: 'SL-2027-KIDS-01', label: 'text-white/70' },
 }

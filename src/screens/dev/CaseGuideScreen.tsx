@@ -69,6 +69,16 @@ function SystemPreview({ id }: { id: SystemGuide['id'] }) {
         <span className={btn}>확인</span>
       </div>
     )
+  if (id === 'reconsent')
+    return (
+      <div className={box}>
+        <p className="text-[12px] font-semibold text-[#0E1A40]">약관이 개정되었어요</p>
+        <p className="mt-1 text-[11px] text-[#64748B]">서비스 이용약관 v1.1 · 2026.11.01 시행</p>
+        <p className="text-[11px] text-[#9CA3AF]">개정 사유: 장기 미이용 회원 처리 기준 추가</p>
+        <div className="mt-2 flex items-center gap-1.5 text-[11px] text-[#0E1A40]"><span className="inline-block h-3 w-3 rounded border border-[#C4C9D6]" />개정된 약관에 동의합니다</div>
+        <span className={btn}>동의하고 계속하기</span>
+      </div>
+    )
   if (id === 'update')
     return (
       <div className={box}>

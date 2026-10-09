@@ -230,7 +230,7 @@ export const EVENT_LIST = [
   { id: 0, title: '9월 키즈런 이벤트', period: '2026.09.01 ~ 2026.09.30', endDate: '2026-09-30', category: '참여형' },
   { id: 1, title: '라이온즈 직관 인증 챌린지', period: '2026.09.01 ~ 2026.09.25', endDate: '2026-09-25', category: '챌린지' },
   { id: 2, title: '구자욱 1,000득점 기념 포토 이벤트', period: '2026.09.10 ~ 2026.09.20', endDate: '2026-09-20', category: '포토' },
-  { id: 3, title: '블루멤버십 가입 특별 혜택 이벤트', period: '2026.09.15 ~ 2026.09.15', endDate: '2026-09-15', category: '혜택' },
+  { id: 3, title: '라이온즈 멤버십 가입 특별 혜택 이벤트', period: '2026.09.15 ~ 2026.09.15', endDate: '2026-09-15', category: '혜택' },
   { id: 4, title: '8월 홈경기 응원왕 선발', period: '2026.08.01 ~ 2026.08.31', endDate: '2026-08-31', category: '참여형' },
   { id: 5, title: '여름 굿즈 구매 인증 이벤트', period: '2026.07.15 ~ 2026.08.15', endDate: '2026-08-15', category: '포토' },
   { id: 6, title: '시즌권 후기 이벤트', period: '2026.07.01 ~ 2026.07.31', endDate: '2026-07-31', category: '참여형' },
@@ -243,7 +243,7 @@ export const EVENT_HISTORY = [
   { id: 1, title: '8월 홈경기 응원왕 선발', joinedAt: '2026.08.28 오전 11:05', status: '당첨' as const },
   { id: 2, title: '여름 굿즈 구매 인증 이벤트', joinedAt: '2026.08.10 오후 7:18', status: '미당첨' as const },
   { id: 3, title: '시즌권 후기 이벤트', joinedAt: '2026.07.20 오전 9:44', status: '미당첨' as const },
-  { id: 4, title: '블루멤버십 가입 특별 혜택 이벤트', joinedAt: '2026.09.15 오후 3:01', status: '응모 중' as const },
+  { id: 4, title: '라이온즈 멤버십 가입 특별 혜택 이벤트', joinedAt: '2026.09.15 오후 3:01', status: '응모 중' as const },
   { id: 5, title: '9월 키즈런 이벤트', joinedAt: '2026.09.03 오전 10:22', status: '응모 중' as const },
   { id: 6, title: '라이온즈 직관 인증 챌린지', joinedAt: '2026.09.01 오후 6:55', status: '응모 중' as const },
 ]

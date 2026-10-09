@@ -9,6 +9,8 @@ export function CouponsScreen() {
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState<'사용 가능' | '사용 완료' | '기간 만료'>('사용 가능')
   const [listCase, setListCase] = useState<ListCase>('목록 있음')
+  const [code, setCode] = useState('')
+  const [codeResult, setCodeResult] = useState<'' | 'ok' | 'used' | 'invalid' | 'expired'>('')
 
   const availableCoupons = [
     { id: 1, tag: '이벤트 참여', emoji: '⚾', title: '구자욱 선수 싸인볼', desc: '홈 개막전 이벤트 참여 당첨', expire: '2026.10.31 까지', color: 'from-[#1B5BF0] to-[#6EC6FF]' },
@@ -34,6 +36,30 @@ export function CouponsScreen() {
     <div className="min-h-full bg-[#F5F7FB] pb-8">
       <Header title="쿠폰함" />
       <ListCaseBar value={listCase} onChange={setListCase} />
+
+      {/* 쿠폰 코드 등록 — 어린이 멤버십 가입 쿠폰 등 코드로 받는 쿠폰 */}
+      <div className="px-4 pt-4">
+        <div className="bg-white rounded-2xl border border-[#DDE1EC] p-4">
+          <p className="text-[13px] font-bold text-[#111827] mb-2">쿠폰 코드 등록</p>
+          <div className="flex gap-2">
+            <input value={code} onChange={(e) => { setCode(e.target.value.toUpperCase()); setCodeResult('') }}
+              placeholder="쿠폰 코드를 입력해 주세요"
+              className="flex-1 min-w-0 h-11 rounded-xl border border-[#DDE1EC] bg-[#F5F7FB] px-3 text-sm text-[#111827] placeholder-[#9CA3AF] outline-none focus:border-[#1B5BF0]" />
+            <button disabled={!code.trim()}
+              onClick={() => setCodeResult(code === 'USED' ? 'used' : code === 'OLD' ? 'expired' : code === 'WRONG' ? 'invalid' : 'ok')}
+              className={`h-11 px-4 rounded-xl text-[13px] font-bold ${code.trim() ? 'bg-[#1B5BF0] text-white' : 'bg-[#E5E7EB] text-[#9CA3AF]'}`}>등록</button>
+          </div>
+          {codeResult && (
+            <p className={`mt-2 text-[12px] ${codeResult === 'ok' ? 'text-[#1B5BF0]' : 'text-[#E53935]'}`}>
+              {codeResult === 'ok' ? '쿠폰을 받았어요. 쿠폰함에서 확인해 보세요.'
+                : codeResult === 'used' ? '이미 등록된 코드예요.'
+                : codeResult === 'expired' ? '사용 기간이 지난 코드예요.'
+                : '코드를 다시 확인해 주세요.'}
+            </p>
+          )}
+          <p className="mt-2 text-[10px] text-[#9CA3AF]">시연용: WRONG(잘못된 코드) · USED(이미 등록) · OLD(기간 만료)를 입력해 보세요.</p>
+        </div>
+      </div>
 
       {/* 탭 */}
       <div className="flex border-b border-[#DDE1EC] px-4 pt-3">

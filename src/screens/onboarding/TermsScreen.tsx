@@ -3,7 +3,7 @@ import { Page } from '@/components/Layout'
 import { TERMS_ARTICLES, TERMS_UPDATED } from '@/data/onboarding'
 import { LEGAL_DUMMY_NOTE } from '@/data/my'
 
-// 091-SL-CM-06 블루멤버십 회원 약관 — 내용만 보기, 동의 체크 없음
+// 091-SL-CM-06 라이온즈 멤버십 회원 약관 — 내용만 보기, 동의 체크 없음
 export function TermsScreen() {
   const navigate = useNavigate()
   return (
@@ -14,7 +14,7 @@ export function TermsScreen() {
             <path d="M15 19l-7-7 7-7" stroke="#111827" strokeWidth="2" strokeLinecap="round"/>
           </svg>
         </button>
-        <span className="text-[#111827] font-semibold">블루멤버십 이용약관</span>
+        <span className="text-[#111827] font-semibold">라이온즈 멤버십 이용약관</span>
       </div>
       {/* 약관 내용만 표시 — 동의 체크 없음 */}
       <div className="flex-1 px-5 pb-8 overflow-y-auto">

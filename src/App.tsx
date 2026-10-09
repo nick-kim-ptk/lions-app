@@ -19,7 +19,6 @@ import {
   PrivacyConsentScreen,
   WelcomeScreen,
   FindAccountScreen,
-  AccountActivateScreen,
   FindCompleteScreen,
   SetNewPasswordScreen,
 } from './screens/onboarding'
@@ -140,7 +139,6 @@ export default function App() {
         <Route path="/signup/privacy" element={<PrivacyConsentScreen />} />
         <Route path="/signup/welcome" element={<WelcomeScreen />} />
         <Route path="/find-account" element={<FindAccountScreen />} />
-        <Route path="/account-activate" element={<AccountActivateScreen />} />
         <Route path="/find-complete" element={<FindCompleteScreen />} />
         <Route path="/set-new-password" element={<SetNewPasswordScreen />} />
         <Route path="/my/withdraw-complete" element={<WithdrawCompleteScreen />} />

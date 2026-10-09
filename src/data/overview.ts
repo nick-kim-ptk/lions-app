@@ -21,11 +21,10 @@ export const SCREENS: ScreenMeta[] = [
   { id: '003-SL-CM-03', name: '팝업(공지)', path: '/notice', group: '공통', layout: 'modal' },
   { id: '089-SL-CM-04', name: '로그인', path: '/login', group: '공통', layout: 'form' },
   { id: '090-SL-CM-05', name: '회원가입', path: '/signup', group: '공통', layout: 'form' },
-  { id: '091-SL-CM-06', name: '블루멤버십 회원 약관', path: '/signup/terms', group: '공통', layout: 'policy' },
+  { id: '091-SL-CM-06', name: '라이온즈 멤버십 회원 약관', path: '/signup/terms', group: '공통', layout: 'policy' },
   { id: '092-SL-CM-07', name: '개인정보수집이용 동의서', path: '/signup/privacy', group: '공통', layout: 'policy' },
   { id: '093-SL-CM-08', name: '가입환영', path: '/signup/welcome', group: '공통', layout: 'splash' },
   { id: '094-SL-CM-09', name: '아이디/비밀번호 찾기', path: '/find-account', group: '공통', layout: 'form' },
-  { id: '095-SL-CM-10', name: '계정 활성화', path: '/account-activate', group: '공통', layout: 'form' },
   { id: '096-SL-CM-11', name: '정보 찾기 완료', path: '/find-complete', group: '공통', layout: 'splash' },
   { id: '099-SL-CM-12', name: '비밀번호 재설정', path: '/set-new-password', group: '공통', layout: 'form' },
   // 홈
@@ -147,12 +146,11 @@ export const IA_TREE: { group: Group; screens: IATreeNode[] }[] = [
       { id: '003-SL-CM-03', name: '팝업(공지)', path: '/notice' },
       { id: '089-SL-CM-04', name: '로그인', path: '/login', children: [
         { id: '094-SL-CM-09', name: '아이디/비밀번호 찾기', path: '/find-account' },
-        { id: '095-SL-CM-10', name: '계정 활성화', path: '/account-activate' },
         { id: '096-SL-CM-11', name: '정보 찾기 완료', path: '/find-complete' },
         { id: '099-SL-CM-12', name: '비밀번호 재설정', path: '/set-new-password' },
       ]},
       { id: '090-SL-CM-05', name: '회원가입', path: '/signup', children: [
-        { id: '091-SL-CM-06', name: '블루멤버십 회원 약관', path: '/signup/terms' },
+        { id: '091-SL-CM-06', name: '라이온즈 멤버십 회원 약관', path: '/signup/terms' },
         { id: '092-SL-CM-07', name: '개인정보수집이용 동의서', path: '/signup/privacy' },
         { id: '093-SL-CM-08', name: '가입환영', path: '/signup/welcome' },
       ]},

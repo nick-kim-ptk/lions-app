@@ -173,20 +173,20 @@ export function PcGnb() {
       {open && (
         <div className="absolute left-0 right-0 top-full bg-white border-b border-[#DDE1EC] shadow-[0_12px_24px_rgba(17,24,39,0.08)]">
           <div className={`${PC_CONTAINER} py-8`}>
-            <div className="flex gap-12">
+            <div className="flex justify-center gap-12">
               {linksOf(NAV.find((n) => n.label === open)?.section ?? "").map(
                 (g) => (
-                  <div key={g.title} className="min-w-[160px]">
+                  <div key={g.title} className="min-w-[160px] text-center">
                     <p className="text-[13px] font-bold text-[#111827] pb-3 mb-3 border-b border-[#DDE1EC]">
                       {g.title}
                     </p>
 
-                    <ul className="flex flex-col gap-2.5">
+                    <ul className="flex flex-col items-center gap-2.5">
                       {g.items.map((i) => (
                         <li key={i.label}>
                           <button
                             onClick={() => go(i.path, i.external)}
-                            className="text-[14px] text-[#475569] hover:text-[#1B5BF0] hover:underline text-left"
+                            className="text-[14px] text-[#475569] hover:text-[#1B5BF0] hover:underline text-center"
                           >
                             {i.label}
 

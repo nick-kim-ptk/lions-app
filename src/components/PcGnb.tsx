@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom"
 
 import { rememberReturnTo, setLoggedIn, useLoggedIn } from "@/data/authStore"
 
+import { blockedOnPc } from "@/utils/pc"
+
 import { FOOTER_COPYRIGHT, FOOTER_INFO } from "@/data/footer"
 
 import { ALL_MENU_SECTIONS, type MenuLink } from "@/data/allMenu"
@@ -88,6 +90,8 @@ export function PcGnb() {
 
       return
     }
+
+    if (blockedOnPc(path)) return
 
     navigate(path.split("#")[0])
   }

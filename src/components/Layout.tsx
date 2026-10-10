@@ -4,6 +4,8 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom"
 
 import { SCREENS } from "@/data/overview"
 
+import { blockedOnPc } from "@/utils/pc"
+
 import { rememberReturnTo, requiresLogin, useLoggedIn } from "@/data/authStore"
 
 import { PcGnb, PcFooter } from "./PcGnb"
@@ -286,6 +288,11 @@ export default function Layout() {
       navigate("/login", { replace: true })
     }
   }, [loggedIn, location.pathname, navigate])
+
+  // PC에서 제공하지 않는 화면(라이온즈 VR)에 URL로 직접 들어와도 안내 후 게임으로 보낸다
+  useEffect(() => {
+    if (blockedOnPc(location.pathname)) navigate("/game", { replace: true })
+  }, [location.pathname, navigate])
 
   return (
     <div className="flex flex-col h-full bg-[#F5F7FB] lg:max-w-[1440px] lg:mx-auto lg:w-full">

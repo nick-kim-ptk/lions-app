@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom"
 
 import { playerByName } from "@/data/mock"
 
+import { blockedOnPc } from "@/utils/pc"
+
 import { GameStateNotice } from "@/components/GameCaseBar"
 
 import { CaseSelect } from "@/components/CaseSelect"
@@ -686,7 +688,10 @@ export function GameDashboardScreen() {
 
           {/* 라이온즈 VR */}
           <div className="px-4 mb-6">
-            <button onClick={() => navigate("/game/vr")} className="w-full">
+            <button
+              onClick={() => !blockedOnPc("/game/vr") && navigate("/game/vr")}
+              className="w-full"
+            >
               <div className="w-full h-16 rounded-2xl bg-gradient-to-r from-[#0A0A1A] to-[#1B1B3A] flex items-center justify-between px-5 overflow-hidden relative">
                 <div
                   className="absolute inset-0 opacity-10"

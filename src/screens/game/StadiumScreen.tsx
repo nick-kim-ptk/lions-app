@@ -109,7 +109,7 @@ export function StadiumScreen() {
           <div className="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:gap-6 lg:items-start lg:px-4">
             {/* 매장 리스트: 모바일은 가로 스크롤 카드(지도 바로 위), PC는 세로 목록 */}
             <div
-              className="flex gap-2 overflow-x-auto px-4 py-1 snap-x lg:flex-col lg:overflow-visible lg:px-0 lg:py-0"
+              className="flex gap-2 overflow-x-auto px-4 py-1 snap-x scroll-pl-4 lg:flex-col lg:overflow-visible lg:px-0 lg:py-0"
               style={{ scrollbarWidth: "none" }}
             >
               {foodList.map((st) => (

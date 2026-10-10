@@ -25,7 +25,7 @@ export function bookTicket(navigate: (path: string) => void) {
 
 export const isPcOnlyBlocked = (path: string) => path.startsWith("/game/vr")
 
-export const PC_APP_ONLY_MESSAGE = "앱에서 확인하세요."
+export const PC_APP_ONLY_MESSAGE = "삼성라이온즈 앱을 통해서 확인하실 수 있습니다."
 
 /** 이동 전에 확인: PC에서 막힌 화면이면 안내(alert)만 띄우고 true를 돌려준다 */
 

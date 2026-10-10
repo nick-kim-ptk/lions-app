@@ -74,7 +74,7 @@ export function AwayScreen() {
         <div className="flex items-center px-4 h-14 gap-2">
           <button
             onClick={() => window.history.back()}
-            className="w-8 h-8 flex items-center justify-center"
+            className="w-8 h-8 flex items-center justify-center lg:hidden"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
               <path
@@ -88,7 +88,7 @@ export function AwayScreen() {
           </button>
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="flex-1 flex items-center gap-1.5"
+            className="flex-1 flex items-center gap-1.5 lg:justify-center"
           >
             <span className="text-[16px] font-bold text-[#111827]">
               {stadium.name}
@@ -111,7 +111,7 @@ export function AwayScreen() {
               />
             </svg>
           </button>
-          <span className="text-[11px] text-[#9CA3AF]">
+          <span className="text-[11px] text-[#9CA3AF] lg:hidden">
             {stadium.city} · {stadium.team}
           </span>
         </div>

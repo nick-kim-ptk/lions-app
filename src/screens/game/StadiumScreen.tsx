@@ -6,13 +6,55 @@ import { PH, PHImage } from "@/components/Placeholder"
 import { Header } from "@/components/Layout"
 
 import { STADIUM_TABS } from "@/data/game"
+import { FOOD_FLOORS, FOOD_STORES, type FoodStore } from "@/data/food"
 
 const EVAC_FLOORS = [3, 4, 5] as const
+
+/** 층 평면도 자리 + (선택 시) 매장 위치 핀 */
+function FloorMap({
+  label,
+  pin,
+}: {
+  label: string
+  pin?: { x: number; y: number }
+}) {
+  return (
+    <div className="relative h-full w-full">
+      <PHImage className="h-full" rounded="rounded-2xl" label={label} />
+      {pin && (
+        <span
+          className="absolute -translate-x-1/2 -translate-y-full text-[28px] leading-none drop-shadow"
+          style={{ left: `${pin.x}%`, top: `${pin.y}%` }}
+        >
+          📍
+        </span>
+      )}
+    </div>
+  )
+}
 
 export function StadiumScreen() {
   const location = useLocation()
   const [floor, setFloor] = useState<(typeof EVAC_FLOORS)[number]>(3)
-  const [zoom, setZoom] = useState<string | null>(null)
+  const [zoom, setZoom] = useState<{
+    title: string
+    pin?: { x: number; y: number }
+  } | null>(null)
+  const [foodFloor, setFoodFloor] = useState<"전체" | (typeof FOOD_FLOORS)[number]>("전체")
+  const [foodSel, setFoodSel] = useState<FoodStore | null>(null)
+  const foodList = FOOD_STORES.filter(
+    (st) => foodFloor === "전체" || st.floor === foodFloor,
+  )
+  // 층 탭 선택: 특정 층이면 그 층의 첫 매장을 자동 선택해 지도를 바로 보여준다
+  const pickFoodFloor = (f: "전체" | (typeof FOOD_FLOORS)[number]) => {
+    setFoodFloor(f)
+    setFoodSel(f === "전체" ? null : (FOOD_STORES.find((st) => st.floor === f) ?? null))
+  }
+  // 매장 선택: 전체 탭에서 누르면 해당 층 탭으로 이동한다
+  const pickStore = (st: FoodStore) => {
+    setFoodFloor(st.floor)
+    setFoodSel(st)
+  }
   const [tab, setTab] = useState<number>(
     (location.state as { tab?: number } | null)?.tab ?? 0,
   )
@@ -43,89 +85,112 @@ export function StadiumScreen() {
 
       {/* 식음매장 */}
       {tab === 1 && (
-        <div className="pb-4">
-          <div className="px-4 py-4">
-            <PH className="w-full h-44 rounded-2xl" />
+        <div className="px-4 py-4 flex flex-col gap-4">
+          {/* 층 탭 */}
+          <div
+            className="flex gap-2 overflow-x-auto"
+            style={{ scrollbarWidth: "none" }}
+          >
+            {(["전체", ...FOOD_FLOORS] as const).map((f) => (
+              <button
+                key={f}
+                onClick={() => pickFoodFloor(f)}
+                className={`shrink-0 px-3.5 py-1.5 rounded-full text-[12px] font-semibold border ${
+                  foodFloor === f
+                    ? "bg-[#0E1A40] text-white border-[#0E1A40]"
+                    : "bg-white text-[#6B7280] border-[#DDE1EC]"
+                }`}
+              >
+                {f === "전체" ? "전체" : `${f}층`}
+              </button>
+            ))}
           </div>
-          <div className="px-4 mb-4">
-            <div
-              className="flex gap-2 overflow-x-auto"
-              style={{ scrollbarWidth: "none" }}
-            >
-              {["전체", "한식", "양식", "분식", "음료", "주류"].map((c, i) => (
-                <span
-                  key={c}
-                  className={`shrink-0 px-3 py-1 rounded-full text-[12px] font-semibold border ${
-                    i === 0
-                      ? "bg-[#0E1A40] text-white border-[#0E1A40]"
-                      : "bg-white text-[#6B7280] border-[#DDE1EC]"
+
+          <div className="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:gap-6 lg:items-start">
+            {/* 매장 리스트 */}
+            <div className="flex flex-col gap-2">
+              {foodList.map((st) => (
+                <button
+                  key={st.id}
+                  onClick={() => pickStore(st)}
+                  className={`flex gap-3 text-left rounded-2xl border p-3 bg-white ${
+                    foodSel?.id === st.id
+                      ? "border-[#1B5BF0] ring-1 ring-[#1B5BF0]"
+                      : "border-[#DDE1EC]"
                   }`}
                 >
-                  {c}
-                </span>
+                  <PH className="w-14 h-14 rounded-xl shrink-0" />
+                  <div className="flex-1 flex flex-col gap-0.5 justify-center">
+                    <div className="flex items-center gap-1.5">
+                      <p className="text-[14px] font-bold text-[#111827]">
+                        {st.name}
+                      </p>
+                      <span className="text-[10px] font-semibold text-[#1B5BF0] bg-[#EBF0FF] rounded-full px-2 py-0.5">
+                        {st.floor}층
+                      </span>
+                    </div>
+                    <p className="text-[12px] text-[#6B7280]">{st.menu}</p>
+                    <p className="text-[11px] text-[#9CA3AF]">{st.zone}</p>
+                  </div>
+                </button>
               ))}
             </div>
-          </div>
-          <div className="px-4 flex flex-col gap-3">
-            {[
-              {
-                name: "라팍 치킨",
-                zone: "1루 외야",
-                menu: "치킨·감자튀김·맥주",
-                hours: "경기일 12:00~22:00",
-              },
 
-              {
-                name: "삼성파이브 버거",
-                zone: "3루 내야",
-                menu: "수제버거·핫도그·콜라",
-                hours: "경기일 12:00~21:00",
-              },
-
-              {
-                name: "라이온 포차",
-                zone: "외야 잔디석",
-                menu: "족발·막창·생맥주",
-                hours: "경기일 16:00~22:00",
-              },
-
-              {
-                name: "블루스타 카페",
-                zone: "1층 중앙",
-                menu: "아메리카노·라떼·스무디",
-                hours: "경기일 10:00~22:00",
-              },
-
-              {
-                name: "파크뷰 도시락",
-                zone: "3루 외야",
-                menu: "도시락·김밥·떡볶이",
-                hours: "경기일 11:00~20:00",
-              },
-
-              {
-                name: "V9 라멘바",
-                zone: "1루 내야",
-                menu: "라멘·교자·하이볼",
-                hours: "경기일 15:00~22:00",
-              },
-            ].map((s, i) => (
-              <div
-                key={i}
-                className="flex gap-3 bg-white rounded-2xl border border-[#DDE1EC] p-3"
-              >
-                <PH className="w-16 h-16 rounded-xl shrink-0" />
-                <div className="flex-1 flex flex-col gap-1 justify-center">
-                  <p className="text-[14px] font-bold text-[#111827]">
-                    {s.name}
+            {/* 위치 지도 + 매장 정보 */}
+            <div className="flex flex-col gap-3">
+              {foodSel ? (
+                <>
+                  <p className="text-[15px] font-bold text-[#0E1A40]">
+                    {foodSel.floor}층 위치
                   </p>
-                  <p className="text-[12px] text-[#6B7280]">{s.menu}</p>
-                  <p className="text-[11px] text-[#9CA3AF]">
-                    {s.zone} · {s.hours}
-                  </p>
+                  <button
+                    onClick={() =>
+                      setZoom({
+                        title: `${foodSel.floor}층 식음매장 지도 · ${foodSel.name}`,
+                        pin: { x: foodSel.x, y: foodSel.y },
+                      })
+                    }
+                    className="relative block w-full aspect-square rounded-2xl overflow-hidden"
+                  >
+                    <FloorMap
+                      label={`${foodSel.floor}층 평면도 (정사각형, 탭하면 확대)`}
+                      pin={{ x: foodSel.x, y: foodSel.y }}
+                    />
+                    <span className="absolute right-2 bottom-2 text-[11px] font-semibold bg-black/55 text-white rounded-full px-2.5 py-1">
+                      🔍 확대
+                    </span>
+                  </button>
+                  <div className="bg-white rounded-2xl border border-[#DDE1EC] p-4 flex flex-col gap-3">
+                    <div className="flex items-center gap-2">
+                      <p className="text-[16px] font-black text-[#0E1A40]">
+                        {foodSel.name}
+                      </p>
+                      <span className="text-[10px] font-semibold text-[#6B7280] bg-[#F3F4F6] rounded-full px-2 py-0.5">
+                        {foodSel.category}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-2 text-[13px] text-[#374151]">
+                      {[
+                        { label: "위치", value: `${foodSel.floor}층 · ${foodSel.zone}` },
+                        { label: "대표 메뉴", value: foodSel.menu },
+                        { label: "운영 시간", value: foodSel.hours },
+                      ].map((row) => (
+                        <div key={row.label} className="flex gap-3">
+                          <span className="w-16 shrink-0 font-semibold text-[#6B7280]">
+                            {row.label}
+                          </span>
+                          <span>{row.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="rounded-2xl border border-dashed border-[#DDE1EC] bg-white py-10 text-center text-[13px] text-[#9CA3AF]">
+                  매장을 선택하면 위치와 정보가 표시됩니다.
                 </div>
-              </div>
-            ))}
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -424,7 +489,7 @@ export function StadiumScreen() {
                   구장 구조
                 </p>
                 <button
-                  onClick={() => setZoom("구장 구조도")}
+                  onClick={() => setZoom({ title: "구장 구조도" })}
                   className="relative block w-full aspect-square rounded-2xl overflow-hidden"
                 >
                   <PHImage
@@ -460,7 +525,7 @@ export function StadiumScreen() {
                   </div>
                 </div>
                 <button
-                  onClick={() => setZoom(`피난 안내도 ${floor}층`)}
+                  onClick={() => setZoom({ title: `피난 안내도 ${floor}층` })}
                   className="relative block w-full aspect-square rounded-2xl overflow-hidden"
                 >
                   <PHImage
@@ -489,7 +554,7 @@ export function StadiumScreen() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between text-white">
-              <p className="text-[15px] font-bold">{zoom}</p>
+              <p className="text-[15px] font-bold">{zoom.title}</p>
               <button
                 onClick={() => setZoom(null)}
                 aria-label="닫기"
@@ -499,11 +564,7 @@ export function StadiumScreen() {
               </button>
             </div>
             <div className="w-full aspect-square lg:aspect-auto lg:h-[calc(100vh-120px)]">
-              <PHImage
-                className="h-full"
-                rounded="rounded-2xl"
-                label={`${zoom} 확대 이미지`}
-              />
+              <FloorMap label={`${zoom.title} 확대 이미지`} pin={zoom.pin} />
             </div>
           </div>
         </div>

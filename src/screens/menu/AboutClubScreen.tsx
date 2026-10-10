@@ -10,6 +10,10 @@ export function AboutClubScreen() {
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-6">
       <Header title="구단 소개" />
+      <p className="px-4 py-2 text-[11px] leading-snug text-[#6B7280] bg-[#FFF7E6] border-b border-[#F3E2B8]">
+        * 구단에서 정리해서 주셔야 할 내용으로 삼성라이온즈파크 소개가 아닌
+        구단에 대한 전반적인 Overview 내용이 구성됩니다.
+      </p>
       <PHImage
         className="h-56"
         label="구단 대표 이미지 (홈구장 전경 또는 선수단 단체 사진)"

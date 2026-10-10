@@ -314,11 +314,11 @@ export function SeatTab() {
       {/* 전체 요금표 모달 */}
       {tableOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-end lg:items-center justify-center bg-black/60 lg:p-8"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 lg:p-8"
           onClick={() => setTableOpen(false)}
         >
           <div
-            className="flex max-h-[88vh] w-full lg:max-w-[720px] flex-col overflow-hidden rounded-t-3xl lg:rounded-3xl bg-white"
+            className="flex max-h-[85vh] w-full max-w-[560px] lg:max-w-[720px] flex-col overflow-hidden rounded-3xl bg-white"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between px-5 py-4 border-b border-[#EEF0F6]">
@@ -332,7 +332,7 @@ export function SeatTab() {
               </button>
             </div>
             <div className="overflow-y-auto">
-              <div className="grid grid-cols-[1fr_repeat(3,72px)] text-[12px] font-bold sticky top-0">
+              <div className="grid grid-cols-[1fr_repeat(3,62px)] text-[12px] font-bold sticky top-0">
                 <div className="bg-[#F3F4F6] px-4 py-2.5 text-[#6B7280]">구분 (원)</div>
                 {SEAT_TIERS.map((t) => (
                   <div
@@ -353,7 +353,7 @@ export function SeatTab() {
                       setSelId(z.id)
                       setTableOpen(false)
                     }}
-                    className="grid w-full grid-cols-[1fr_repeat(3,72px)] border-t border-[#EEF0F6] text-left text-[13px]"
+                    className="grid w-full grid-cols-[1fr_repeat(3,62px)] border-t border-[#EEF0F6] text-left text-[13px]"
                   >
                     <div className="px-4 py-2.5 text-[#374151] leading-snug">
                       <span className="font-semibold">{i === 0 ? z.name : ""}</span>

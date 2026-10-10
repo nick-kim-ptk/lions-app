@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useLocation } from "react-router-dom"
 
 import { PH } from "@/components/Placeholder"
 
@@ -7,7 +8,10 @@ import { Header } from "@/components/Layout"
 import { STADIUM_TABS } from "@/data/game"
 
 export function StadiumScreen() {
-  const [tab, setTab] = useState(0)
+  const location = useLocation()
+  const [tab, setTab] = useState<number>(
+    (location.state as { tab?: number } | null)?.tab ?? 0,
+  )
 
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-8">
@@ -34,7 +38,7 @@ export function StadiumScreen() {
       </div>
 
       {/* 식음매장 */}
-      {tab === 0 && (
+      {tab === 1 && (
         <div className="pb-4">
           <div className="px-4 py-4">
             <PH className="w-full h-44 rounded-2xl" />
@@ -122,8 +126,8 @@ export function StadiumScreen() {
         </div>
       )}
 
-      {/* 교통/주차 */}
-      {tab === 1 && (
+      {/* 교통 */}
+      {tab === 4 && (
         <div className="px-4 py-4 flex flex-col gap-4">
           <PH className="w-full h-52 rounded-2xl" />
           <div className="bg-white rounded-2xl border border-[#DDE1EC] p-4 flex flex-col gap-3">
@@ -148,6 +152,13 @@ export function StadiumScreen() {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* 주차 */}
+      {tab === 5 && (
+        <div className="px-4 py-4 flex flex-col gap-4">
+          <PH className="w-full h-52 rounded-2xl" />
           <div className="bg-white rounded-2xl border border-[#DDE1EC] p-4 flex flex-col gap-3">
             <p className="text-[15px] font-bold text-[#0E1A40]">주차 안내</p>
             <div className="flex flex-col gap-2 text-[13px] text-[#374151]">
@@ -306,60 +317,8 @@ export function StadiumScreen() {
         </div>
       )}
 
-      {/* 이용 안내 */}
-      {tab === 4 && (
-        <div className="px-4 py-4 flex flex-col gap-4">
-          <div className="bg-white rounded-2xl border border-[#DDE1EC] p-4 flex flex-col gap-3">
-            <p className="text-[15px] font-bold text-[#0E1A40]">
-              반입 금지 물품
-            </p>
-            <ul className="flex flex-col gap-1.5 text-[13px] text-[#374151]">
-              {[
-                "부부젤라, 메가폰 등 소음 기구",
-                "외부 음식물 (단, 생수·유아식 제외)",
-                "우산 (우비만 허용)",
-                "대형 현수막 (50cm×50cm 초과)",
-                "드론 및 촬영 장비",
-                "위험물 및 인화성 물질",
-              ].map((item, i) => (
-                <li key={i} className="flex gap-2">
-                  <span className="text-[#EF4444] font-bold">✕</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="bg-white rounded-2xl border border-[#DDE1EC] p-4 flex flex-col gap-3">
-            <p className="text-[15px] font-bold text-[#0E1A40]">입장 안내</p>
-            <div className="flex flex-col gap-2 text-[13px] text-[#374151]">
-              <div className="flex gap-2">
-                <span className="w-20 shrink-0 font-semibold">게이트 오픈</span>
-                <span>경기 시작 2시간 전</span>
-              </div>
-              <div className="flex gap-2">
-                <span className="w-20 shrink-0 font-semibold">본인 확인</span>
-                <span>스마트 티켓 또는 신분증 지참</span>
-              </div>
-              <div className="flex gap-2">
-                <span className="w-20 shrink-0 font-semibold">재입장</span>
-                <span>당일 재입장 1회 허용 (스탬프 필수)</span>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-2xl border border-[#DDE1EC] p-4 flex flex-col gap-3">
-            <p className="text-[15px] font-bold text-[#0E1A40]">환불 정책</p>
-            <ul className="flex flex-col gap-1.5 text-[13px] text-[#374151]">
-              <li>경기 시작 전 취소: 100% 환불</li>
-              <li>경기 시작 후 취소: 환불 불가</li>
-              <li>우천 취소 (3이닝 미만): 100% 환불</li>
-              <li>우천 취소 (3이닝 이상): 환불 불가</li>
-            </ul>
-          </div>
-        </div>
-      )}
-
-      {/* 라팍 소개 */}
-      {tab === 5 && (
+      {/* 구장 소개 */}
+      {tab === 0 && (
         <div className="flex flex-col gap-0 pb-4">
           <PH className="w-full h-56 rounded-none" />
           <div className="px-4 py-5 flex flex-col gap-4">

@@ -659,21 +659,25 @@ export function GameDashboardScreen() {
                   DAEGU SAMSUNG LIONS PARK
                 </p>
               </div>
-              <div className="grid grid-cols-5 border-t border-white/10">
+              <div className="grid grid-cols-6 border-t border-white/10">
                 {[
-                  { icon: "🍔", label: "식음매장" },
+                  { icon: "🏟", label: "구장 소개", tab: 0 },
 
-                  { icon: "🅿️", label: "교통/주차" },
+                  { icon: "🍔", label: "식음매장", tab: 1 },
 
-                  { icon: "♿", label: "편의시설" },
+                  { icon: "♿", label: "편의시설", tab: 2 },
 
-                  { icon: "💺", label: "좌석 배치" },
+                  { icon: "💺", label: "좌석배치", tab: 3 },
 
-                  { icon: "📋", label: "이용 안내" },
+                  { icon: "🚇", label: "교통", tab: 4 },
+
+                  { icon: "🅿️", label: "주차", tab: 5 },
                 ].map((item) => (
                   <button
                     key={item.label}
-                    onClick={() => navigate("/game/stadium")}
+                    onClick={() =>
+                      navigate("/game/stadium", { state: { tab: item.tab } })
+                    }
                     className="flex flex-col items-center gap-1.5 py-3.5 border-r border-white/10 last:border-r-0 active:bg-white/5"
                   >
                     <span className="text-xl">{item.icon}</span>

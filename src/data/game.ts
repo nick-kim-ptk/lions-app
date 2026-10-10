@@ -403,55 +403,83 @@ export const AWAY_INFO: {
   },
 ]
 
-// 011-SL-GM-06 선수 기록 > 팀 기록 (구단 대기록)
+// 011-SL-GM-06 선수 기록 > 팀 기록 (구단 대기록) — 어드민 [경기 관리 > 구단 기록 관리]에서 등록
 
-export const TEAM_RECORDS = [
+export type RecordBadge = "최초 기록" | "최고 기록" | "최다 기록" | "역사적 기록"
+
+export interface TeamRecord {
+  /** 기록 대상: 팀 또는 선수 */
+  target: "팀" | "선수"
+
+  /** 대상이 선수일 때 PLAYERS의 id */
+  playerId?: string
+
+  year: string
+
+  date: string
+
+  record: string
+
+  desc: string
+
+  badge: RecordBadge
+}
+
+export const TEAM_RECORDS: TeamRecord[] = [
   {
+    target: "팀",
     year: "2024",
-
     date: "2024.09.01",
-
     record: "KBO 리그 최초 통산 3,000승 돌파",
-
     desc: "삼성 라이온즈가 KBO 리그 출범 이후 최초로 통산 3,000승을 달성했습니다.",
-
     badge: "역사적 기록",
   },
 
   {
-    year: "2023",
-
-    date: "2023.07.22",
-
-    record: "KBO 역대 최초 팀 통산 50,000안타 달성",
-
-    desc: "구단 창단 이래 누적 안타 수 50,000개를 KBO 최초로 돌파했습니다.",
-
+    target: "선수",
+    playerId: "koo-ja-wook",
+    year: "2024",
+    date: "2024.08.14",
+    record: "구단 역대 최초 4시즌 연속 150안타",
+    desc: "구자욱이 구단 역사상 처음으로 4시즌 연속 150안타를 기록했습니다.",
     badge: "최초 기록",
   },
 
   {
-    year: "1986",
-
-    date: "1986시즌 종료",
-
-    record: "단일 시즌 역대 최고 승률 (0.706)",
-
-    desc: "1986년 시즌 최종 승률 0.706을 기록, KBO 역대 단일 시즌 최고 승률로 남아 있습니다.",
-
-    badge: "최고 기록",
+    target: "팀",
+    year: "2023",
+    date: "2023.07.22",
+    record: "KBO 역대 최초 팀 통산 50,000안타 달성",
+    desc: "구단 창단 이래 누적 안타 수 50,000개를 KBO 최초로 돌파했습니다.",
+    badge: "최초 기록",
   },
 
   {
+    target: "팀",
     year: "2023",
-
     date: "2023.10 기준",
-
     record: "프로야구 역사상 최다 포스트시즌 진출 (31회)",
-
     desc: "창단 이래 31회의 포스트시즌 진출로 KBO 역사상 가장 많은 가을야구 무대를 경험한 구단입니다.",
-
     badge: "최다 기록",
+  },
+
+  {
+    target: "선수",
+    playerId: "won-tae-in",
+    year: "2023",
+    date: "2023.09.05",
+    record: "구단 좌·우완 통틀어 한 시즌 최다 탈삼진 (200개)",
+    desc: "원태인이 한 시즌 탈삼진 200개를 돌파하며 구단 투수 한 시즌 최다 탈삼진 기록을 새로 썼습니다.",
+    badge: "최다 기록",
+  },
+
+  {
+    target: "팀",
+    year: "1986",
+    date: "1986시즌 종료",
+    record: "단일 시즌 역대 최고 승률 (0.706)",
+    desc: "1986년 시즌 최종 승률 0.706을 기록, KBO 역대 단일 시즌 최고 승률로 남아 있습니다.",
+    badge: "최고 기록",
   },
 ]
 

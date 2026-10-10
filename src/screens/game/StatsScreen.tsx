@@ -4,7 +4,15 @@ import { Header } from "@/components/Layout"
 
 import { TEAM_RECORDS } from "@/data/game"
 
-import { BATTERS, BATTER_STATS, PITCHERS, PITCHER_STATS } from "@/data/mock"
+import { CaseSelect } from "@/components/CaseSelect"
+
+import {
+  BATTERS,
+  BATTER_STATS,
+  PITCHERS,
+  PITCHER_STATS,
+  PLAYER_BY_ID,
+} from "@/data/mock"
 
 // 011-SL-GM-06 투수/타자/팀 기록
 
@@ -94,6 +102,10 @@ function SortChips<K extends string>({
 export function StatsScreen() {
   const [tab, setTab] = useState(0)
 
+  const [recordCase, setRecordCase] = useState<
+    "팀 + 선수" | "팀 기록만" | "선수 기록만"
+  >("팀 + 선수")
+
   const [pitcherSort, setPitcherSort] = useState<PitcherKey>("탈삼진")
 
   const [batterSort, setBatterSort] = useState<BatterKey>("타율")
@@ -132,6 +144,12 @@ export function StatsScreen() {
       도루: s.sb,
     }[key]
   }
+
+  const records = TEAM_RECORDS.filter(
+    (r) =>
+      recordCase === "팀 + 선수" ||
+      r.target === (recordCase === "팀 기록만" ? "팀" : "선수"),
+  )
 
   const batters = BATTERS.filter((p) => BATTER_STATS[p.id]).sort(
     (a, b) =>
@@ -294,35 +312,76 @@ export function StatsScreen() {
         </div>
       )}
 
-      {/* 팀 기록 */}
+      {/* 팀 기록 — 구단 대기록. 카드가 스크롤하면서 위로 쌓인다 */}
       {tab === 2 && (
-        <div className="px-4 pt-4 pb-4 flex flex-col gap-4">
-          <p className="text-[12px] text-[#9CA3AF]">
-            삼성 라이온즈 구단 대기록
-          </p>
-          {TEAM_RECORDS.map((r, i) => (
-            <div
-              key={i}
-              className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden"
-            >
-              {/* Top accent bar */}
-              <div className="h-1 bg-[#1B5BF0]" />
-              <div className="p-4 flex flex-col gap-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-semibold text-white bg-[#1B5BF0] rounded-full px-2.5 py-0.5">
-                    {r.badge}
-                  </span>
-                  <span className="text-[11px] text-[#9CA3AF]">{r.date}</span>
+        <div className="px-4 pt-4 pb-10 lg:max-w-[560px] lg:mx-auto [--rec-top:68px] lg:[--rec-top:12px]">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-[12px] text-[#9CA3AF]">
+              삼성 라이온즈 구단 대기록
+            </p>
+            {/* 케이스 전환 (와이어프레임 전용) */}
+            <CaseSelect
+              value={recordCase}
+              options={["팀 + 선수", "팀 기록만", "선수 기록만"] as const}
+              onChange={setRecordCase}
+            />
+          </div>
+          {records.length === 0 && (
+            <p className="py-16 text-center text-[13px] text-[#9CA3AF]">
+              등록된 구단 기록이 없습니다.
+            </p>
+          )}
+          <div className="flex flex-col gap-4">
+            {records.map((r, i) => {
+              const pl = r.playerId ? PLAYER_BY_ID[r.playerId] : undefined
+
+              return (
+                <div
+                  key={i}
+                  className="sticky rounded-3xl overflow-hidden shadow-[0_8px_24px_rgba(14,47,128,0.28)] text-white text-center bg-gradient-to-b from-[#1B5BF0] to-[#0A1A4E]"
+                  style={{ top: `calc(var(--rec-top) + ${i * 10}px)`, zIndex: i + 1 }}
+                >
+                  <div className="px-6 pt-5 pb-7 min-h-[300px] flex flex-col items-center">
+                    <span className="text-[11px] font-bold tracking-wide text-[#0A1A4E] bg-[#FFD76A] rounded-full px-3 py-1">
+                      {r.badge}
+                    </span>
+
+                    {/* 기록 대상 */}
+                    <div className="mt-4 flex items-center gap-2">
+                      {pl ? (
+                        <>
+                          <span className="w-8 h-8 rounded-full bg-white/15 border border-white/30 flex items-center justify-center text-[12px] font-bold">
+                            {pl.no}
+                          </span>
+                          <span className="text-[14px] font-semibold text-[#C8D8FF]">
+                            {pl.name}
+                          </span>
+                        </>
+                      ) : (
+                        <span className="text-[14px] font-semibold text-[#C8D8FF]">
+                          삼성 라이온즈
+                        </span>
+                      )}
+                    </div>
+
+                    {/* 기록명 — 카드 중앙 */}
+                    <div className="flex-1 flex items-center justify-center py-5">
+                      <p className="text-[22px] font-black leading-snug break-keep">
+                        {r.record}
+                      </p>
+                    </div>
+
+                    <p className="text-[13px] font-semibold text-[#FFD76A]">
+                      {r.date}
+                    </p>
+                    <p className="mt-2 text-[12px] leading-relaxed text-white/70 break-keep">
+                      {r.desc}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-[15px] font-bold text-[#111827] leading-snug">
-                  {r.record}
-                </p>
-                <p className="text-[12px] text-[#64748B] leading-relaxed">
-                  {r.desc}
-                </p>
-              </div>
-            </div>
-          ))}
+              )
+            })}
+          </div>
         </div>
       )}
     </div>

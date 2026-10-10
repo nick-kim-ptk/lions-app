@@ -20,7 +20,7 @@ const NAV: { label: string; path: string; section?: string }[] = [
 
   { label: "티켓+", path: "/ticket", section: "티켓+" },
 
-  { label: "라이온즈", path: "/all/about", section: "라이온즈" },
+  { label: "라이온즈", path: "/game/stadium", section: "라이온즈" },
 
   { label: "소식/안내", path: "/all/notice-list", section: "소식/안내" },
 
@@ -42,6 +42,9 @@ const linksOf = (title: string) => {
 /** 현재 경로가 속한 대메뉴 */
 
 function activeLabel(pathname: string) {
+  // 라팍 정보(013)는 PC에서 "라이온즈" 메뉴의 첫 화면
+  if (pathname === "/game/stadium") return "라이온즈"
+
   if (pathname.startsWith("/my/booking") || pathname.startsWith("/my/ticket"))
     return "티켓+"
 

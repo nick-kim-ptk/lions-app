@@ -7,8 +7,12 @@ import { Header } from "@/components/Layout"
 
 import { STADIUM_TABS } from "@/data/game"
 
+const EVAC_FLOORS = [3, 4, 5] as const
+
 export function StadiumScreen() {
   const location = useLocation()
+  const [floor, setFloor] = useState<(typeof EVAC_FLOORS)[number]>(3)
+  const [zoom, setZoom] = useState<string | null>(null)
   const [tab, setTab] = useState<number>(
     (location.state as { tab?: number } | null)?.tab ?? 0,
   )
@@ -413,23 +417,92 @@ export function StadiumScreen() {
               </div>
             </div>
 
-            {/* 구장 구조 */}
-            <div className="flex flex-col gap-2">
-              <p className="text-[15px] font-bold text-[#0E1A40]">구장 구조</p>
-              <PHImage
-                className="h-52"
-                rounded="rounded-2xl"
-                label="구장 구조도 (층별·구역별 시설 배치, 확대 가능)"
-              />
-            </div>
+            {/* 구장 구조 / 피난 안내도: 모바일 세로, PC 좌우 */}
+            <div className="flex flex-col gap-5 lg:grid lg:grid-cols-2 lg:gap-6">
+              <div className="flex flex-col gap-2">
+                <p className="text-[15px] font-bold text-[#0E1A40] leading-[30px]">
+                  구장 구조
+                </p>
+                <button
+                  onClick={() => setZoom("구장 구조도")}
+                  className="relative block w-full aspect-square rounded-2xl overflow-hidden"
+                >
+                  <PHImage
+                    className="h-full"
+                    rounded="rounded-2xl"
+                    label="구장 구조도 (정사각형, 탭하면 확대)"
+                  />
+                  <span className="absolute right-2 bottom-2 text-[11px] font-semibold bg-black/55 text-white rounded-full px-2.5 py-1">
+                    🔍 확대
+                  </span>
+                </button>
+              </div>
 
-            {/* 피난 안내도 */}
-            <div className="flex flex-col gap-2">
-              <p className="text-[15px] font-bold text-[#0E1A40]">피난 안내도</p>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <p className="text-[15px] font-bold text-[#0E1A40]">
+                    피난 안내도
+                  </p>
+                  <div className="flex gap-1.5">
+                  {EVAC_FLOORS.map((f) => (
+                    <button
+                      key={f}
+                      onClick={() => setFloor(f)}
+                      className={`px-3 py-1 rounded-full text-[12px] font-semibold border ${
+                        floor === f
+                          ? "bg-[#0E1A40] text-white border-[#0E1A40]"
+                          : "bg-white text-[#6B7280] border-[#DDE1EC]"
+                      }`}
+                    >
+                      {f}층
+                    </button>
+                  ))}
+                  </div>
+                </div>
+                <button
+                  onClick={() => setZoom(`피난 안내도 ${floor}층`)}
+                  className="relative block w-full aspect-square rounded-2xl overflow-hidden"
+                >
+                  <PHImage
+                    className="h-full"
+                    rounded="rounded-2xl"
+                    label={`피난 안내도 ${floor}층 (정사각형, 탭하면 확대)`}
+                  />
+                  <span className="absolute right-2 bottom-2 text-[11px] font-semibold bg-black/55 text-white rounded-full px-2.5 py-1">
+                    🔍 확대
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 이미지 확대 모달 */}
+      {zoom && (
+        <div
+          className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4"
+          onClick={() => setZoom(null)}
+        >
+          <div
+            className="w-full max-w-[560px] flex flex-col gap-3"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between text-white">
+              <p className="text-[15px] font-bold">{zoom}</p>
+              <button
+                onClick={() => setZoom(null)}
+                aria-label="닫기"
+                className="w-8 h-8 rounded-full bg-white/15 text-[18px] leading-none"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="w-full aspect-square">
               <PHImage
-                className="h-52"
+                className="h-full"
                 rounded="rounded-2xl"
-                label="피난 안내도 (비상구·대피 경로, 확대 가능)"
+                label={`${zoom} 확대 이미지`}
               />
             </div>
           </div>

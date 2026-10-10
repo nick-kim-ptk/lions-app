@@ -85,10 +85,10 @@ export function StadiumScreen() {
 
       {/* 식음매장 */}
       {tab === 1 && (
-        <div className="px-4 py-4 flex flex-col gap-4">
+        <div className="py-4 flex flex-col gap-4">
           {/* 층 탭 */}
           <div
-            className="flex gap-2 overflow-x-auto"
+            className="flex gap-2 overflow-x-auto px-4"
             style={{ scrollbarWidth: "none" }}
           >
             {(["전체", ...FOOD_FLOORS] as const).map((f) => (
@@ -106,38 +106,45 @@ export function StadiumScreen() {
             ))}
           </div>
 
-          <div className="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:gap-6 lg:items-start">
-            {/* 매장 리스트 */}
-            <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:gap-6 lg:items-start lg:px-4">
+            {/* 매장 리스트: 모바일은 가로 스크롤 카드(지도 바로 위), PC는 세로 목록 */}
+            <div
+              className="flex gap-2 overflow-x-auto px-4 py-1 snap-x lg:flex-col lg:overflow-visible lg:px-0 lg:py-0"
+              style={{ scrollbarWidth: "none" }}
+            >
               {foodList.map((st) => (
                 <button
                   key={st.id}
                   onClick={() => pickStore(st)}
-                  className={`flex gap-3 text-left rounded-2xl border p-3 bg-white ${
+                  className={`shrink-0 snap-start w-[168px] lg:w-auto flex flex-col gap-2 lg:flex-row lg:gap-3 text-left rounded-2xl border p-3 bg-white ${
                     foodSel?.id === st.id
                       ? "border-[#1B5BF0] ring-1 ring-[#1B5BF0]"
                       : "border-[#DDE1EC]"
                   }`}
                 >
-                  <PH className="w-14 h-14 rounded-xl shrink-0" />
-                  <div className="flex-1 flex flex-col gap-0.5 justify-center">
+                  <PH className="w-full h-20 lg:w-14 lg:h-14 rounded-xl shrink-0" />
+                  <div className="flex-1 flex flex-col gap-0.5 justify-center min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <p className="text-[14px] font-bold text-[#111827]">
+                      <p className="text-[14px] font-bold text-[#111827] truncate">
                         {st.name}
                       </p>
-                      <span className="text-[10px] font-semibold text-[#1B5BF0] bg-[#EBF0FF] rounded-full px-2 py-0.5">
+                      <span className="shrink-0 text-[10px] font-semibold text-[#1B5BF0] bg-[#EBF0FF] rounded-full px-2 py-0.5">
                         {st.floor}층
                       </span>
                     </div>
-                    <p className="text-[12px] text-[#6B7280]">{st.menu}</p>
-                    <p className="text-[11px] text-[#9CA3AF]">{st.zone}</p>
+                    <p className="text-[12px] text-[#6B7280] truncate">
+                      {st.menus.map((m) => m.name).join("·")}
+                    </p>
+                    <p className="text-[11px] text-[#9CA3AF] truncate">
+                      {st.zone}
+                    </p>
                   </div>
                 </button>
               ))}
             </div>
 
             {/* 위치 지도 + 매장 정보 */}
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 px-4 lg:px-0">
               {foodSel ? (
                 <>
                   <p className="text-[15px] font-bold text-[#0E1A40]">
@@ -160,28 +167,50 @@ export function StadiumScreen() {
                       🔍 확대
                     </span>
                   </button>
-                  <div className="bg-white rounded-2xl border border-[#DDE1EC] p-4 flex flex-col gap-3">
-                    <div className="flex items-center gap-2">
-                      <p className="text-[16px] font-black text-[#0E1A40]">
-                        {foodSel.name}
-                      </p>
-                      <span className="text-[10px] font-semibold text-[#6B7280] bg-[#F3F4F6] rounded-full px-2 py-0.5">
-                        {foodSel.category}
-                      </span>
+                  <div className="bg-white rounded-2xl border border-[#DDE1EC] p-4 flex flex-col gap-4">
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-center gap-2">
+                        <p className="text-[16px] font-black text-[#0E1A40]">
+                          {foodSel.name}
+                        </p>
+                        <span className="text-[10px] font-semibold text-[#6B7280] bg-[#F3F4F6] rounded-full px-2 py-0.5">
+                          {foodSel.category}
+                        </span>
+                      </div>
+                      <div className="flex flex-col gap-2 text-[13px] text-[#374151]">
+                        {[
+                          {
+                            label: "위치",
+                            value: `${foodSel.floor}층 · ${foodSel.zone}`,
+                          },
+                          { label: "운영 시간", value: foodSel.hours },
+                        ].map((row) => (
+                          <div key={row.label} className="flex gap-3">
+                            <span className="w-16 shrink-0 font-semibold text-[#6B7280]">
+                              {row.label}
+                            </span>
+                            <span>{row.value}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-2 text-[13px] text-[#374151]">
-                      {[
-                        { label: "위치", value: `${foodSel.floor}층 · ${foodSel.zone}` },
-                        { label: "대표 메뉴", value: foodSel.menu },
-                        { label: "운영 시간", value: foodSel.hours },
-                      ].map((row) => (
-                        <div key={row.label} className="flex gap-3">
-                          <span className="w-16 shrink-0 font-semibold text-[#6B7280]">
-                            {row.label}
-                          </span>
-                          <span>{row.value}</span>
-                        </div>
-                      ))}
+                    <div className="flex flex-col gap-2">
+                      <p className="text-[13px] font-bold text-[#0E1A40]">
+                        주요 메뉴
+                      </p>
+                      <div className="grid grid-cols-3 gap-2">
+                        {foodSel.menus.map((m) => (
+                          <div key={m.name} className="flex flex-col gap-1.5">
+                            <PH className="w-full aspect-square rounded-xl" />
+                            <p className="text-[12px] font-semibold text-[#111827] leading-tight">
+                              {m.name}
+                            </p>
+                            <p className="text-[12px] font-bold text-[#1B5BF0]">
+                              {m.price.toLocaleString()}원
+                            </p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </>

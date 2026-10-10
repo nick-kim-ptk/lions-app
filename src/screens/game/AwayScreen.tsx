@@ -122,7 +122,7 @@ export function AwayScreen() {
           </button>
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="flex-1 flex items-center gap-1.5 lg:justify-center"
+            className="flex-1 flex items-center gap-1.5 justify-center"
           >
             <span className="text-[16px] font-bold text-[#111827]">
               {stadium.name}
@@ -145,9 +145,8 @@ export function AwayScreen() {
               />
             </svg>
           </button>
-          <span className="text-[11px] text-[#9CA3AF] lg:hidden">
-            {stadium.city} · {stadium.team}
-          </span>
+          {/* 이전 버튼과 같은 폭의 빈 칸 — 구장명을 정확히 가운데로 */}
+          <span className="w-8 shrink-0 lg:hidden" />
         </div>
         {dropdownOpen && (
           <div className="absolute top-full left-0 right-0 bg-white border-b border-[#DDE1EC] shadow-lg z-30">

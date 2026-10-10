@@ -2,7 +2,7 @@ import { PHImage } from "@/components/Placeholder"
 
 import { Header } from "@/components/Layout"
 
-import { LOGO_GUIDES, LOGO_ITEMS } from "@/data/club"
+import { LOGO_ITEMS } from "@/data/club"
 
 // 060-SL-AL-04 구단 로고
 
@@ -30,22 +30,6 @@ export function LogoIntroScreen() {
           </div>
         ))}
 
-        <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-4">
-          <p className="text-[13px] font-bold text-[#111827] mb-2">
-            로고 사용 가이드
-          </p>
-          <ul className="flex flex-col gap-1.5">
-            {LOGO_GUIDES.map((g) => (
-              <li
-                key={g}
-                className="flex gap-2 text-[12px] text-[#64748B] leading-relaxed"
-              >
-                <span className="text-[#1B5BF0]">·</span>
-                <span>{g}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
     </div>
   )

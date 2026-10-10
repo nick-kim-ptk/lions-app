@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
 import { AWAY_STADIUMS, AWAY_TABS, AWAY_INFO } from "@/data/game"
 
@@ -36,12 +36,46 @@ export function AwayScreen() {
 
   const [toast, setToast] = useState(false)
 
-  useEffect(() => {
-    if (location.state?.tab !== undefined) setAwayTab(location.state.tab)
+  // 탭은 한 페이지 안의 영역으로 이동하는 앵커 (구장 소개 / 대중교통 / 주차 / 편의시설)
+  const sectionRefs = useRef<(HTMLElement | null)[]>([])
 
+  const goTab = (i: number) => {
+    setAwayTab(i)
+
+    sectionRefs.current[i]?.scrollIntoView({ behavior: "smooth", block: "start" })
+  }
+
+  useEffect(() => {
     if (location.state?.stadiumIndex !== undefined)
       setSelected(location.state.stadiumIndex)
+
+    if (location.state?.tab !== undefined) {
+      const t = setTimeout(() => goTab(location.state.tab), 80)
+
+      return () => clearTimeout(t)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.state])
+
+  // 스크롤 위치에 맞춰 현재 영역의 탭을 강조
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            const i = sectionRefs.current.indexOf(e.target as HTMLElement)
+
+            if (i >= 0) setAwayTab(i)
+          }
+        })
+      },
+      { rootMargin: "-120px 0px -65% 0px" },
+    )
+
+    sectionRefs.current.forEach((el) => el && io.observe(el))
+
+    return () => io.disconnect()
+  }, [selected])
 
   useEffect(() => {
     if (!toast) return
@@ -159,13 +193,13 @@ export function AwayScreen() {
 
       {/* 탭 */}
       <div
-        className="flex border-b border-[#DDE1EC] bg-white overflow-x-auto"
+        className="sticky top-14 z-10 flex border-b border-[#DDE1EC] bg-white overflow-x-auto"
         style={{ scrollbarWidth: "none" }}
       >
         {AWAY_TABS.map((t, i) => (
           <button
             key={i}
-            onClick={() => setAwayTab(i)}
+            onClick={() => goTab(i)}
             className={`shrink-0 flex-1 px-4 py-3 text-[13px] font-semibold border-b-2 transition-colors ${
               awayTab === i
                 ? "border-[#1B5BF0] text-[#1B5BF0]"
@@ -179,8 +213,13 @@ export function AwayScreen() {
 
       <div className="px-4 pt-4 pb-6 flex flex-col gap-4">
         {/* 구장 소개 */}
-        {awayTab === 0 && (
-          <>
+        <section
+          ref={(el) => {
+            sectionRefs.current[0] = el
+          }}
+          className="scroll-mt-[112px] flex flex-col gap-4"
+        >
+          <h2 className="text-[16px] font-bold text-[#111827]">구장 소개</h2>
             <Card title="홈 구단 정보">
               <div className="flex flex-col gap-3">
                 {stadium.teams.map((code) => {
@@ -276,12 +315,16 @@ export function AwayScreen() {
                 </a>
               </div>
             </Card>
-          </>
-        )}
+          </section>
 
         {/* 대중교통 */}
-        {awayTab === 1 && (
-          <>
+        <section
+          ref={(el) => {
+            sectionRefs.current[1] = el
+          }}
+          className="scroll-mt-[112px] flex flex-col gap-4"
+        >
+          <h2 className="text-[16px] font-bold text-[#111827]">대중교통</h2>
             <Card title="🚇 지하철">
               {info.subway.length === 0 ? (
                 <p className="text-[12px] text-[#9CA3AF]">
@@ -322,12 +365,16 @@ export function AwayScreen() {
                 </p>
               </Card>
             )}
-          </>
-        )}
+          </section>
 
         {/* 주차 */}
-        {awayTab === 2 && (
-          <>
+        <section
+          ref={(el) => {
+            sectionRefs.current[2] = el
+          }}
+          className="scroll-mt-[112px] flex flex-col gap-4"
+        >
+          <h2 className="text-[16px] font-bold text-[#111827]">주차</h2>
             <Card title="🅿️ 구장 주차장">
               <div className="divide-y divide-[#F0F2F5]">
                 {[
@@ -360,12 +407,17 @@ export function AwayScreen() {
                 </div>
               ))}
             </Card>
-          </>
-        )}
+          </section>
 
         {/* 편의시설 */}
-        {awayTab === 3 && (
-          <div className="grid grid-cols-2 gap-3">
+        <section
+          ref={(el) => {
+            sectionRefs.current[3] = el
+          }}
+          className="scroll-mt-[112px] flex flex-col gap-4"
+        >
+          <h2 className="text-[16px] font-bold text-[#111827]">편의시설</h2>
+          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
             {info.facilities.map((f) => (
               <div
                 key={f.title}
@@ -379,7 +431,7 @@ export function AwayScreen() {
               </div>
             ))}
           </div>
-        )}
+        </section>
 
         <p className="text-[10px] text-[#9CA3AF] text-center">
           ※ 교통·주차 세부 수치는 예시이며 실제 정보는 각 구단 공식 안내

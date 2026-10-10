@@ -18,7 +18,7 @@ export function RecordCard({
 }) {
   return (
     <div
-      className={`relative aspect-square rounded-3xl overflow-hidden text-white text-center shadow-[0_8px_24px_rgba(14,47,128,0.28)] ${className}`}
+      className={`relative aspect-[16/10] rounded-3xl overflow-hidden text-white text-center shadow-[0_8px_24px_rgba(14,47,128,0.28)] ${className}`}
       style={{ background: r.bg ?? DEFAULT_BG }}
     >
       {/* 글자 가독성용 어두운 막 */}
@@ -38,7 +38,7 @@ export function RecordCard({
       <div className="absolute inset-0 flex items-center justify-center px-7">
         <p
           className={`font-black leading-snug break-keep ${
-            size === "lg" ? "text-[24px]" : "text-[18px]"
+            size === "lg" ? "text-[22px]" : "text-[18px]"
           }`}
         >
           {r.record}

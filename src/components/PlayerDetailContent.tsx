@@ -369,7 +369,7 @@ export function PlayerDetailContent({
                   key={i}
                   r={r}
                   size="sm"
-                  className="shrink-0 w-[240px]"
+                  className="shrink-0 w-[260px]"
                 />
               ))}
             </div>

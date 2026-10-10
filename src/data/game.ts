@@ -406,7 +406,14 @@ export const AWAY_INFO: {
 // 011-SL-GM-06 선수 기록 > 팀 기록 (구단 대기록) — 어드민 [경기 관리 > 기록 관리]에서 등록
 // 팀 대상 기록은 팀 기록 탭에, 선수 대상 기록은 해당 선수 상세(066)의 "주요 기록"에 노출한다. 목록은 달성일 내림차순.
 
-export type RecordBadge = "최초 기록" | "최고 기록" | "최다 기록" | "역사적 기록"
+export type RecordBadge =
+  | "최초 기록"
+  | "최고 기록"
+  | "최다 기록"
+  | "역사적 기록"
+  | "연속"
+  | "개인 타이틀"
+  | "시즌 VS 통산"
 
 export interface TeamRecord {
   /** 기록 대상: 팀 또는 선수 */
@@ -447,6 +454,32 @@ export const TEAM_RECORDS: TeamRecord[] = [
     record: "구단 역대 최초 4시즌 연속 150안타",
     badge: "최초 기록",
     bg: bg("#0E7C86", "#06303A"),
+  },
+
+  {
+    target: "팀",
+    date: "2024-06-20",
+    record: "팀 최다 연속 경기 득점 (42경기)",
+    badge: "연속",
+    bg: bg("#0F766E", "#042F2E"),
+  },
+
+  {
+    target: "선수",
+    playerId: "koo-ja-wook",
+    date: "2024-10-05",
+    record: "2024 KBO 리그 타격왕",
+    badge: "개인 타이틀",
+    bg: bg("#A16207", "#422006"),
+  },
+
+  {
+    target: "선수",
+    playerId: "won-tae-in",
+    date: "2024-09-18",
+    record: "시즌 15승, 통산 70승 돌파",
+    badge: "시즌 VS 통산",
+    bg: bg("#1D4ED8", "#172554"),
   },
 
   {

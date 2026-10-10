@@ -483,6 +483,46 @@ export const TEAM_RECORDS: TeamRecord[] = [
   },
 
   {
+    target: "선수",
+    playerId: "lee-jae-hyun",
+    date: "2024-07-09",
+    record: "구단 유격수 역대 최다 단일 시즌 도루 (35개)",
+    badge: "최다 기록",
+  },
+
+  {
+    target: "선수",
+    playerId: "diaz",
+    date: "2024-09-25",
+    record: "시즌 40홈런 달성, 통산 홈런 1위 등극",
+    badge: "시즌 VS 통산",
+  },
+
+  {
+    target: "선수",
+    playerId: "kang-min-ho",
+    date: "2024-05-30",
+    record: "KBO 포수 최초 통산 2,000경기 출전",
+    badge: "최초 기록",
+  },
+
+  {
+    target: "선수",
+    playerId: "kim-ji-chan",
+    date: "2024-08-02",
+    record: "구단 역대 최다 연속 경기 출루 (38경기)",
+    badge: "연속",
+  },
+
+  {
+    target: "선수",
+    playerId: "kim-young-woong",
+    date: "2024-10-04",
+    record: "2024 KBO 리그 신인왕",
+    badge: "개인 타이틀",
+  },
+
+  {
     target: "팀",
     date: "2023-10-20",
     record: "프로야구 역사상 최다 포스트시즌 진출 (31회)",

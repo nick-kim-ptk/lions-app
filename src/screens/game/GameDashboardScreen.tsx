@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom"
 
+import { playerByName } from "@/data/mock"
+
 import { GameStateNotice } from "@/components/GameCaseBar"
 
 import { CaseSelect } from "@/components/CaseSelect"
@@ -18,6 +20,13 @@ import { AWAY_STADIUMS } from "@/data/game"
 
 export function GameDashboardScreen() {
   const navigate = useNavigate()
+
+  // 라인업 카드 → 해당 선수 상세 (상대 선수는 상세가 없어 기본 선수 화면)
+  const openPlayer = (name: string) => {
+    const pl = playerByName(name)
+
+    navigate(pl ? `/all/player-detail?id=${pl.id}` : "/all/player-detail")
+  }
 
   const { phase } = useCaseState()
 
@@ -536,7 +545,7 @@ export function GameDashboardScreen() {
 
               return (
                 <button
-                  onClick={() => navigate("/all/player-detail")}
+                  onClick={() => openPlayer(starter.name)}
                   className="shrink-0 flex flex-col items-center gap-2 bg-[#1B5BF0] rounded-2xl px-4 py-3.5 w-[82px] relative overflow-hidden"
                 >
                   <div className="absolute inset-0 opacity-10 text-[60px] leading-none flex items-end justify-center pointer-events-none select-none">
@@ -576,7 +585,7 @@ export function GameDashboardScreen() {
             ].map((p, i) => (
               <button
                 key={i}
-                onClick={() => navigate("/all/player-detail")}
+                onClick={() => openPlayer(p.name)}
                 className="shrink-0 flex flex-col items-center gap-2 bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] px-4 py-3.5 w-[82px]"
               >
                 <span className="text-[#1B5BF0] text-[11px] font-bold">

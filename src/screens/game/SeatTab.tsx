@@ -331,9 +331,10 @@ export function SeatTab() {
                 ✕
               </button>
             </div>
-            <div className="overflow-y-auto">
-              <div className="grid grid-cols-[1fr_repeat(3,62px)] text-[12px] font-bold sticky top-0">
-                <div className="bg-[#F3F4F6] px-4 py-2.5 text-[#6B7280]">구분 (원)</div>
+            <div className="overflow-y-auto px-4 py-4">
+              <div className="overflow-hidden rounded-xl border border-[#DDE1EC]">
+              <div className="grid grid-cols-[1fr_repeat(3,62px)] text-[12px] font-bold">
+                <div className="bg-[#F3F4F6] px-3 py-2.5 text-[#6B7280]">구분 (원)</div>
                 {SEAT_TIERS.map((t) => (
                   <div
                     key={t.id}
@@ -355,7 +356,7 @@ export function SeatTab() {
                     }}
                     className="grid w-full grid-cols-[1fr_repeat(3,62px)] border-t border-[#EEF0F6] text-left text-[13px]"
                   >
-                    <div className="px-4 py-2.5 text-[#374151] leading-snug">
+                    <div className="px-3 py-2.5 text-[#374151] leading-snug">
                       <span className="font-semibold">{i === 0 ? z.name : ""}</span>
                       {p.label && (
                         <span className="block text-[11px] text-[#9CA3AF]">{p.label}</span>
@@ -373,8 +374,9 @@ export function SeatTab() {
                   </button>
                 )),
               )}
-              <div className="border-t border-[#EEF0F6] p-4">{tierLegend}</div>
-              <p className="px-4 pb-4 text-[11px] text-[#9CA3AF]">
+              </div>
+              <div className="pt-4">{tierLegend}</div>
+              <p className="pt-3 text-[11px] text-[#9CA3AF]">
                 행을 누르면 해당 구역을 지도에서 확인합니다. 스윗박스는 요금표에 없어 제외했습니다.
               </p>
             </div>

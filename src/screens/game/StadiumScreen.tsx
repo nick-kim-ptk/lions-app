@@ -481,11 +481,11 @@ export function StadiumScreen() {
       {/* 이미지 확대 모달 */}
       {zoom && (
         <div
-          className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4 lg:p-8"
           onClick={() => setZoom(null)}
         >
           <div
-            className="w-full max-w-[560px] flex flex-col gap-3"
+            className="w-full max-w-[560px] lg:max-w-[1440px] flex flex-col gap-3"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between text-white">
@@ -498,7 +498,7 @@ export function StadiumScreen() {
                 ✕
               </button>
             </div>
-            <div className="w-full aspect-square">
+            <div className="w-full aspect-square lg:aspect-auto lg:h-[calc(100vh-120px)]">
               <PHImage
                 className="h-full"
                 rounded="rounded-2xl"

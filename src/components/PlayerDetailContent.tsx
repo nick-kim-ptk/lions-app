@@ -6,6 +6,8 @@ import { CaseSelect } from "./CaseSelect"
 
 import { PlayerStatusBadge } from "./PlayerStatusBadge"
 
+import { TEAM_RECORDS } from "@/data/game"
+
 import {
   BATTER_STATS,
   PITCHER_STATS,
@@ -333,6 +335,38 @@ export function PlayerDetailContent({
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* 구단 기록 — 어드민 [구단 기록 관리]에서 대상이 이 선수로 등록된 기록 */}
+        {TEAM_RECORDS.some((r) => r.playerId === playerId) && (
+          <div>
+            <PHSection label="구단 기록" right="" />
+            <div className="flex gap-3 overflow-x-auto pb-1">
+              {TEAM_RECORDS.filter((r) => r.playerId === playerId).map(
+                (r, i) => (
+                  <div
+                    key={i}
+                    className="shrink-0 w-[280px] rounded-3xl text-white text-center bg-gradient-to-b from-[#1B5BF0] to-[#0A1A4E] px-5 pt-4 pb-5 min-h-[230px] flex flex-col items-center"
+                  >
+                    <span className="text-[10px] font-bold text-[#0A1A4E] bg-[#FFD76A] rounded-full px-2.5 py-0.5">
+                      {r.badge}
+                    </span>
+                    <div className="flex-1 flex items-center justify-center py-3">
+                      <p className="text-[18px] font-black leading-snug break-keep">
+                        {r.record}
+                      </p>
+                    </div>
+                    <p className="text-[12px] font-semibold text-[#FFD76A]">
+                      {r.date}
+                    </p>
+                    <p className="mt-1.5 text-[11px] leading-relaxed text-white/70 break-keep">
+                      {r.desc}
+                    </p>
+                  </div>
+                ),
+              )}
             </div>
           </div>
         )}

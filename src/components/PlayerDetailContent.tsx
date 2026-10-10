@@ -359,9 +359,9 @@ export function PlayerDetailContent({
           )}
         </div>
 
-        {/* 구단 기록 — 어드민 [구단 기록 관리]에서 대상이 이 선수로 등록된 기록 (달성일 내림차순) */}
+        {/* 선수 본인의 주요 기록 — 어드민 [구단 기록 관리]에서 대상이 이 선수로 등록된 기록 (달성일 내림차순) */}
         <div>
-          <PHSection label="구단 기록" right="" />
+          <PHSection label="주요 기록" right="" />
           {playerRecords.length > 0 ? (
             <div className="flex gap-3 overflow-x-auto pb-1">
               {playerRecords.map((r, i) => (
@@ -374,7 +374,7 @@ export function PlayerDetailContent({
               ))}
             </div>
           ) : (
-            <EmptyBox text="등록된 구단 기록이 없습니다." />
+            <EmptyBox text="등록된 주요 기록이 없습니다." />
           )}
         </div>
 

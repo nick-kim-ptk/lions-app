@@ -1,8 +1,7 @@
 import { useState } from "react"
 
 import {
-  MAP_LINKS,
-  PARK_PLACE,
+  mapLinks,
   TRANSIT_DEST,
   TRANSIT_ORIGINS,
 } from "@/data/transit"
@@ -77,38 +76,6 @@ export function TransitTab() {
 
   return (
     <div className="flex flex-col gap-4 py-4">
-      {/* 도착지 + 지도 앱 연계 */}
-      <div className="px-4">
-        <div className="flex flex-col gap-3 rounded-2xl border border-[#DDE1EC] bg-white p-4">
-          <div>
-            <p className="text-[15px] font-black text-[#0E1A40]">
-              {PARK_PLACE.name}
-            </p>
-            <p className="text-[12px] text-[#6B7280]">{PARK_PLACE.address}</p>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            {MAP_LINKS.map((m) => (
-              <a
-                key={m.id}
-                href={m.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-1.5 rounded-xl border border-[#DDE1EC] py-2.5 text-[13px] font-bold text-[#111827]"
-              >
-                <span
-                  className="h-3 w-3 rounded-full"
-                  style={{ background: m.color }}
-                />
-                {m.name}
-              </a>
-            ))}
-          </div>
-          <p className="text-[11px] text-[#9CA3AF]">
-            지도 앱에서 현재 위치 기준 길찾기를 이용할 수 있습니다.
-          </p>
-        </div>
-      </div>
-
       {/* 출발지 선택 */}
       <div className="flex flex-col gap-2">
         <p className="px-4 text-[13px] font-bold text-[#0E1A40]">
@@ -135,6 +102,22 @@ export function TransitTab() {
         {o.sub && (
           <p className="px-4 text-[12px] text-[#9CA3AF]">{o.sub}</p>
         )}
+      </div>
+
+      {/* 지도 앱 길찾기: 선택한 출발지 → 삼성라이온즈 파크 */}
+      <div className="grid grid-cols-2 gap-2 px-4">
+        {mapLinks(o).map((m) => (
+          <a
+            key={m.id}
+            href={m.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-1.5 rounded-xl border border-[#DDE1EC] bg-white py-2.5 text-[13px] font-bold text-[#111827]"
+          >
+            <span className="h-3 w-3 rounded-full" style={{ background: m.color }} />
+            {m.name}
+          </a>
+        ))}
       </div>
 
       <div className="flex flex-col gap-5 px-4 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6">

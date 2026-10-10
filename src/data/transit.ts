@@ -8,21 +8,26 @@ export const PARK_PLACE = {
   address: "대구광역시 수성구 야구전설로 1",
 }
 
-/** 지도 앱 연계 (장소 검색 결과에서 길찾기로 이어짐) */
-export const MAP_LINKS = [
-  {
-    id: "naver",
-    name: "네이버 지도",
-    color: "#03C75A",
-    url: `https://map.naver.com/p/search/${encodeURIComponent(PARK_PLACE.name)}`,
-  },
-  {
-    id: "kakao",
-    name: "카카오맵",
-    color: "#FEE500",
-    url: `https://map.kakao.com/link/search/${encodeURIComponent(PARK_PLACE.name)}`,
-  },
-] as const
+export const PARK_POS = { lat: 35.8412, lng: 128.6816 }
+
+/** 지도 앱 연계: 출발지 → 라팍 대중교통 길찾기 (좌표는 근사값, 구단 확인 후 보정) */
+export function mapLinks(o: { name: string; lat: number; lng: number }) {
+  const pn = PARK_PLACE.name
+  return [
+    {
+      id: "naver",
+      name: "네이버 지도",
+      color: "#03C75A",
+      url: `https://map.naver.com/p/directions/${o.lng},${o.lat},${encodeURIComponent(o.name)}/${PARK_POS.lng},${PARK_POS.lat},${encodeURIComponent(pn)}/-/transit`,
+    },
+    {
+      id: "kakao",
+      name: "카카오맵",
+      color: "#FEE500",
+      url: `https://map.kakao.com/link/by/publictransit/${encodeURIComponent(o.name)},${o.lat},${o.lng}/${encodeURIComponent(pn)},${PARK_POS.lat},${PARK_POS.lng}`,
+    },
+  ]
+}
 
 export interface BusRoute {
   /** 탑승 정류장 */
@@ -45,6 +50,8 @@ export interface SubwayRoute {
 
 export interface TransitOrigin {
   id: string
+  lat: number
+  lng: number
   name: string
   sub?: string
   busTime: string
@@ -55,6 +62,8 @@ export interface TransitOrigin {
 export const TRANSIT_ORIGINS: TransitOrigin[] = [
   {
     id: "dongdaegu",
+    lat: 35.8798,
+    lng: 128.6283,
     name: "동대구역",
     sub: "고속철도·터미널",
     busTime: "약 40분",
@@ -72,6 +81,8 @@ export const TRANSIT_ORIGINS: TransitOrigin[] = [
   },
   {
     id: "daegu",
+    lat: 35.8758,
+    lng: 128.5961,
     name: "대구역",
     sub: "경부선",
     busTime: "약 55분",
@@ -86,6 +97,8 @@ export const TRANSIT_ORIGINS: TransitOrigin[] = [
   },
   {
     id: "seodaegu",
+    lat: 35.8799,
+    lng: 128.5569,
     name: "서대구역",
     sub: "고속철도",
     busTime: "약 70분",
@@ -100,6 +113,8 @@ export const TRANSIT_ORIGINS: TransitOrigin[] = [
   },
   {
     id: "seodaegu-bus",
+    lat: 35.8664,
+    lng: 128.5516,
     name: "서대구고속버스터미널",
     busTime: "약 70분",
     bus: [
@@ -116,6 +131,8 @@ export const TRANSIT_ORIGINS: TransitOrigin[] = [
   },
   {
     id: "bukbu",
+    lat: 35.8905,
+    lng: 128.5933,
     name: "대구북부시외버스터미널",
     busTime: "약 70분",
     bus: [
@@ -133,6 +150,8 @@ export const TRANSIT_ORIGINS: TransitOrigin[] = [
   },
   {
     id: "seobu",
+    lat: 35.8523,
+    lng: 128.5368,
     name: "대구서부정류장",
     busTime: "약 60분",
     bus: [

@@ -4,15 +4,26 @@
 
 // 058-SL-AL-02 구단 소개
 
+// 숫자로 보는 라이온즈 (수치는 구단 확인 필요)
 export const ABOUT_FACTS = [
-  { label: "창단", value: "1982 (KBO 원년)" },
+  { value: "1982", unit: "년", label: "창단 (KBO 원년)" },
 
-  { label: "연고지", value: "대구·경북" },
+  { value: "8", unit: "회", label: "한국시리즈 우승" },
 
-  { label: "홈구장", value: "대구삼성라이온즈파크" },
+  { value: "2016", unit: "년", label: "대구삼성라이온즈파크 개장" },
 
-  { label: "한국시리즈 우승", value: "8회" },
+  { value: "24,000", unit: "명", label: "홈구장 수용인원" },
 ]
+
+export const ABOUT_VISION = {
+  phrase: "WIN OR WOW",
+
+  desc: "승리를 넘어 팬에게 감동을 선물하는 구단",
+
+  team: "혼연일체 · One Team, One Body",
+
+  values: ["팬 우선", "도전", "상생", "신뢰"],
+}
 
 export const ABOUT_SECTIONS = [
   {
@@ -24,26 +35,24 @@ export const ABOUT_SECTIONS = [
       "지역 팬들의 뜨거운 응원과 함께 성장하며 한국 프로야구의 역사와 늘 같은 자리에서 걸어왔습니다.",
     ],
   },
+]
 
-  {
-    title: "구단 가치",
+export const ABOUT_SHORTCUTS = [
+  { icon: "🦁", label: "구단 앰블럼", path: "/all/emblem" },
 
-    paragraphs: [
-      "라이온즈는 팬과 함께하는 구단, 끊임없이 도전하는 구단, 지역과 상생하는 구단을 지향합니다.",
-    ],
+  { icon: "🔤", label: "구단 로고", path: "/all/logo" },
 
-    chips: ["팬 우선", "도전", "상생", "신뢰"],
-  },
+  { icon: "🐾", label: "구단 마스코트", path: "/all/mascot" },
 
-  {
-    title: "경영 철학",
+  { icon: "📅", label: "구단 연혁", path: "/all/history" },
 
-    paragraphs: [
-      "투명하고 책임 있는 경영으로 팬의 신뢰를 얻고, 선수단이 최고의 경기력을 발휘할 수 있는 환경을 만듭니다.",
+  { icon: "🧢", label: "역대 감독", path: "/all/past-managers" },
 
-      "경기장 안팎에서 팬이 즐거운 구단, 지역 사회에 기여하는 구단이 되겠습니다.",
-    ],
-  },
+  { icon: "⚾", label: "선수단 소개", path: "/all/players" },
+
+  { icon: "📣", label: "응원단 소개", path: "/all/cheer-squad" },
+
+  { icon: "🏟", label: "경산볼파크", path: "/all/gyeongsan-park" },
 ]
 
 // 059-SL-AL-03 구단 앰블럼 (출처: 구단 홈페이지 엠블럼 캐릭터 > 엠블럼)

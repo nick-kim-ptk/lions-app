@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useLocation } from "react-router-dom"
 
-import { PH } from "@/components/Placeholder"
+import { PH, PHImage } from "@/components/Placeholder"
 
 import { Header } from "@/components/Layout"
 
@@ -319,9 +319,12 @@ export function StadiumScreen() {
 
       {/* 구장 소개 */}
       {tab === 0 && (
-        <div className="flex flex-col gap-0 pb-4">
-          <PH className="w-full h-56 rounded-none" />
-          <div className="px-4 py-5 flex flex-col gap-4">
+        <div className="pb-4">
+          <PHImage
+            className="h-56"
+            label="구장 대표 이미지 (팔각 다이아몬드 전경)"
+          />
+          <div className="px-4 py-5 flex flex-col gap-5">
             <div className="flex flex-col gap-1">
               <p className="text-[11px] font-semibold text-[#1B5BF0] tracking-wider uppercase">
                 Samsung Lions Park
@@ -330,53 +333,104 @@ export function StadiumScreen() {
                 대구삼성라이온즈파크
               </h2>
             </div>
-            <p className="text-[13px] text-[#374151] leading-relaxed">
-              2016년 개장한 대구삼성라이온즈파크는 수용 인원 29,000명 규모의
-              현대식 돔형 야구장입니다. 삼성 라이온즈의 홈 구장으로, 최첨단
-              시설과 팬 친화적인 환경을 갖추고 있습니다.
-            </p>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-2 text-[13px] text-[#374151] leading-relaxed">
+              <p>
+                삼성라이온즈파크는 국내 최초의 팔각 다이아몬드 형태로 설계된
+                야구장입니다.
+              </p>
+              <p>
+                최고의 전문성을 갖춘 Professional Park, 관중과 최강구단을 위한
+                차별화된 Different Park, 자연과 시민이 함께 공존하는 친환경 Eco
+                Park를 지향하는 야구장입니다.
+              </p>
+            </div>
+
+            {/* 구장 정보 */}
+            <div className="bg-white rounded-2xl border border-[#DDE1EC] divide-y divide-[#EEF0F6]">
               {[
-                { label: "개장", value: "2016년 3월" },
-
-                { label: "수용 인원", value: "29,000명" },
-
-                { label: "구장 형태", value: "개방형 자연잔디" },
-
-                { label: "위치", value: "대구광역시 수성구" },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="bg-white rounded-2xl border border-[#DDE1EC] p-3 flex flex-col gap-1"
-                >
-                  <p className="text-[11px] text-[#9CA3AF]">{item.label}</p>
-                  <p className="text-[14px] font-bold text-[#111827]">
-                    {item.value}
-                  </p>
+                { label: "위치", value: "대구광역시 수성구 야구전설로 1" },
+                { label: "대지면적", value: "151,379㎡ (45,792평)" },
+                { label: "연면적", value: "46,943㎡ (14,200평)" },
+                { label: "수용인원", value: "24,000명" },
+                { label: "개장연도", value: "2016년" },
+                { label: "펜스", value: "좌우측펜스 99m, 중앙펜스 122m" },
+              ].map((row) => (
+                <div key={row.label} className="flex gap-3 px-4 py-3 text-[13px]">
+                  <span className="w-16 shrink-0 font-semibold text-[#6B7280]">
+                    {row.label}
+                  </span>
+                  <span className="text-[#111827]">{row.value}</span>
                 </div>
               ))}
             </div>
-            <PH className="w-full h-44 rounded-2xl" />
-            <div className="flex flex-col gap-2">
+
+            {/* 구장 특징 */}
+            <div className="flex flex-col gap-3">
               <p className="text-[15px] font-bold text-[#0E1A40]">구장 특징</p>
-              <ul className="flex flex-col gap-2 text-[13px] text-[#374151]">
+              <div className="grid grid-cols-2 gap-3">
                 {[
-                  "내·외야를 아우르는 파노라믹 관람 시야",
-
-                  "1루·3루 프리미엄 테이블석과 루프탑 전망 구역",
-
-                  "외야 천연잔디 피크닉존 및 어린이 놀이공간",
-
-                  "삼성 라이온즈 역사관 및 기념품 전시 공간",
-
-                  "전 좌석 USB 충전 포트 및 무료 Wi-Fi 제공",
-                ].map((item, i) => (
-                  <li key={i} className="flex gap-2">
-                    <span className="text-[#1B5BF0] font-bold">·</span>
-                    {item}
-                  </li>
+                  {
+                    tag: "Octagon",
+                    title: "팔각 다이아몬드",
+                    desc: "국내 최초의 팔각 다이아몬드 형태로 설계",
+                    color: "#0E1A40",
+                  },
+                  {
+                    tag: "Professional",
+                    title: "Professional Park",
+                    desc: "최고의 전문성을 갖춘 야구장",
+                    color: "#1B5BF0",
+                  },
+                  {
+                    tag: "Different",
+                    title: "Different Park",
+                    desc: "관중과 최강구단을 위한 차별화된 야구장",
+                    color: "#7C3AED",
+                  },
+                  {
+                    tag: "Eco",
+                    title: "Eco Park",
+                    desc: "자연과 시민이 함께 공존하는 친환경 야구장",
+                    color: "#16A34A",
+                  },
+                ].map((f) => (
+                  <div
+                    key={f.tag}
+                    className="rounded-2xl p-4 flex flex-col gap-2 min-h-[132px] text-white"
+                    style={{ background: f.color }}
+                  >
+                    <span className="text-[10px] font-semibold tracking-wider uppercase text-white/70">
+                      {f.tag}
+                    </span>
+                    <p className="text-[15px] font-black leading-tight">
+                      {f.title}
+                    </p>
+                    <p className="text-[12px] leading-snug text-white/85">
+                      {f.desc}
+                    </p>
+                  </div>
                 ))}
-              </ul>
+              </div>
+            </div>
+
+            {/* 구장 구조 */}
+            <div className="flex flex-col gap-2">
+              <p className="text-[15px] font-bold text-[#0E1A40]">구장 구조</p>
+              <PHImage
+                className="h-52"
+                rounded="rounded-2xl"
+                label="구장 구조도 (층별·구역별 시설 배치, 확대 가능)"
+              />
+            </div>
+
+            {/* 피난 안내도 */}
+            <div className="flex flex-col gap-2">
+              <p className="text-[15px] font-bold text-[#0E1A40]">피난 안내도</p>
+              <PHImage
+                className="h-52"
+                rounded="rounded-2xl"
+                label="피난 안내도 (비상구·대피 경로, 확대 가능)"
+              />
             </div>
           </div>
         </div>

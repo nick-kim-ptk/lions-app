@@ -5,6 +5,7 @@ import { PH, PHImage } from "@/components/Placeholder"
 import { FloorMap } from "@/components/FloorMap"
 import { FacilityTab } from "./FacilityTab"
 import { SeatTab } from "./SeatTab"
+import { ParkingTab } from "./ParkingTab"
 import { TransitTab } from "./TransitTab"
 
 import { Header } from "@/components/Layout"
@@ -344,40 +345,7 @@ export function StadiumScreen() {
       {tab === 4 && <TransitTab />}
 
       {/* 주차 */}
-      {tab === 5 && (
-        <div className="px-4 py-4 flex flex-col gap-4">
-          <PH className="w-full h-52 rounded-2xl" />
-          <div className="bg-white rounded-2xl border border-[#DDE1EC] p-4 flex flex-col gap-3">
-            <p className="text-[15px] font-bold text-[#0E1A40]">주차 안내</p>
-            <div className="flex flex-col gap-2 text-[13px] text-[#374151]">
-              <div className="flex gap-2">
-                <span className="w-16 shrink-0 font-semibold text-[#374151]">
-                  주차 요금
-                </span>
-                <span>최초 30분 무료 / 이후 10분당 500원</span>
-              </div>
-              <div className="flex gap-2">
-                <span className="w-16 shrink-0 font-semibold text-[#374151]">
-                  운영 시간
-                </span>
-                <span>경기 시작 3시간 전 ~ 경기 종료 후 1시간</span>
-              </div>
-              <div className="flex gap-2">
-                <span className="w-16 shrink-0 font-semibold text-[#374151]">
-                  주차 대수
-                </span>
-                <span>본관 주차장 1,200대 / 외야 주차장 800대</span>
-              </div>
-            </div>
-          </div>
-          <div className="bg-[#FFF7ED] rounded-2xl border border-[#FED7AA] p-4">
-            <p className="text-[12px] text-[#EA580C] font-semibold">
-              ⚠️ 홈경기 당일은 주차장 혼잡이 예상됩니다. 대중교통 이용을
-              권장합니다.
-            </p>
-          </div>
-        </div>
-      )}
+      {tab === 5 && <ParkingTab />}
 
       {/* 편의시설 */}
       {tab === 2 && <FacilityTab onZoom={setZoom} />}

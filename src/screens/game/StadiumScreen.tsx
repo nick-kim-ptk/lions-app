@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom"
 import { PH, PHImage } from "@/components/Placeholder"
 import { FloorMap } from "@/components/FloorMap"
 import { FacilityTab } from "./FacilityTab"
+import { SeatTab } from "./SeatTab"
 
 import { Header } from "@/components/Layout"
 
@@ -406,69 +407,8 @@ export function StadiumScreen() {
       {/* 편의시설 */}
       {tab === 2 && <FacilityTab onZoom={setZoom} />}
 
-      {/* 좌석 배치 */}
-      {tab === 3 && (
-        <div className="px-4 py-4 flex flex-col gap-4">
-          <PH className="w-full h-64 rounded-2xl" />
-          <div className="flex flex-col gap-2">
-            {[
-              {
-                name: "테이블석",
-                color: "#7C3AED",
-                desc: "1루·3루 내야 프리미엄 좌석, 테이블 및 모니터 제공",
-                price: "75,000원~",
-              },
-
-              {
-                name: "프리미엄석",
-                color: "#1B5BF0",
-                desc: "1루·3루 내야 지정석, 넓은 시야 확보",
-                price: "45,000원~",
-              },
-
-              {
-                name: "내야 지정석",
-                color: "#0EA5E9",
-                desc: "1·3루 내야 일반 지정석",
-                price: "18,000원~",
-              },
-
-              {
-                name: "외야 블루석",
-                color: "#16A34A",
-                desc: "외야 응원 구역, 라이온즈 응원단과 함께",
-                price: "12,000원~",
-              },
-
-              {
-                name: "잔디석",
-                color: "#84CC16",
-                desc: "외야 잔디 위 돗자리 관람",
-                price: "8,000원~",
-              },
-            ].map((s, i) => (
-              <div
-                key={i}
-                className="bg-white rounded-2xl border border-[#DDE1EC] p-4 flex items-center gap-3"
-              >
-                <div
-                  className="w-3 h-3 rounded-full shrink-0"
-                  style={{ background: s.color }}
-                />
-                <div className="flex-1">
-                  <p className="text-[14px] font-bold text-[#111827]">
-                    {s.name}
-                  </p>
-                  <p className="text-[12px] text-[#6B7280]">{s.desc}</p>
-                </div>
-                <span className="text-[13px] font-semibold text-[#1B5BF0] shrink-0">
-                  {s.price}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* 좌석배치 */}
+      {tab === 3 && <SeatTab />}
 
       {/* 구장 소개 */}
       {tab === 0 && (

@@ -5,6 +5,7 @@ import seatMap from "@/assets/seat-map.jpg"
 import { SEAT_GEO, SEAT_MAP_SIZE } from "@/data/seatGeo"
 import {
   SEAT_GROUPS,
+  TIER_INTRO,
   SEAT_TIERS,
   SEAT_ZONES,
   type SeatGroup,
@@ -26,14 +27,14 @@ const ZOOMS = [1, 1.8, 2.6]
 
 // 013-SL-GM-08 좌석배치: 요금제 선택 · 좌석안내도(구역 클릭) · 구역별 요금 · 전체 요금표
 export function SeatTab() {
-  const [tier, setTier] = useState<SeatTier>("blue")
+  const [tier, setTier] = useState<SeatTier | null>(null)
   const [group, setGroup] = useState<SeatGroup | "전체">("전체")
   const [selId, setSelId] = useState<string | null>(null)
   const [zoom, setZoom] = useState(0)
   const [tableOpen, setTableOpen] = useState(false)
 
   const sel = SEAT_ZONES.find((z) => z.id === selId) ?? null
-  const tIdx = TIER_IDX[tier]
+  const tIdx = tier ? TIER_IDX[tier] : -1
   const chips = SEAT_ZONES.filter((z) => group === "전체" || z.group === group)
   // 스포트라이트: 선택한 구역, 없으면 선택한 층의 모든 구역
   const active = new Set(
@@ -45,7 +46,6 @@ export function SeatTab() {
   )
   const { w, h } = SEAT_MAP_SIZE
   const activeGeo = SEAT_GEO.filter(([id]) => active.has(id))
-  const tierInfo = SEAT_TIERS.find((t) => t.id === tier)!
 
   const pickGroup = (g: SeatGroup | "전체") => {
     setGroup(g)
@@ -96,38 +96,37 @@ export function SeatTab() {
       </div>
     ) : null
 
-  return (
-    <div className="py-4 flex flex-col gap-4">
-      {/* 요금제 선택 */}
-      <div className="px-4 flex flex-col gap-2">
-        <p className="text-[13px] font-bold text-[#0E1A40]">
-          3단계 입장 요금제
-        </p>
-        <div className="grid grid-cols-3 gap-2">
-          {SEAT_TIERS.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setTier(t.id)}
-              className={`rounded-xl border py-2 text-[13px] font-bold ${
-                tier === t.id
-                  ? "border-[#0E1A40] ring-1 ring-[#0E1A40]"
-                  : "border-[#DDE1EC]"
-              }`}
-              style={{
-                background: TIER_STYLE[t.id].bg,
-                color: TIER_STYLE[t.id].fg,
-              }}
+  // 입장 요금제 범례 (요금 표 아래): 누르면 해당 요금제 열을 강조
+  const tierLegend = (
+    <div className="rounded-xl border border-[#DDE1EC] bg-[#F8FAFF] p-3 flex flex-col gap-2">
+      <p className="text-[12px] font-bold text-[#0E1A40]">3단계 입장 요금제</p>
+      <div className="flex flex-col gap-1.5">
+        {SEAT_TIERS.map((t) => (
+          <button
+            key={t.id}
+            onClick={() => setTier(tier === t.id ? null : t.id)}
+            className="flex items-center gap-2 text-left"
+          >
+            <span
+              className="w-14 shrink-0 rounded-md border border-[#DDE1EC] py-0.5 text-center text-[11px] font-bold"
+              style={{ background: TIER_STYLE[t.id].bg, color: TIER_STYLE[t.id].fg }}
             >
               {t.name}
-            </button>
-          ))}
-        </div>
-        <p className="text-[12px] text-[#6B7280]">
-          <span className="font-semibold text-[#374151]">{tierInfo.name}</span>{" "}
-          · {tierInfo.days}
-        </p>
+            </span>
+            <span
+              className={`text-[12px] ${tier === t.id ? "font-bold text-[#0E1A40]" : "text-[#374151]"}`}
+            >
+              {t.days}
+            </span>
+          </button>
+        ))}
       </div>
+      <p className="text-[11px] leading-relaxed text-[#6B7280]">{TIER_INTRO}</p>
+    </div>
+  )
 
+  return (
+    <div className="py-4 flex flex-col gap-4">
       {/* 층 필터 */}
       <div
         className="flex gap-2 overflow-x-auto px-4"
@@ -154,6 +153,12 @@ export function SeatTab() {
           <div className="flex items-center justify-between">
             <p className="text-[15px] font-bold text-[#0E1A40]">좌석안내도</p>
             <div className="flex items-center gap-1">
+              <button
+                onClick={() => setTableOpen(true)}
+                className="mr-1 rounded-full border border-[#DDE1EC] bg-white px-3 py-1.5 text-[12px] font-semibold text-[#0E1A40]"
+              >
+                ⓘ 전체 요금표
+              </button>
               <button
                 onClick={() => setZoom((z) => Math.max(0, z - 1))}
                 disabled={zoom === 0}
@@ -275,16 +280,22 @@ export function SeatTab() {
                 </div>
                 {sel.prices ? (
                   <>
-                    <p className="text-[13px] text-[#374151]">
-                      {tierInfo.name} 요금{" "}
-                      <span className="text-[18px] font-black text-[#1B5BF0]">
-                        {sel.prices.map((p) => won(p.price[tIdx])).join(" / ")}
-                      </span>
-                    </p>
+                    <div className="flex items-center justify-between">
+                      <p className="text-[13px] font-bold text-[#0E1A40]">
+                        요금 <span className="font-normal text-[#9CA3AF]">(원)</span>
+                      </p>
+                      <button
+                        onClick={() => setTableOpen(true)}
+                        className="flex items-center gap-1 rounded-full bg-[#EBF0FF] px-2.5 py-1 text-[11px] font-semibold text-[#1B5BF0]"
+                      >
+                        ⓘ 전체 요금표
+                      </button>
+                    </div>
                     {priceTable(sel)}
                     <p className="text-[11px] text-[#9CA3AF]">
                       테이블·패밀리·캠핑존은 표기된 인원 기준 1구역 요금입니다.
                     </p>
+                    {tierLegend}
                   </>
                 ) : (
                   <p className="text-[13px] text-[#6B7280]">{sel.note}</p>
@@ -297,79 +308,79 @@ export function SeatTab() {
             )}
           </div>
 
-          {/* 전체 요금표 */}
-          <div className="px-4 lg:px-0">
-            <button
-              onClick={() => setTableOpen((o) => !o)}
-              className="w-full flex items-center justify-between rounded-2xl border border-[#DDE1EC] bg-white px-4 py-3 text-[14px] font-bold text-[#0E1A40]"
-            >
-              전체 요금표 ({tierInfo.name} 기준 강조)
-              <span className="text-[12px] text-[#9CA3AF]">
-                {tableOpen ? "접기 ▲" : "펼치기 ▼"}
-              </span>
-            </button>
-            {tableOpen && (
-              <div className="mt-2 overflow-hidden rounded-2xl border border-[#DDE1EC] bg-white">
-                <div className="grid grid-cols-[1fr_repeat(3,64px)] text-[11px] font-bold">
-                  <div className="bg-[#F3F4F6] px-3 py-2 text-[#6B7280]">
-                    구분
-                  </div>
-                  {SEAT_TIERS.map((t) => (
-                    <div
-                      key={t.id}
-                      className="px-1 py-2 text-center"
-                      style={{
-                        background: TIER_STYLE[t.id].bg,
-                        color: TIER_STYLE[t.id].fg,
-                      }}
-                    >
-                      {t.name}
-                    </div>
-                  ))}
-                </div>
-                {SEAT_ZONES.filter((z) => z.prices).map((z) =>
-                  z.prices!.map((p, i) => (
-                    <button
-                      key={z.id + i}
-                      onClick={() => {
-                        setGroup("전체")
-                        setSelId(z.id)
-                        window.scrollTo?.({ top: 0 })
-                      }}
-                      className="grid w-full grid-cols-[1fr_repeat(3,64px)] border-t border-[#EEF0F6] text-left text-[12px]"
-                    >
-                      <div className="px-3 py-2 text-[#374151] leading-snug">
-                        <span className="font-semibold">
-                          {i === 0 ? z.name : ""}
-                        </span>
-                        {p.label && (
-                          <span className="block text-[11px] text-[#9CA3AF]">
-                            {p.label}
-                          </span>
-                        )}
-                      </div>
-                      {p.price.map((v, ti) => (
-                        <div
-                          key={ti}
-                          className={`px-1 py-2 text-center ${ti === tIdx ? "font-bold text-[#0E1A40]" : "text-[#6B7280]"}`}
-                          style={{
-                            background: ti === tIdx ? TIER_STYLE[tier].hl : undefined,
-                          }}
-                        >
-                          {v.toLocaleString()}
-                        </div>
-                      ))}
-                    </button>
-                  )),
-                )}
-                <p className="border-t border-[#EEF0F6] px-3 py-2 text-[11px] text-[#9CA3AF]">
-                  단위: 원 · 스윗박스는 요금표에 없어 제외
-                </p>
-              </div>
-            )}
-          </div>
         </div>
       </div>
+
+      {/* 전체 요금표 모달 */}
+      {tableOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-end lg:items-center justify-center bg-black/60 lg:p-8"
+          onClick={() => setTableOpen(false)}
+        >
+          <div
+            className="flex max-h-[88vh] w-full lg:max-w-[720px] flex-col overflow-hidden rounded-t-3xl lg:rounded-3xl bg-white"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-5 py-4 border-b border-[#EEF0F6]">
+              <p className="text-[16px] font-black text-[#0E1A40]">전체 요금표</p>
+              <button
+                onClick={() => setTableOpen(false)}
+                aria-label="닫기"
+                className="w-8 h-8 rounded-full bg-[#F3F4F6] text-[16px] leading-none"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="overflow-y-auto">
+              <div className="grid grid-cols-[1fr_repeat(3,72px)] text-[12px] font-bold sticky top-0">
+                <div className="bg-[#F3F4F6] px-4 py-2.5 text-[#6B7280]">구분 (원)</div>
+                {SEAT_TIERS.map((t) => (
+                  <div
+                    key={t.id}
+                    className="px-1 py-2.5 text-center"
+                    style={{ background: TIER_STYLE[t.id].bg, color: TIER_STYLE[t.id].fg }}
+                  >
+                    {t.name}
+                  </div>
+                ))}
+              </div>
+              {SEAT_ZONES.filter((z) => z.prices).map((z) =>
+                z.prices!.map((p, i) => (
+                  <button
+                    key={z.id + i}
+                    onClick={() => {
+                      setGroup("전체")
+                      setSelId(z.id)
+                      setTableOpen(false)
+                    }}
+                    className="grid w-full grid-cols-[1fr_repeat(3,72px)] border-t border-[#EEF0F6] text-left text-[13px]"
+                  >
+                    <div className="px-4 py-2.5 text-[#374151] leading-snug">
+                      <span className="font-semibold">{i === 0 ? z.name : ""}</span>
+                      {p.label && (
+                        <span className="block text-[11px] text-[#9CA3AF]">{p.label}</span>
+                      )}
+                    </div>
+                    {p.price.map((v, ti) => (
+                      <div
+                        key={ti}
+                        className={`px-1 py-2.5 text-center ${ti === tIdx ? "font-bold text-[#0E1A40]" : "text-[#6B7280]"}`}
+                        style={{ background: ti === tIdx && tier ? TIER_STYLE[tier].hl : undefined }}
+                      >
+                        {v.toLocaleString()}
+                      </div>
+                    ))}
+                  </button>
+                )),
+              )}
+              <div className="border-t border-[#EEF0F6] p-4">{tierLegend}</div>
+              <p className="px-4 pb-4 text-[11px] text-[#9CA3AF]">
+                행을 누르면 해당 구역을 지도에서 확인합니다. 스윗박스는 요금표에 없어 제외했습니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -8,6 +8,9 @@ export const SEAT_TIERS: { id: SeatTier; name: string; days: string }[] = [
   { id: "blue", name: "블루", days: "토·공휴일, 이벤트 주말경기 등" },
 ]
 
+export const TIER_INTRO =
+  "팬들이 각자의 라이프스타일에 맞춰 가성비 있는 평일 직관이나 풍성한 주말 이벤트를 합리적으로 선택할 수 있도록, 직관의 문턱을 낮추고 선택권을 넓힌 상생 요금제입니다."
+
 export type SeatGroup = "5층" | "4층" | "3층" | "외야"
 
 export const SEAT_GROUPS: SeatGroup[] = ["5층", "4층", "3층", "외야"]

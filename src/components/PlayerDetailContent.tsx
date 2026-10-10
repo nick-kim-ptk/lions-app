@@ -359,7 +359,7 @@ export function PlayerDetailContent({
           )}
         </div>
 
-        {/* 선수 본인의 주요 기록 — 어드민 [구단 기록 관리]에서 대상이 이 선수로 등록된 기록 (달성일 내림차순) */}
+        {/* 선수 본인의 주요 기록 — 어드민 [기록 관리]에서 대상이 이 선수로 등록된 기록 (달성일 내림차순) */}
         <div>
           <PHSection label="주요 기록" right="" />
           {playerRecords.length > 0 ? (

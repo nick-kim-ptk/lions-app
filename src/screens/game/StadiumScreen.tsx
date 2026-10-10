@@ -5,6 +5,7 @@ import { PH, PHImage } from "@/components/Placeholder"
 import { FloorMap } from "@/components/FloorMap"
 import { FacilityTab } from "./FacilityTab"
 import { SeatTab } from "./SeatTab"
+import { TransitTab } from "./TransitTab"
 
 import { Header } from "@/components/Layout"
 
@@ -340,33 +341,7 @@ export function StadiumScreen() {
       )}
 
       {/* 교통 */}
-      {tab === 4 && (
-        <div className="px-4 py-4 flex flex-col gap-4">
-          <PH className="w-full h-52 rounded-2xl" />
-          <div className="bg-white rounded-2xl border border-[#DDE1EC] p-4 flex flex-col gap-3">
-            <p className="text-[15px] font-bold text-[#0E1A40]">대중교통</p>
-            <div className="flex flex-col gap-2 text-[13px] text-[#374151]">
-              <div className="flex gap-2">
-                <span className="w-12 shrink-0 font-semibold text-[#1B5BF0]">
-                  지하철
-                </span>
-                <span>
-                  1호선 아양교역 1번 출구 도보 10분 / 2호선 대구스타디움역 셔틀
-                  운행
-                </span>
-              </div>
-              <div className="flex gap-2">
-                <span className="w-12 shrink-0 font-semibold text-[#1B5BF0]">
-                  버스
-                </span>
-                <span>
-                  순환3(-1), 349, 509번 → 삼성라이온즈파크 정류장 하차
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {tab === 4 && <TransitTab />}
 
       {/* 주차 */}
       {tab === 5 && (

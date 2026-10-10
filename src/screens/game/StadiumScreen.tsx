@@ -2,6 +2,8 @@ import { useState } from "react"
 import { useLocation } from "react-router-dom"
 
 import { PH, PHImage } from "@/components/Placeholder"
+import { FloorMap } from "@/components/FloorMap"
+import { FacilityTab } from "./FacilityTab"
 
 import { Header } from "@/components/Layout"
 
@@ -33,29 +35,6 @@ function StoreRow({ st, onPick }: { st: FoodStore; onPick: () => void }) {
         <p className="text-[11px] text-[#9CA3AF] truncate">{st.zone}</p>
       </div>
     </button>
-  )
-}
-
-/** 층 평면도 자리 + (선택 시) 매장 위치 핀 */
-function FloorMap({
-  label,
-  pin,
-}: {
-  label: string
-  pin?: { x: number; y: number }
-}) {
-  return (
-    <div className="relative h-full w-full">
-      <PHImage className="h-full" rounded="rounded-2xl" label={label} />
-      {pin && (
-        <span
-          className="absolute -translate-x-1/2 -translate-y-full text-[28px] leading-none drop-shadow"
-          style={{ left: `${pin.x}%`, top: `${pin.y}%` }}
-        >
-          📍
-        </span>
-      )}
-    </div>
   )
 }
 
@@ -425,66 +404,7 @@ export function StadiumScreen() {
       )}
 
       {/* 편의시설 */}
-      {tab === 2 && (
-        <div className="px-4 py-4 flex flex-col gap-3">
-          {[
-            {
-              icon: "🏥",
-              name: "의무실",
-              desc: "1루 내야 1층, 응급처치 및 의료 지원",
-              hours: "경기일 상시 운영",
-            },
-
-            {
-              icon: "👶",
-              name: "수유실",
-              desc: "1루·3루 내야 각 1층, 기저귀 교환대 완비",
-              hours: "경기일 12:00~경기 종료",
-            },
-
-            {
-              icon: "♿",
-              name: "장애인석",
-              desc: "1루·3루 내야 전용 구역, 엘리베이터 연결",
-              hours: "상시 이용 가능",
-            },
-
-            {
-              icon: "🎒",
-              name: "물품보관소",
-              name2: "",
-              desc: "정문·3루 입구 각 1개소, 무료 이용",
-              hours: "경기일 12:00~경기 종료 후 30분",
-            },
-
-            {
-              icon: "🛍️",
-              name: "공식 굿즈샵",
-              desc: "정문 1층 및 외야 팝업스토어 운영",
-              hours: "경기일 12:00~22:00",
-            },
-
-            {
-              icon: "📸",
-              name: "포토존",
-              desc: "외야 잔디석 입구 및 1루 내야 홈플레이트 앞",
-              hours: "경기일 상시 운영",
-            },
-          ].map((f, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-2xl border border-[#DDE1EC] p-4 flex gap-3 items-start"
-            >
-              <span className="text-2xl">{f.icon}</span>
-              <div className="flex flex-col gap-0.5">
-                <p className="text-[14px] font-bold text-[#111827]">{f.name}</p>
-                <p className="text-[12px] text-[#6B7280]">{f.desc}</p>
-                <p className="text-[11px] text-[#9CA3AF]">{f.hours}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      {tab === 2 && <FacilityTab onZoom={setZoom} />}
 
       {/* 좌석 배치 */}
       {tab === 3 && (

@@ -134,25 +134,39 @@ export const MASCOT_FAMILY = [
 export const CATCHPHRASE = {
   season: "2026 SEASON",
 
-  phrase: "다시, 푸른 함성",
+  phrase: "WIN OR WOW",
 
-  sub: "ONE MORE ROAR",
+  sub: "2023 — 2026",
 
   desc: [
-    "올 시즌 라이온즈는 팬 여러분의 함성과 함께 다시 정상을 향해 달립니다.",
+    "경기를 이기거나(WIN), 팬들을 열광시키거나(WOW). 프로야구단으로서 승리도 중요하지만 한발 더 나아가 팬들에게 승리를 뛰어넘는 감동과 팬덤을 선물하겠다는 의미를 담고 있습니다.",
 
-    "경기장에서, 그리고 앱에서 함께 만드는 푸른 함성이 선수단의 가장 큰 힘입니다.",
+    "2023시즌에 처음 도입된 이후 팬들의 사랑을 받아 2026시즌까지 4시즌 연속 유지되고 있습니다.",
   ],
+
+  team: {
+    label: "선수단 슬로건",
+    phrase: "혼연일체",
+    sub: "One Team, One Body",
+  },
 }
 
-export const CATCHPHRASE_HISTORY = [
-  { year: "2025", phrase: "새로운 도약" },
+export const CATCHPHRASE_HISTORY: {
+  year: string
+  phrase: string
+  note?: string
+}[] = [
+  { year: "2026", phrase: "WIN OR WOW" },
 
-  { year: "2024", phrase: "푸른 사자의 질주" },
+  { year: "2025", phrase: "WIN OR WOW" },
 
-  { year: "2023", phrase: "Blue Roar" },
+  {
+    year: "2024",
+    phrase: "WIN OR WOW",
+    note: "가을야구: NOW OR NEVER (지금이 아니면 안 된다)",
+  },
 
-  { year: "2022", phrase: "다시 뛰는 심장" },
+  { year: "2023", phrase: "WIN OR WOW", note: "최초 도입" },
 ]
 
 // 064-SL-AL-08 경산볼파크

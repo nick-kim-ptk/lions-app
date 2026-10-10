@@ -30,6 +30,19 @@ export function CatchphraseScreen() {
             </p>
           ))}
         </div>
+        <div className="w-full flex items-center justify-between rounded-2xl border border-[#DDE1EC] bg-white px-4 py-3">
+          <span className="text-[12px] font-bold text-[#1B5BF0]">
+            {CATCHPHRASE.team.label}
+          </span>
+          <span className="text-right">
+            <span className="block text-[15px] font-black text-[#0E1A40]">
+              {CATCHPHRASE.team.phrase}
+            </span>
+            <span className="block text-[11px] text-[#9CA3AF]">
+              {CATCHPHRASE.team.sub}
+            </span>
+          </span>
+        </div>
         <div className="w-full flex flex-col gap-3">
           <p className="text-xs text-[#9CA3AF] font-medium text-left">
             역대 캐치프레이즈
@@ -42,8 +55,15 @@ export function CatchphraseScreen() {
               <span className="text-[12px] font-bold text-[#1B5BF0]">
                 {h.year}
               </span>
-              <span className="text-[13px] font-semibold text-[#111827]">
-                {h.phrase}
+              <span className="text-right">
+                <span className="block text-[13px] font-semibold text-[#111827]">
+                  {h.phrase}
+                </span>
+                {h.note && (
+                  <span className="block text-[11px] text-[#9CA3AF]">
+                    {h.note}
+                  </span>
+                )}
               </span>
             </div>
           ))}

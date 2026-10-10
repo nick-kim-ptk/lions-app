@@ -2,6 +2,8 @@ import { useState } from "react"
 
 import { Header } from "@/components/Layout"
 
+import { RecordCard } from "@/components/RecordCard"
+
 import { TEAM_RECORDS } from "@/data/game"
 
 import {
@@ -140,7 +142,9 @@ export function StatsScreen() {
   }
 
   // 선수 대상 기록은 선수 상세 페이지에서만 보여준다
-  const records = TEAM_RECORDS.filter((r) => r.target === "팀")
+  const records = TEAM_RECORDS.filter((r) => r.target === "팀").sort((a, b) =>
+    b.date.localeCompare(a.date),
+  )
 
   const batters = BATTERS.filter((p) => BATTER_STATS[p.id]).sort(
     (a, b) =>
@@ -303,46 +307,25 @@ export function StatsScreen() {
         </div>
       )}
 
-      {/* 팀 기록 — 구단 대기록. 카드가 스크롤하면서 위로 쌓인다 */}
+      {/* 팀 기록 — 구단 대기록. 모바일은 스크롤하면 카드가 위로 쌓이고, PC는 2열 */}
       {tab === 2 && (
-        <div className="px-4 pt-4 pb-10 lg:max-w-[560px] lg:mx-auto [--rec-top:68px] lg:[--rec-top:12px]">
-          <p className="mb-4 text-[12px] text-[#9CA3AF]">
-            삼성 라이온즈 구단 대기록
-          </p>
+        <div className="px-4 pt-4 pb-10 [--rec-top:68px]">
           {records.length === 0 && (
             <p className="py-16 text-center text-[13px] text-[#9CA3AF]">
               등록된 구단 기록이 없습니다.
             </p>
           )}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:gap-5">
             {records.map((r, i) => (
               <div
                 key={i}
-                className="sticky rounded-3xl overflow-hidden shadow-[0_8px_24px_rgba(14,47,128,0.28)] text-white text-center bg-gradient-to-b from-[#1B5BF0] to-[#0A1A4E]"
-                style={{ top: `calc(var(--rec-top) + ${i * 10}px)`, zIndex: i + 1 }}
+                className="sticky lg:static"
+                style={{
+                  top: `calc(var(--rec-top) + ${i * 10}px)`,
+                  zIndex: i + 1,
+                }}
               >
-                <div className="px-6 pt-5 pb-7 min-h-[300px] flex flex-col items-center">
-                  <span className="text-[11px] font-bold tracking-wide text-[#0A1A4E] bg-[#FFD76A] rounded-full px-3 py-1">
-                    {r.badge}
-                  </span>
-                  <span className="mt-4 text-[14px] font-semibold text-[#C8D8FF]">
-                    삼성 라이온즈
-                  </span>
-
-                  {/* 기록명 — 카드 중앙 */}
-                  <div className="flex-1 flex items-center justify-center py-5">
-                    <p className="text-[22px] font-black leading-snug break-keep">
-                      {r.record}
-                    </p>
-                  </div>
-
-                  <p className="text-[13px] font-semibold text-[#FFD76A]">
-                    {r.date}
-                  </p>
-                  <p className="mt-2 text-[12px] leading-relaxed text-white/70 break-keep">
-                    {r.desc}
-                  </p>
-                </div>
+                <RecordCard r={r} />
               </div>
             ))}
           </div>

@@ -6,6 +6,8 @@ import { CaseSelect } from "./CaseSelect"
 
 import { PlayerStatusBadge } from "./PlayerStatusBadge"
 
+import { RecordCard } from "./RecordCard"
+
 import { TEAM_RECORDS } from "@/data/game"
 
 import {
@@ -25,6 +27,16 @@ const STATUS_CASES: StatusCase[] = ["1군", "2군", "부상", "신입단", "군�
 const DEFAULT_INJURY = "어깨 통증"
 
 const DEFAULT_PLAYER_ID = "lee-jae-hyun"
+
+/** 와이어프레임: 데이터가 없어도 영역은 항상 보여준다 */
+
+function EmptyBox({ text }: { text: string }) {
+  return (
+    <div className="bg-[#FFFFFF] rounded-2xl border border-dashed border-[#DDE1EC] px-4 py-5 text-center text-[12px] text-[#9CA3AF]">
+      {text}
+    </div>
+  )
+}
 
 export function PlayerDetailContent({
   onClose,
@@ -131,6 +143,10 @@ export function PlayerDetailContent({
         : []
 
   const pastStats = profile?.history ?? []
+
+  const playerRecords = TEAM_RECORDS.filter(
+    (r) => r.playerId === base.id,
+  ).sort((a, b) => b.date.localeCompare(a.date))
 
   return (
     <div className="bg-[#F5F7FB] min-h-full">
@@ -278,9 +294,11 @@ export function PlayerDetailContent({
           </div>
         </div>
 
-        {currentStats.length > 0 && kind === "일반" && (
-          <div>
-            <PHSection label="2026 시즌 기록" right="" />
+        <div>
+          <PHSection label="2026 시즌 기록" right="" />
+          {currentStats.length === 0 || kind !== "일반" ? (
+            <EmptyBox text="시즌 기록이 없습니다." />
+          ) : (
             <div className="grid grid-cols-3 gap-3">
               {currentStats.map((s) => (
                 <div
@@ -294,12 +312,14 @@ export function PlayerDetailContent({
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
-        {pastStats.length > 0 && kind === "일반" && (
-          <div>
-            <PHSection label="연도별 기록" right="" />
+        <div>
+          <PHSection label="연도별 기록" right="" />
+          {pastStats.length === 0 || kind !== "일반" ? (
+            <EmptyBox text="연도별 기록이 없습니다." />
+          ) : (
             <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] overflow-hidden">
               <div className="flex bg-[#E8EBF4]">
                 {["시즌", "타율", "HR", "RBI", "안타"].map((h) => (
@@ -336,40 +356,27 @@ export function PlayerDetailContent({
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
-        {/* 구단 기록 — 어드민 [구단 기록 관리]에서 대상이 이 선수로 등록된 기록 */}
-        {TEAM_RECORDS.some((r) => r.playerId === playerId) && (
-          <div>
-            <PHSection label="구단 기록" right="" />
+        {/* 구단 기록 — 어드민 [구단 기록 관리]에서 대상이 이 선수로 등록된 기록 (달성일 내림차순) */}
+        <div>
+          <PHSection label="구단 기록" right="" />
+          {playerRecords.length > 0 ? (
             <div className="flex gap-3 overflow-x-auto pb-1">
-              {TEAM_RECORDS.filter((r) => r.playerId === playerId).map(
-                (r, i) => (
-                  <div
-                    key={i}
-                    className="shrink-0 w-[280px] rounded-3xl text-white text-center bg-gradient-to-b from-[#1B5BF0] to-[#0A1A4E] px-5 pt-4 pb-5 min-h-[230px] flex flex-col items-center"
-                  >
-                    <span className="text-[10px] font-bold text-[#0A1A4E] bg-[#FFD76A] rounded-full px-2.5 py-0.5">
-                      {r.badge}
-                    </span>
-                    <div className="flex-1 flex items-center justify-center py-3">
-                      <p className="text-[18px] font-black leading-snug break-keep">
-                        {r.record}
-                      </p>
-                    </div>
-                    <p className="text-[12px] font-semibold text-[#FFD76A]">
-                      {r.date}
-                    </p>
-                    <p className="mt-1.5 text-[11px] leading-relaxed text-white/70 break-keep">
-                      {r.desc}
-                    </p>
-                  </div>
-                ),
-              )}
+              {playerRecords.map((r, i) => (
+                <RecordCard
+                  key={i}
+                  r={r}
+                  size="sm"
+                  className="shrink-0 w-[240px]"
+                />
+              ))}
             </div>
-          </div>
-        )}
+          ) : (
+            <EmptyBox text="등록된 구단 기록이 없습니다." />
+          )}
+        </div>
 
         <div>
           <PHSection label="등장곡" right="" />

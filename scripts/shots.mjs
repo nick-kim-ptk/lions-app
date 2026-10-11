@@ -48,7 +48,15 @@ const HEIGHT = Number(opt("height", 844))
 
 const WAIT = Number(opt("wait", 600))
 
-const MAX_H = 16000 // Chromium 캡처 높이 한계(16384) 아래
+// 재현 가능한 캡처: 시각·난수 고정 (내용이 같으면 같은 PNG)
+const NOW = new Date(opt("now", "2026-10-01T10:00:00+09:00"))
+
+const SEED = Number(opt("seed", 20261001))
+
+const SCALE = Number(opt("scale", 2))
+
+// Chromium 캡처 한계(16384 장치 px) 아래: 높이 × 배율 ≤ 16000
+const MAX_H = Math.floor(16000 / SCALE)
 
 // ── 정적 서버 (dist 를 루트로 서빙) ──
 
@@ -131,6 +139,8 @@ async function loadScreens() {
 // 스크롤 영역 전체가 보이도록 뷰포트 높이를 늘려 캡처
 
 async function snap(page, file) {
+  await page.evaluate(() => document.fonts.ready)
+
   await page.waitForTimeout(WAIT)
 
   const h = await page.evaluate((vh) => {
@@ -158,10 +168,64 @@ async function snap(page, file) {
     await page.waitForTimeout(300)
   }
 
-  await page.screenshot({ path: file })
+  await page.screenshot({ path: file, animations: "disabled", caret: "hide" })
 
   if (target !== HEIGHT)
     await page.setViewportSize({ width: WIDTH, height: HEIGHT })
+}
+
+// 컨텍스트 공통 고정: 시계(멈춤) + Math.random 시드 + crypto.randomUUID 대체
+async function freeze(context) {
+  await context.clock.install({ time: NOW })
+
+  await context.clock.pauseAt(new Date(NOW.getTime() + 1000))
+
+  await context.addInitScript((seed) => {
+    let a = seed >>> 0
+
+    Math.random = () => {
+      a = (a + 0x6d2b79f5) >>> 0
+
+      let t = a
+
+      t = Math.imul(t ^ (t >>> 15), t | 1)
+
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
+
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+    }
+
+    // 부드러운 스크롤은 캡처 시점에 따라 위치가 달라지므로 즉시 이동으로 고정
+    const instant = (orig) =>
+      function (arg, ...rest) {
+        if (arg && typeof arg === "object" && "behavior" in arg)
+          arg = { ...arg, behavior: "instant" }
+
+        return orig.call(this, arg, ...rest)
+      }
+
+    for (const k of ["scrollIntoView", "scrollTo", "scrollBy"])
+      Element.prototype[k] = instant(Element.prototype[k])
+
+    window.scrollTo = instant(window.scrollTo)
+
+    window.scrollBy = instant(window.scrollBy)
+
+    // 스크롤바 폭·모서리 픽셀 차이 제거
+    document.addEventListener("DOMContentLoaded", () => {
+      const st = document.createElement("style")
+
+      st.textContent = "*::-webkit-scrollbar{display:none}*{scrollbar-width:none}"
+
+      document.head.appendChild(st)
+    })
+
+    let n = 0
+
+    if (window.crypto && crypto.randomUUID)
+      crypto.randomUUID = () =>
+        `00000000-0000-4000-8000-${String(++n).padStart(12, "0")}`
+  }, SEED)
 }
 
 async function main() {
@@ -187,14 +251,18 @@ async function main() {
   for (const s of list) {
     const context = await browser.newContext({
       viewport: { width: WIDTH, height: HEIGHT },
-      deviceScaleFactor: 1,
+      deviceScaleFactor: SCALE,
       locale: "ko-KR",
     })
+
+    await freeze(context)
 
     const page = await context.newPage()
 
     try {
       await page.goto(`${base}#${s.path}`, { waitUntil: "networkidle" })
+
+      await page.evaluate(() => document.fonts.ready)
 
       // 홈 첫 진입 공지 팝업은 닫고 찍는다 (003 팝업 화면은 그대로)
       if (s.path === "/home") {

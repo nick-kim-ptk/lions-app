@@ -18,6 +18,19 @@ jobs:
         with: { node-version: 22, cache: pnpm }
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
+      # 화면 캡처 → dist/shots/{화면ID}.png + index.json (실패해도 배포는 계속)
+      - name: Install Playwright
+        id: pw
+        continue-on-error: true
+        working-directory: scripts
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Capture screens
+        if: steps.pw.outcome == 'success'
+        continue-on-error: true
+        working-directory: scripts
+        run: node shots.mjs --dist ../dist --out ../dist/shots
       - uses: actions/upload-pages-artifact@v3
         with: { path: dist }
   deploy:

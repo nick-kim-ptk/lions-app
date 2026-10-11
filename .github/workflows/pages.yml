@@ -32,6 +32,12 @@ jobs:
         continue-on-error: true
         working-directory: scripts
         run: node shots.mjs --dist ../dist --out ../dist/shots
+      # 구역·케이스 단위 캡처 → dist/shots/cases/*.png + cases.json (대상은 capture-cases.json, 실패해도 배포는 계속)
+      - name: Capture cases
+        if: steps.pw.outcome == 'success'
+        continue-on-error: true
+        working-directory: scripts
+        run: node shots-cases.mjs --dist ../dist --out ../dist/shots
       - uses: actions/upload-pages-artifact@v3
         with: { path: dist }
   deploy:

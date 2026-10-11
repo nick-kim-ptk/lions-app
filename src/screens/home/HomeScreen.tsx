@@ -287,7 +287,7 @@ export function HomeScreen() {
 
       {/* Today's Match Carousel */}
       <GameCaseBar />
-      <div className="pb-4 pt-2">
+      <div data-cap="today-game" className="pb-4 pt-2">
         <div className="flex items-center justify-between px-4 mb-3">
           <span className="text-sm font-bold text-[#111827]">오늘의 경기</span>
           {phase === "시범경기" && (

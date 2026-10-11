@@ -82,7 +82,7 @@ export function GameDashboardScreen() {
       <GameStateNotice context="game" />
 
       {/* Match summary header & Chips */}
-      <div className="px-4 pt-3 pb-1">
+      <div data-cap="game-today" className="px-4 pt-3 pb-1">
         <div className="flex items-center justify-between mb-2">
           <div className="flex flex-col gap-0.5">
             <div className="flex items-center gap-2">
@@ -112,6 +112,7 @@ export function GameDashboardScreen() {
               ] as const
             }
             onChange={setMatchType}
+            group="경기 유형"
           />
         </div>
 

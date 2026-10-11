@@ -173,6 +173,7 @@ export function MyHomeScreen() {
           <CaseSelect
             variant="dark"
             value={"로그인 상태" as "로그인 상태" | "비로그인"}
+            group="로그인 상태"
             options={["로그인 상태", { value: "비로그인", label: "비로그인" }]}
             onChange={(v) => {
               if (v === "비로그인") navigate("/login")
@@ -181,6 +182,7 @@ export function MyHomeScreen() {
           <CaseSelect
             variant="dark"
             value={memberCase}
+            group="멤버십 상태"
             options={["멤버십 모집 전", "멤버십 모집 중", "가입 완료"] as const}
             onChange={(v) => {
               setMemberCase(v)
@@ -296,6 +298,7 @@ export function MyHomeScreen() {
 
       {/* Membership card — carousel (9:16 세로형) */}
       <div
+        data-cap="membership-card"
         className="mb-4 overflow-hidden"
         onTouchStart={(e) => {
           touchStartX.current = e.touches[0].clientX

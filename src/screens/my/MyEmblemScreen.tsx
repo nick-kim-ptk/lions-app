@@ -81,6 +81,7 @@ export function MyEmblemScreen() {
             value={commCase}
             options={COMMEMORATIVE_CASES}
             onChange={setCommCase}
+            group="기념 앰블럼 상태"
           />
         </div>
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] p-4 flex items-center gap-3">
@@ -125,7 +126,7 @@ export function MyEmblemScreen() {
         </div>
       </div>
 
-      <div className="px-4">
+      <div data-cap="emblem-list" className="px-4">
         <div className="flex items-center justify-between mb-3">
           <span className="text-[15px] font-bold text-[#111827]">
             획득 앰블럼

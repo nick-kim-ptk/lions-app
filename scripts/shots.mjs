@@ -6,6 +6,7 @@
  * 결과
  *   {화면ID}.png    폭 390 풀페이지 (안쪽 스크롤 영역까지 펼쳐서 한 장)
  *   index.json      [{ id, file, capturedAt, sha }]  (화면 ID 순)
+ *   (구역·케이스 단위 캡처는 shots-cases.mjs)
  *
  * 화면 목록은 src/data/overview.ts 의 SCREENS 입니다. 같은 경로를 쓰는 팝업(variant) 화면은
  * 별도 라우트가 없어 제외합니다. 일부 화면이 실패해도 나머지는 계속 캡처하고 종료 코드는 0 입니다.
@@ -27,36 +28,36 @@ const here = path.dirname(fileURLToPath(import.meta.url))
 
 const argv = process.argv.slice(2)
 
-const opt = (name, def) => {
+export const opt = (name, def) => {
   const i = argv.indexOf(`--${name}`)
 
   return i >= 0 ? argv[i + 1] : def
 }
 
-const DIST = path.resolve(here, opt("dist", "../dist"))
+export const DIST = path.resolve(here, opt("dist", "../dist"))
 
-const OUT = path.resolve(here, opt("out", "../dist/shots"))
+export const OUT = path.resolve(here, opt("out", "../dist/shots"))
 
 const ONLY = opt("only", "")
   .split(",")
   .map((s) => s.trim())
   .filter(Boolean)
 
-const WIDTH = Number(opt("width", 390))
+export const WIDTH = Number(opt("width", 390))
 
-const HEIGHT = Number(opt("height", 844))
+export const HEIGHT = Number(opt("height", 844))
 
-const WAIT = Number(opt("wait", 600))
+export const WAIT = Number(opt("wait", 600))
 
 // 재현 가능한 캡처: 시각·난수 고정 (내용이 같으면 같은 PNG)
 const NOW = new Date(opt("now", "2026-10-01T10:00:00+09:00"))
 
 const SEED = Number(opt("seed", 20261001))
 
-const SCALE = Number(opt("scale", 2))
+export const SCALE = Number(opt("scale", 2))
 
 // Chromium 캡처 한계(16384 장치 px) 아래: 높이 × 배율 ≤ 16000
-const MAX_H = Math.floor(16000 / SCALE)
+export const MAX_H = Math.floor(16000 / SCALE)
 
 // ── 정적 서버 (dist 를 루트로 서빙) ──
 
@@ -75,7 +76,7 @@ const MIME = {
   ".ico": "image/x-icon",
 }
 
-function serve(dir) {
+export function serve(dir) {
   const server = http.createServer((req, res) => {
     const url = decodeURIComponent((req.url ?? "/").split("?")[0])
 
@@ -175,7 +176,7 @@ async function snap(page, file) {
 }
 
 // 컨텍스트 공통 고정: 시계(멈춤) + Math.random 시드 + crypto.randomUUID 대체
-async function freeze(context) {
+export async function freeze(context) {
   await context.clock.install({ time: NOW })
 
   await context.clock.pauseAt(new Date(NOW.getTime() + 1000))
@@ -313,8 +314,14 @@ async function main() {
   for (const k of skipped) console.log(`  제외: ${k}`)
 }
 
-main().catch((e) => {
-  console.error(e)
+// 직접 실행했을 때만 캡처를 돈다 (shots-cases.mjs 가 serve·freeze 를 가져다 쓸 수 있게)
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href
+) {
+  main().catch((e) => {
+    console.error(e)
 
-  process.exit(1)
-})
+    process.exit(1)
+  })
+}

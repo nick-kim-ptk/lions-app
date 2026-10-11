@@ -29,12 +29,14 @@ export function GameCaseBar() {
           value={phase}
           options={SEASON_PHASES}
           onChange={setSeasonPhase}
+          group="시즌 단계"
         />
         <CaseSelect
           value={match}
           options={MATCH_STATES}
           onChange={setMatchState}
           disabled={isNoGamePhase(phase)}
+          group="경기 상태"
         />
       </div>
     </div>

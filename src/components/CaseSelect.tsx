@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
+
+import { nextCaseId, removeCase, upsertCase } from "@/lib/caseRegistry"
 
 type Option<T extends string> = T | { value: T; label: string }
 
@@ -21,6 +23,8 @@ export function CaseSelect<T extends string>({
   className = "",
 
   disabled = false,
+
+  group,
 }: {
   value: T
 
@@ -35,8 +39,15 @@ export function CaseSelect<T extends string>({
   className?: string
 
   disabled?: boolean
+
+  /** 케이스 그룹명(한글) — window.__wfCase.list() 에 이 이름으로 나온다. 생략하면 '케이스 N' */
+  group?: string
 }) {
   const [open, setOpen] = useState(false)
+
+  const idRef = useRef(0)
+
+  if (!idRef.current) idRef.current = nextCaseId()
 
   const ref = useRef<HTMLDivElement>(null)
 
@@ -45,6 +56,23 @@ export function CaseSelect<T extends string>({
   )
 
   const current = items.find((o) => o.value === value) ?? items[0]
+
+  // 코드로 케이스를 바꾸는 창구(window.__wfCase)에 현재 상태를 알린다
+  useLayoutEffect(() => {
+    upsertCase(idRef.current, {
+      group,
+      options: items.map((o) => ({ value: o.value, label: o.label })),
+      value: current.value,
+      disabled,
+      onChange: (v) => onChange(v as T),
+    })
+  })
+
+  useEffect(() => {
+    const id = idRef.current
+
+    return () => removeCase(id)
+  }, [])
 
   useEffect(() => {
     if (!open) return
@@ -70,7 +98,11 @@ export function CaseSelect<T extends string>({
       : "bg-[#E8EBF4] text-[#0E1A40]"
 
   return (
-    <div ref={ref} className={`relative inline-block ${className}`}>
+    <div
+      ref={ref}
+      data-wf-case=""
+      className={`relative inline-block ${className}`}
+    >
       <button
         type="button"
         disabled={disabled}

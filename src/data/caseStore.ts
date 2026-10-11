@@ -128,6 +128,10 @@ export const setMatchState = (match: MatchState) => {
   emit()
 }
 
+/** 현재 전역 케이스 (React 밖에서 읽을 때 — window.__wfCase 용) */
+
+export const getCaseState = () => state
+
 export const useCaseState = () => useSyncExternalStore(subscribe, () => state)
 
 const STATUS_OF: Record<MatchState, GameStatus> = {

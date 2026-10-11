@@ -7,9 +7,11 @@ export type ListCase = "목록 있음" | "목록 없음"
 export function ListCaseBar({
   value,
   onChange,
+  group = "목록 상태",
 }: {
   value: ListCase
   onChange: (v: ListCase) => void
+  group?: string
 }) {
   return (
     <div className="flex justify-end px-4 pt-3">
@@ -17,6 +19,7 @@ export function ListCaseBar({
         value={value}
         options={["목록 있음", "목록 없음"] as const}
         onChange={onChange}
+        group={group}
       />
     </div>
   )

@@ -139,12 +139,13 @@ export function TicketScreen() {
           value={ticketCase}
           options={["시즌 중", "시즌 종료"] as const}
           onChange={setTicketCase}
+          group="시즌 구분"
         />
       </div>
 
       {/* 예매 오픈 D-5분 카운트다운 바 */}
       {openingGame && heroOpp && (
-        <div className="px-4 pt-3">
+        <div data-cap="server-timer" className="px-4 pt-3">
           <div
             className="relative overflow-hidden rounded-2xl px-4 flex items-center gap-3"
             style={{
@@ -222,7 +223,7 @@ export function TicketScreen() {
 
       {/* Hero Banner */}
       {heroGame && heroOpp && (
-        <div className="px-4 pt-3 pb-4">
+        <div data-cap="today-ticket" className="px-4 pt-3 pb-4">
           <div className="relative w-full rounded-3xl overflow-hidden bg-gradient-to-br from-[#1B5BF0] to-[#0E2F80]">
             <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/5" />
             <div className="absolute right-10 bottom-0 w-24 h-24 rounded-full bg-white/5" />

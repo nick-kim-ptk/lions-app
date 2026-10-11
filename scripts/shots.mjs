@@ -5,13 +5,15 @@
  *
  * 결과
  *   {화면ID}.png    폭 390 풀페이지 (안쪽 스크롤 영역까지 펼쳐서 한 장)
- *   index.json      [{ id, file, capturedAt }]  (화면 ID 순)
+ *   index.json      [{ id, file, capturedAt, sha }]  (화면 ID 순)
  *
  * 화면 목록은 src/data/overview.ts 의 SCREENS 입니다. 같은 경로를 쓰는 팝업(variant) 화면은
  * 별도 라우트가 없어 제외합니다. 일부 화면이 실패해도 나머지는 계속 캡처하고 종료 코드는 0 입니다.
  */
 
 import { chromium } from "playwright"
+
+import crypto from "node:crypto"
 
 import fs from "node:fs"
 
@@ -223,6 +225,13 @@ async function main() {
   server.close()
 
   index.sort((a, b) => a.id.localeCompare(b.id))
+
+  // 파일 내용의 sha256 (변경 감지용)
+  for (const e of index)
+    e.sha = crypto
+      .createHash("sha256")
+      .update(fs.readFileSync(path.join(OUT, e.file)))
+      .digest("hex")
 
   fs.writeFileSync(
     path.join(OUT, "index.json"),

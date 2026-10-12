@@ -486,21 +486,27 @@ export function GameDashboardScreen() {
 
       {/* PC: 왼쪽 프리뷰 | 오른쪽 라인업·응원단 (모바일은 세로 나열 그대로) */}
       {!noMatch && (
-      <div className="lg:grid lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:bg-white lg:border-y lg:border-[#DDE1EC] lg:mt-3">
+      <div className="lg:grid lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-x-8 lg:gap-y-8 lg:px-4 lg:pt-4 lg:pb-6">
       {/* 경기 프리뷰 */}
-        <div className="px-4 pt-3 pb-1 lg:row-span-2 lg:px-6 lg:py-6 lg:border-r lg:border-[#DDE1EC] lg:min-w-0">
+        <div className="px-4 pt-3 pb-1 lg:row-span-2 lg:p-0 lg:min-w-0">
           <div className="hidden lg:flex items-center justify-between mb-3">
             <span className="text-[15px] font-bold text-[#111827]">
               오늘의 프리뷰
             </span>
-            <span className="text-[#111827]">→</span>
+            <button
+              onClick={() => navigate("/all/preview-list")}
+              className="text-base text-[#111827]"
+              aria-label="오늘의 프리뷰 목록"
+            >
+              →
+            </button>
           </div>
           <button
             onClick={() => navigate("/all/preview-detail")}
             className="w-full text-left"
           >
-            <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] flex items-center gap-3 p-3 lg:flex-col lg:items-stretch lg:gap-0 lg:p-0 lg:border-0 lg:rounded-none">
-              <PH className="shrink-0 w-16 h-16 rounded-xl lg:w-full lg:h-auto lg:aspect-[16/9] lg:rounded-lg" />
+            <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] flex items-center gap-3 p-3 lg:flex-col lg:items-stretch lg:gap-0 lg:p-0 lg:border-0 lg:rounded-none lg:bg-transparent">
+              <PH className="shrink-0 w-16 h-16 rounded-xl lg:w-full lg:h-auto lg:aspect-[2/1] lg:rounded-lg" />
               <div className="flex-1 min-w-0 lg:mt-4">
                 <span className="text-[10px] text-[#1B5BF0] font-semibold lg:hidden">
                   오늘의 프리뷰
@@ -533,7 +539,7 @@ export function GameDashboardScreen() {
         </div>
 
       {/* Lineup preview */}
-        <div className="mb-4 pt-3 lg:mb-0 lg:px-6 lg:py-6 lg:border-b lg:border-[#DDE1EC] lg:min-w-0">
+        <div className="mb-4 pt-3 lg:m-0 lg:p-0 lg:min-w-0">
           <div className="flex items-center justify-between mb-2 px-4 lg:px-0 lg:mb-3">
             <span className="text-sm font-bold text-[#111827] lg:text-[15px]">
               오늘의 라인업
@@ -615,17 +621,16 @@ export function GameDashboardScreen() {
         </div>
 
       {/* Cheerleader preview */}
-        <div className="px-4 mb-5 lg:mb-0 lg:px-6 lg:py-6 lg:min-w-0">
+        <div className="px-4 mb-5 lg:m-0 lg:p-0 lg:min-w-0">
           <div className="flex items-center justify-between mb-2 lg:mb-3">
             <span className="text-sm font-bold text-[#111827] lg:text-[15px]">
               오늘의 응원단
             </span>
             <button
               onClick={() => navigate("/all/cheer-squad")}
-              className="text-xs text-[#9CA3AF] lg:text-[#111827] lg:text-base"
+              className="text-xs text-[#9CA3AF] lg:hidden"
             >
-              <span className="lg:hidden">전체보기 ›</span>
-              <span className="hidden lg:inline">→</span>
+              전체보기 ›
             </button>
           </div>
           <div className="flex gap-3 overflow-x-auto pb-1 lg:gap-5">
@@ -658,9 +663,9 @@ export function GameDashboardScreen() {
 
       {/* 홈 경기 전용: 라팍 정보 & 라이온즈 VR */}
       {matchType === "home" && (
-        <>
+        <div className="lg:flex lg:gap-4 lg:px-4 lg:mb-6">
           {/* 라팍 정보 */}
-          <div className="px-4 mb-6">
+          <div className="px-4 mb-6 lg:p-0 lg:m-0 lg:flex-[7] lg:min-w-0 lg:order-2">
             <div className="rounded-2xl overflow-hidden border border-[#DDE1EC] bg-gradient-to-br from-[#0E1A40] to-[#1B3A80]">
               <div className="px-4 pt-4 pb-3">
                 <p className="text-white font-black text-base leading-tight mb-0.5">
@@ -702,12 +707,12 @@ export function GameDashboardScreen() {
           </div>
 
           {/* 라이온즈 VR */}
-          <div className="px-4 mb-6">
+          <div className="px-4 mb-6 lg:p-0 lg:m-0 lg:flex-[3] lg:min-w-0 lg:order-1">
             <button
               onClick={() => !blockedOnPc("/game/vr") && navigate("/game/vr")}
-              className="w-full"
+              className="w-full lg:h-full"
             >
-              <div className="w-full h-16 rounded-2xl bg-gradient-to-r from-[#0A0A1A] to-[#1B1B3A] flex items-center justify-between px-5 overflow-hidden relative">
+              <div className="w-full h-16 lg:h-full rounded-2xl bg-gradient-to-r from-[#0A0A1A] to-[#1B1B3A] flex items-center justify-between px-5 overflow-hidden relative">
                 <div
                   className="absolute inset-0 opacity-10"
                   style={{
@@ -732,7 +737,7 @@ export function GameDashboardScreen() {
               </div>
             </button>
           </div>
-        </>
+        </div>
       )}
 
       {/* 원정 경기 전용: 오늘의 원정 구장 */}

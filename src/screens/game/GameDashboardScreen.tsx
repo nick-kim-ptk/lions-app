@@ -484,26 +484,37 @@ export function GameDashboardScreen() {
           )
         })()}
 
-      {/* 경기 프리뷰 */}
+      {/* PC: 왼쪽 프리뷰 | 오른쪽 라인업·응원단 (모바일은 세로 나열 그대로) */}
       {!noMatch && (
-        <div className="px-4 pt-3 pb-1">
+      <div className="lg:grid lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:bg-white lg:border-y lg:border-[#DDE1EC] lg:mt-3">
+      {/* 경기 프리뷰 */}
+        <div className="px-4 pt-3 pb-1 lg:row-span-2 lg:px-6 lg:py-6 lg:border-r lg:border-[#DDE1EC] lg:min-w-0">
+          <div className="hidden lg:flex items-center justify-between mb-3">
+            <span className="text-[15px] font-bold text-[#111827]">
+              오늘의 프리뷰
+            </span>
+            <span className="text-[#111827]">→</span>
+          </div>
           <button
             onClick={() => navigate("/all/preview-detail")}
             className="w-full text-left"
           >
-            <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] flex items-center gap-3 p-3">
-              <PH className="shrink-0 w-16 h-16 rounded-xl" />
-              <div className="flex-1 min-w-0">
-                <span className="text-[10px] text-[#1B5BF0] font-semibold">
+            <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] flex items-center gap-3 p-3 lg:flex-col lg:items-stretch lg:gap-0 lg:p-0 lg:border-0 lg:rounded-none">
+              <PH className="shrink-0 w-16 h-16 rounded-xl lg:w-full lg:h-auto lg:aspect-[16/9] lg:rounded-lg" />
+              <div className="flex-1 min-w-0 lg:mt-4">
+                <span className="text-[10px] text-[#1B5BF0] font-semibold lg:hidden">
                   오늘의 프리뷰
                 </span>
-                <p className="text-[13px] font-bold text-[#111827] leading-snug line-clamp-2 mt-0.5">
+                <p className="text-[13px] font-bold text-[#111827] leading-snug line-clamp-2 mt-0.5 lg:text-[15px] lg:font-medium lg:mt-0">
                   삼성 마지막 잠실 나들이, 페덱이 승리 피날레 이끌까
                 </p>
-                <span className="text-[11px] text-[#9CA3AF]">2026.09.16</span>
+                <span className="text-[11px] text-[#9CA3AF] lg:text-[14px] lg:block lg:mt-1">2026.09.16</span>
+                <span className="hidden lg:inline-block mt-3 rounded-full border border-[#111827] px-3 py-1 text-[11px] text-[#111827]">
+                  자세히 보기
+                </span>
               </div>
               <svg
-                className="shrink-0"
+                className="shrink-0 lg:hidden"
                 width="16"
                 height="16"
                 viewBox="0 0 24 24"
@@ -520,24 +531,23 @@ export function GameDashboardScreen() {
             </div>
           </button>
         </div>
-      )}
 
       {/* Lineup preview */}
-      {!noMatch && (
-        <div className="mb-4 pt-3">
-          <div className="flex items-center justify-between mb-2 px-4">
-            <span className="text-sm font-bold text-[#111827]">
+        <div className="mb-4 pt-3 lg:mb-0 lg:px-6 lg:py-6 lg:border-b lg:border-[#DDE1EC] lg:min-w-0">
+          <div className="flex items-center justify-between mb-2 px-4 lg:px-0 lg:mb-3">
+            <span className="text-sm font-bold text-[#111827] lg:text-[15px]">
               오늘의 라인업
             </span>
             <button
               onClick={() => navigate("/game/lineup")}
-              className="text-xs text-[#9CA3AF]"
+              className="text-xs text-[#9CA3AF] lg:text-[#111827] lg:text-base"
             >
-              전체보기 ›
+              <span className="lg:hidden">전체보기 ›</span>
+              <span className="hidden lg:inline">→</span>
             </button>
           </div>
           <div
-            className="flex gap-2 overflow-x-auto pb-2 px-4"
+            className="flex gap-2 overflow-x-auto pb-2 px-4 lg:px-0"
             style={{ scrollbarWidth: "none" }}
           >
             {(() => {
@@ -603,23 +613,22 @@ export function GameDashboardScreen() {
             ))}
           </div>
         </div>
-      )}
 
       {/* Cheerleader preview */}
-      {!noMatch && (
-        <div className="px-4 mb-5">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-bold text-[#111827]">
+        <div className="px-4 mb-5 lg:mb-0 lg:px-6 lg:py-6 lg:min-w-0">
+          <div className="flex items-center justify-between mb-2 lg:mb-3">
+            <span className="text-sm font-bold text-[#111827] lg:text-[15px]">
               오늘의 응원단
             </span>
             <button
               onClick={() => navigate("/all/cheer-squad")}
-              className="text-xs text-[#9CA3AF]"
+              className="text-xs text-[#9CA3AF] lg:text-[#111827] lg:text-base"
             >
-              전체보기 ›
+              <span className="lg:hidden">전체보기 ›</span>
+              <span className="hidden lg:inline">→</span>
             </button>
           </div>
-          <div className="flex gap-3 overflow-x-auto pb-1">
+          <div className="flex gap-3 overflow-x-auto pb-1 lg:gap-5">
             {[
               { name: "박성웅", role: "응원단장", emoji: "🎤" },
 
@@ -644,6 +653,7 @@ export function GameDashboardScreen() {
             ))}
           </div>
         </div>
+      </div>
       )}
 
       {/* 홈 경기 전용: 라팍 정보 & 라이온즈 VR */}

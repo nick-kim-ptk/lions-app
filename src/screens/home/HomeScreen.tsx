@@ -759,181 +759,184 @@ export function HomeScreen() {
         </div>
       </div>
 
-      {/* Lions News */}
-      <div className="px-4 mb-6">
-        <PHSection
-          label="라이온즈 뉴스"
-          onMore={() => navigate("/game/news")}
-        />
-        <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-x-10">
-          {[
-            {
-              title: "원태인, 시즌 15승 달성… 에이스 자리 굳혔다",
-              source: "스포츠조선",
-              time: "13:42",
-            },
+      {/* 뉴스·TV·소식 — 모바일은 세로로 차례대로, PC는 뉴스 | 소식 반반 + 아래 LIONS TV 전체 폭 */}
+      <div className="lg:grid lg:grid-cols-2 lg:items-start">
+        {/* Lions News */}
+        <div className="px-4 mb-6 lg:order-1">
+          <PHSection
+            label="라이온즈 뉴스"
+            onMore={() => navigate("/game/news")}
+          />
+          <div className="flex flex-col">
+            {[
+              {
+                title: "원태인, 시즌 15승 달성… 에이스 자리 굳혔다",
+                source: "스포츠조선",
+                time: "13:42",
+              },
 
-            {
-              title: "구자욱 통산 200홈런 눈앞… 오늘 경기가 변수",
-              source: "일간스포츠",
-              time: "11:20",
-            },
+              {
+                title: "구자욱 통산 200홈런 눈앞… 오늘 경기가 변수",
+                source: "일간스포츠",
+                time: "11:20",
+              },
 
-            {
-              title: "삼성 라이온즈, 9월 홈경기 전승 행진 계속",
-              source: "대구MBC",
-              time: "09:05",
-            },
+              {
+                title: "삼성 라이온즈, 9월 홈경기 전승 행진 계속",
+                source: "대구MBC",
+                time: "09:05",
+              },
 
-            {
-              title: "라이온즈파크 올 시즌 관중 130만 돌파 기념 이벤트 예고",
-              source: "OSEN",
-              time: "08:30",
-            },
-          ].map((item, i) => (
-            <div
-              key={i}
-              className="flex gap-3 py-3 border-b border-[#DDE1EC] items-center"
-            >
-              <PH className="w-18 h-14 rounded-xl shrink-0" />
-              <div className="flex-1 flex flex-col gap-1 justify-center">
-                <p className="text-[13px] text-[#111827] font-medium leading-snug line-clamp-2">
-                  {item.title}
-                </p>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <span className="text-[11px] text-[#9CA3AF]">
-                    {item.source}
-                  </span>
-                  <span className="text-[11px] text-[#C4C9D6]">·</span>
-                  <span className="text-[11px] text-[#9CA3AF]">
-                    {item.time}
-                  </span>
-                </div>
-              </div>
-              <div className="shrink-0 w-7 h-7 rounded-full bg-[#F5F7FB] border border-[#DDE1EC] flex items-center justify-center">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"
-                    stroke="#9CA3AF"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M15 3h6v6M10 14L21 3"
-                    stroke="#9CA3AF"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* LIONS TV */}
-      <div className="mb-6">
-        <div className="px-4">
-          <button
-            type="button"
-            onClick={() => setSelectedLionsVideo(LIONS_TV_ITEMS[0])}
-            className="mb-3 text-[15px] font-bold text-[#111827]"
-          >
-            LIONS TV
-          </button>
-        </div>
-        <div className="flex items-start gap-3 overflow-x-auto px-4 pb-1 lg:gap-5">
-          {LIONS_TV_ITEMS.map((item) => (
-            <button
-              type="button"
-              key={item.id}
-              onClick={() => setSelectedLionsVideo(item)}
-              className={`shrink-0 flex flex-col text-left ${
-                item.format === "short" ? "w-32 lg:w-40" : "w-52 lg:w-64"
-              }`}
-            >
+              {
+                title: "라이온즈파크 올 시즌 관중 130만 돌파 기념 이벤트 예고",
+                source: "OSEN",
+                time: "08:30",
+              },
+            ].map((item, i) => (
               <div
-                className={`relative mb-2 w-full overflow-hidden rounded-2xl ${
-                  item.format === "short" ? "aspect-[9/16]" : "aspect-video"
-                }`}
+                key={i}
+                className="flex gap-3 py-3 border-b border-[#DDE1EC] items-center"
               >
-                <PH className="w-full h-full rounded-2xl" />
-                {item.format === "short" && (
-                  <span className="absolute left-2 top-2 rounded-md bg-[#FF0000] px-1.5 py-0.5 text-[9px] font-bold text-white">
-                    SHORTS
-                  </span>
-                )}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-8 h-8 rounded-full bg-black/40 backdrop-blur-xs flex items-center justify-center">
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="white"
-                    >
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
+                <PH className="w-18 h-14 rounded-xl shrink-0" />
+                <div className="flex-1 flex flex-col gap-1 justify-center">
+                  <p className="text-[13px] text-[#111827] font-medium leading-snug line-clamp-2">
+                    {item.title}
+                  </p>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="text-[11px] text-[#9CA3AF]">
+                      {item.source}
+                    </span>
+                    <span className="text-[11px] text-[#C4C9D6]">·</span>
+                    <span className="text-[11px] text-[#9CA3AF]">
+                      {item.time}
+                    </span>
                   </div>
                 </div>
+                <div className="shrink-0 w-7 h-7 rounded-full bg-[#F5F7FB] border border-[#DDE1EC] flex items-center justify-center">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"
+                      stroke="#9CA3AF"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M15 3h6v6M10 14L21 3"
+                      stroke="#9CA3AF"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </div>
               </div>
-              <span className="text-[12px] font-semibold text-[#0E1A40] leading-snug mb-1 line-clamp-2">
-                {item.title}
-              </span>
-              <span className="text-[10px] text-[#9CA3AF] font-medium">
-                {item.duration} · 조회수 {item.views}
-              </span>
-            </button>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* Notice */}
-      <div className="px-4 mb-6">
-        <PHSection
-          label="라이온즈 소식"
-          onMore={() => navigate("/all/notice-list")}
-        />
-        <div className="flex flex-col">
-          {[
-            {
-              badge: "구단",
-              title: "2026 삼성 라이온즈 홈경기 입장 안내",
-              date: "2026.09.15",
-            },
-
-            {
-              badge: "구단",
-              title: "라이온즈파크 주차장 운영 변경 안내",
-              date: "2026.09.12",
-            },
-
-            {
-              badge: "앱",
-              title: "앱 업데이트 및 이용 안내 (v4.1.0)",
-              date: "2026.09.13",
-            },
-          ].map((item, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-3 py-3 border-b border-[#DDE1EC]"
+        {/* LIONS TV */}
+        <div className="mb-6 lg:order-3 lg:col-span-2">
+          <div className="px-4">
+            <button
+              type="button"
+              onClick={() => setSelectedLionsVideo(LIONS_TV_ITEMS[0])}
+              className="mb-3 text-[15px] font-bold text-[#111827]"
             >
-              <span
-                className={`shrink-0 text-[10px] font-semibold px-1.5 py-0.5 rounded ${
-                  item.badge === "앱"
-                    ? "bg-[#F0FDF4] text-[#16A34A]"
-                    : "bg-[#EEF3FF] text-[#1B5BF0]"
+              LIONS TV
+            </button>
+          </div>
+          <div className="flex items-start gap-3 overflow-x-auto px-4 pb-1 lg:gap-5">
+            {LIONS_TV_ITEMS.map((item) => (
+              <button
+                type="button"
+                key={item.id}
+                onClick={() => setSelectedLionsVideo(item)}
+                className={`shrink-0 flex flex-col text-left ${
+                  item.format === "short" ? "w-32 lg:w-40" : "w-52 lg:w-64"
                 }`}
               >
-                {item.badge}
-              </span>
-              <span className="flex-1 text-sm text-[#111827] truncate">
-                {item.title}
-              </span>
-              <span className="shrink-0 text-xs text-[#9CA3AF]">
-                {item.date}
-              </span>
-            </div>
-          ))}
+                <div
+                  className={`relative mb-2 w-full overflow-hidden rounded-2xl ${
+                    item.format === "short" ? "aspect-[9/16]" : "aspect-video"
+                  }`}
+                >
+                  <PH className="w-full h-full rounded-2xl" />
+                  {item.format === "short" && (
+                    <span className="absolute left-2 top-2 rounded-md bg-[#FF0000] px-1.5 py-0.5 text-[9px] font-bold text-white">
+                      SHORTS
+                    </span>
+                  )}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-black/40 backdrop-blur-xs flex items-center justify-center">
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="white"
+                      >
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                <span className="text-[12px] font-semibold text-[#0E1A40] leading-snug mb-1 line-clamp-2">
+                  {item.title}
+                </span>
+                <span className="text-[10px] text-[#9CA3AF] font-medium">
+                  {item.duration} · 조회수 {item.views}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Notice */}
+        <div className="px-4 mb-6 lg:order-2">
+          <PHSection
+            label="라이온즈 소식"
+            onMore={() => navigate("/all/notice-list")}
+          />
+          <div className="flex flex-col">
+            {[
+              {
+                badge: "구단",
+                title: "2026 삼성 라이온즈 홈경기 입장 안내",
+                date: "2026.09.15",
+              },
+
+              {
+                badge: "구단",
+                title: "라이온즈파크 주차장 운영 변경 안내",
+                date: "2026.09.12",
+              },
+
+              {
+                badge: "앱",
+                title: "앱 업데이트 및 이용 안내 (v4.1.0)",
+                date: "2026.09.13",
+              },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-3 py-3 border-b border-[#DDE1EC]"
+              >
+                <span
+                  className={`shrink-0 text-[10px] font-semibold px-1.5 py-0.5 rounded ${
+                    item.badge === "앱"
+                      ? "bg-[#F0FDF4] text-[#16A34A]"
+                      : "bg-[#EEF3FF] text-[#1B5BF0]"
+                  }`}
+                >
+                  {item.badge}
+                </span>
+                <span className="flex-1 text-sm text-[#111827] truncate">
+                  {item.title}
+                </span>
+                <span className="shrink-0 text-xs text-[#9CA3AF]">
+                  {item.date}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

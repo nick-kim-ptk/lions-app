@@ -85,3 +85,18 @@ node shots-cases.mjs --dist ../dist --out ../captures/cases-out [--only today-ga
 ```
 - 구역 밖 요소(이웃·고정 헤더·탭바)와 빨간 점선 드롭다운은 기본으로 감추고 찍습니다(`--keep-case-ui`로 드롭다운 남김).
 - 구역이 없거나 바꿀 수 없는 조합은 건너뛰고 로그(`↷ 건너뜀`)에만 남기며, 전체 캡처는 멈추지 않습니다. 시계·난수는 `shots.mjs`와 같이 고정되어 같은 내용이면 같은 PNG(`sha`)가 나옵니다.
+
+---
+
+# 전체 보기·다운로드 (배포 사이트)
+
+main에 푸시할 때마다 Actions가 캡처를 모아 아래 주소에 올립니다.
+
+| | 모아보기 | 전체 다운로드 |
+|---|---|---|
+| 앱 | `https://nick-kim-ptk.github.io/lions-app/shots/` | `…/lions-app/shots/lions-app-shots.zip` |
+| 어드민 | `https://nick-kim-ptk.github.io/lions-admin/shots/` | `…/lions-admin/shots/lions-admin-shots.zip` |
+
+- 모아보기: 화면 ID로 찾기, 이미지 클릭 시 원본 크기, 장별 PNG 받기. 앱은 전체 화면 아래에 구역·케이스별 이미지도 함께 나옵니다.
+- zip에는 PNG와 `index.json`(·`cases.json`)이 들어 있습니다. 만드는 스크립트는 `scripts/shots-pack.mjs`.
+

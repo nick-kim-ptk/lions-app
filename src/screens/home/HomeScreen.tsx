@@ -6,7 +6,7 @@ import { NoticePopup } from "@/components/NoticePopup"
 
 import { useScreenIdOverride } from "@/components/Layout"
 
-import { useState, useRef, useEffect, useSyncExternalStore } from "react"
+import { useState, useRef, useEffect } from "react"
 
 import { PH, PHCircle, PHSection } from "@/components/Placeholder"
 
@@ -14,7 +14,7 @@ import { useCaseState, setMatchState, useTodayGame } from "@/data/caseStore"
 
 import { GameCaseBar, PostseasonFrame } from "@/components/GameCaseBar"
 
-import { subscribeNotif, getHasUnread } from "@/data/notifStore"
+import { KvCarousel } from "@/components/KvCarousel"
 
 import {
   KV_SLIDES,
@@ -124,10 +124,6 @@ export function HomeScreen() {
 
   useScreenIdOverride(showNotice ? "003-SL-CM-03" : null)
 
-  const [kvIndex, setKvIndex] = useState(0)
-
-  const touchStartX = useRef(0)
-
   const { match: matchState, phase } = useCaseState()
 
   const [selectedLionsVideo, setSelectedLionsVideo] =
@@ -151,139 +147,10 @@ export function HomeScreen() {
 
   const upcoming = nextGame()
 
-  const hasUnread = useSyncExternalStore(subscribeNotif, getHasUnread)
-
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-4">
       {/* KV Carousel — GNB 포함 */}
-      <div
-        className="relative w-full h-[374px] overflow-hidden pc-bleed"
-        onTouchStart={(e) => {
-          touchStartX.current = e.touches[0].clientX
-        }}
-        onTouchEnd={(e) => {
-          const dx = e.changedTouches[0].clientX - touchStartX.current
-
-          if (dx < -40) setKvIndex((i) => Math.min(i + 1, KV_SLIDES.length - 1))
-
-          if (dx > 40) setKvIndex((i) => Math.max(i - 1, 0))
-        }}
-      >
-        {/* Floating GNB */}
-        <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-4 h-14 gap-1 pc-kv-pad">
-          <button
-            onClick={() => navigate("/case-guide")}
-            className="rounded-full border border-dashed border-red-400 bg-black/30 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-sm"
-          >
-            가이드
-          </button>
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => navigate("/notifications")}
-              className="w-8 h-8 flex items-center justify-center relative lg:hidden"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"
-                  stroke="white"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                />
-              </svg>
-              {/* 미확인 알림 Red Dot */}
-              {hasUnread && (
-                <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-red-500 ring-1 ring-white/30" />
-              )}
-            </button>
-            <button
-              onClick={() => navigate("/all-menu")}
-              className="w-8 h-8 flex items-center justify-center lg:hidden"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M4 6h16M4 12h16M4 18h16"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-        {/* Slides strip */}
-        <div
-          className="flex h-full transition-transform duration-300 ease-out"
-          style={{
-            width: `${KV_SLIDES.length * 100}%`,
-            transform: `translateX(-${kvIndex * (100 / KV_SLIDES.length)}%)`,
-          }}
-        >
-          {KV_SLIDES.map((slide) => (
-            <div
-              key={slide.id}
-              className={`relative flex-shrink-0 bg-gradient-to-br ${slide.bg}`}
-              style={{ width: `${100 / KV_SLIDES.length}%` }}
-            >
-              {/* BG texture */}
-              <div
-                className="absolute inset-0 opacity-5"
-                style={{
-                  backgroundImage:
-                    "repeating-linear-gradient(135deg,transparent,transparent 12px,rgba(255,255,255,0.5) 12px,rgba(255,255,255,0.5) 13px)",
-                }}
-              />
-
-              {/* Graphic */}
-              <div
-                className={`absolute right-5 top-1/2 -translate-y-1/2 w-28 h-28 rounded-3xl ${slide.graphicBg} flex items-center justify-center pc-kv-right`}
-              >
-                <span className="text-[72px] leading-none">
-                  {slide.graphic}
-                </span>
-              </div>
-
-              {/* Content — 하단 정렬, 버튼 없음 */}
-              <div className="absolute inset-0 flex flex-col justify-end p-5 pb-10 pc-kv-pad">
-                {!slide.hideBadge && (
-                  <span
-                    className={`self-start text-[10px] font-bold text-white ${slide.badgeColor} rounded-full px-2.5 py-0.5 mb-3`}
-                  >
-                    {slide.badge}
-                  </span>
-                )}
-                <p className="text-white text-[22px] font-black leading-tight mb-2 whitespace-pre-line">
-                  {slide.title}
-                </p>
-                <p className="text-white/60 text-[11px] leading-relaxed">
-                  {slide.sub}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* AD badge — 광고 슬라이드일 때만 */}
-        {KV_SLIDES[kvIndex].badge === "AD" && (
-          <div className="absolute top-3 right-4 bg-black/40 rounded-md px-1.5 py-0.5 backdrop-blur-sm">
-            <span className="text-white text-[9px] font-bold tracking-wider">
-              AD
-            </span>
-          </div>
-        )}
-
-        {/* Dot indicators */}
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-          {KV_SLIDES.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setKvIndex(i)}
-              className={`rounded-full transition-all ${
-                i === kvIndex ? "w-4 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/30"
-              }`}
-            />
-          ))}
-        </div>
-      </div>
+      <KvCarousel slides={KV_SLIDES} />
 
       {/* Today's Match Carousel */}
       <GameCaseBar />

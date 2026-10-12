@@ -4,7 +4,9 @@ import { CaseSelect } from "@/components/CaseSelect"
 
 import { useState, useEffect, useRef } from "react"
 
-import { Header } from "@/components/Layout"
+import { KvCarousel } from "@/components/KvCarousel"
+
+import { LOUNGE_KV_SLIDES } from "@/data/lounge"
 
 type MissionType = "사지선다" | "OX퀴즈" | "VS선택" | "예측형"
 
@@ -221,32 +223,10 @@ export function LoungeDashboardScreen() {
 
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-8">
-      <Header showBack={false} showNotif showMenu bare />
+      {/* KV Carousel — GNB 포함 (홈과 동일 동작) */}
+      <KvCarousel slides={LOUNGE_KV_SLIDES} />
 
-      {/* ── 독점 콘텐츠 preview — 최상단 ── */}
-      <div className="px-4 pt-4 mb-5">
-        <button
-          onClick={() => navigate("/lounge/exclusive")}
-          className="w-full"
-        >
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-[#1A1A2E] via-[#16213E] to-[#0F3460] h-36 flex flex-col items-center justify-center gap-2 px-5">
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-bold text-white bg-[#1B5BF0] rounded-full px-2.5 py-0.5 tracking-wide">
-                EXCLUSIVE
-              </span>
-              <span className="text-[10px] text-[#F0A500] font-semibold bg-black/40 rounded-full px-2 py-0.5">
-                ⏱ 23:47 남음
-              </span>
-            </div>
-            <p className="text-white text-[14px] font-bold text-center leading-snug">
-              구자욱 선수의 카메라 렌즈 세레머니를 확인하세요! 📸
-            </p>
-            <p className="text-white/50 text-[11px]">
-              오늘 자정까지만 확인할 수 있어요
-            </p>
-          </div>
-        </button>
-      </div>
+      <div className="h-5" />
 
       {/* Menu grid */}
       <div className="px-4 mb-6">

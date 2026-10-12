@@ -177,3 +177,38 @@ export const SNS_POSTS = [
     imageLabel: "유니폼 착용 사진",
   },
 ]
+
+// 020-SL-LG-01 라운지 상단 KV 슬라이드 (홈 KV와 같은 형식 — 더미)
+export const LOUNGE_KV_SLIDES = [
+  {
+    id: 0,
+    badge: "EXCLUSIVE",
+    badgeColor: "bg-[#1B5BF0]",
+    bg: "from-[#1A1A2E] via-[#16213E] to-[#0F3460]",
+    title: "구자욱 선수의 카메라 렌즈\n세레머니를 확인하세요!",
+    sub: "⏱ 23:47 남음 · 오늘 자정까지만 확인할 수 있어요",
+    graphic: "📸",
+    graphicBg: "bg-white/10",
+  },
+  {
+    id: 1,
+    badge: "오늘의 미션",
+    badgeColor: "bg-[#F0A500]",
+    bg: "from-[#0E1A40] via-[#1B3A80] to-[#2255CC]",
+    title: "오늘 경기, 미션에 참여하고\n앰블럼을 모아보세요",
+    sub: "경기 종료 후 정답이 발표돼요",
+    graphic: "🎯",
+    graphicBg: "bg-white/10",
+  },
+  {
+    id: 2,
+    badge: "엘도라도 ZONE",
+    badgeColor: "bg-[#E53935]",
+    bg: "from-[#3B0A1E] via-[#6B1233] to-[#B0204F]",
+    title: "엘도라도 ZONE\n오늘의 응원 현장",
+    sub: "경기 중 실시간으로 만나보세요",
+    graphic: "⚡",
+    graphicBg: "bg-white/10",
+  },
+] as const
+

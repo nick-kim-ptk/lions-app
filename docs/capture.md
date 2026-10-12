@@ -100,3 +100,12 @@ main에 푸시할 때마다 Actions가 캡처를 모아 아래 주소에 올립�
 - 모아보기: 화면 ID로 찾기, 이미지 클릭 시 원본 크기, 장별 PNG 받기. 앱은 전체 화면 아래에 구역·케이스별 이미지도 함께 나옵니다.
 - zip에는 PNG와 `index.json`(·`cases.json`)이 들어 있습니다. 만드는 스크립트는 `scripts/shots-pack.mjs`.
 
+
+## 탭 화면 캡처 (`/shots/views.json`)
+탭이 있는 화면을 탭별 이미지로 찍는다. Actions 의 "Capture tab views" 단계(`scripts/shots-views.mjs`)가 만든다.
+- 대상 설정: `scripts/view-tabs.json` — `{ id, path, tabs: ["첫 탭", "둘째 탭", …] }` (왼쪽부터 순번 0). 화면을 더하거나 뺄 때 이 파일만 고친다.
+- 결과: `shots/views/{화면ID}__{탭 순번}.png` + `shots/views.json` (`[{id, tab, index, default | file, sha, capturedAt}]`).
+- 첫 탭은 `default: true` 만 적고 이미지는 `index.json` 의 기본 캡처를 쓴다. 나머지는 화면 안 탭 버튼(하단 메뉴 제외)을 누른 뒤 풀 페이지로 찍는다(폭·배율·시계 고정은 전체 캡처와 동일).
+- 이전 배포의 `views.json` 과 sha 가 같으면 `capturedAt` 을 유지한다(못 읽으면 새로 기록).
+- 탭 글자가 화면과 다르면 그 탭만 건너뛰고 로그에 `↷ 건너뜀` 으로 남는다. 목록 필터·앵커 이동 탭 화면(010·015·072·077·079·082·103·104)은 제외.
+- 로컬: `node shots-views.mjs --dist ../dist --out ../dist/shots [--only 011]`

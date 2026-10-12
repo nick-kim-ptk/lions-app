@@ -139,7 +139,7 @@ async function loadScreens() {
 
 // 스크롤 영역 전체가 보이도록 뷰포트 높이를 늘려 캡처
 
-async function snap(page, file) {
+export async function snap(page, file) {
   await page.evaluate(() => document.fonts.ready)
 
   await page.waitForTimeout(WAIT)

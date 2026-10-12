@@ -38,6 +38,12 @@ jobs:
         continue-on-error: true
         working-directory: scripts
         run: node shots-cases.mjs --dist ../dist --out ../dist/shots
+      # 탭 화면 캡처 → dist/shots/views/*.png + views.json (대상은 scripts/view-tabs.json, 실패해도 배포는 계속)
+      - name: Capture tab views
+        if: steps.pw.outcome == 'success'
+        continue-on-error: true
+        working-directory: scripts
+        run: node shots-views.mjs --dist ../dist --out ../dist/shots
       # 모아보기(/shots/) + 전체 다운로드 zip (실패해도 배포는 계속)
       - name: Pack shots
         if: steps.pw.outcome == 'success'

@@ -1,0 +1,15 @@
+[
+ {"id":"011-SL-GM-06","path":"/game/stats","tabs":["투수 기록","타자 기록","팀 기록"]},
+ {"id":"013-SL-GM-08","path":"/game/stadium","tabs":["구장 소개","식음매장","편의시설","좌석배치","교통","주차"]},
+ {"id":"026-SL-LG-07","path":"/lounge/digital-goods","tabs":["배경화면","템플릿","스티커"]},
+ {"id":"042-SL-MY-13","path":"/my/theme","tabs":["앱 아이콘","시작화면","마이페이지"]},
+ {"id":"043-SL-MY-14","path":"/my/booking-history","tabs":["예매 확인","예매 취소"]},
+ {"id":"046-SL-MY-17","path":"/my/booking-guide","tabs":["예매 일정","예매 방법","취소/환불","주의사항"]},
+ {"id":"047-SL-MY-18","path":"/my/ticket-gift","tabs":["선물하기","선물 내역"]},
+ {"id":"048-SL-MY-19","path":"/my/coupons","tabs":["사용 가능","사용 완료","기간 만료"]},
+ {"id":"051-SL-MY-22","path":"/my/membership-guide","tabs":["멤버십","시즌권"]},
+ {"id":"065-SL-AL-09","path":"/all/players","tabs":["소개","감독","코칭스텝","투수","타자","군입대","신입단"]},
+ {"id":"067-SL-AL-11","path":"/all/cheer-squad","tabs":["응원단장","치어리더"]},
+ {"id":"070-SL-AL-14","path":"/all/lions-21","tabs":["머리글","본문","연대별"]},
+ {"id":"071-SL-AL-15","path":"/all/history-moments","tabs":["해외스프링캠프","신인지명현황","FA선수현황","외국인선수현황","이적현황"]}
+]

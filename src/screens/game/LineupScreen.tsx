@@ -37,8 +37,6 @@ export function LineupScreen() {
       ? announcedLocal
       : match !== "우천 취소" && match !== "경기 연기"
 
-  const [side, setSide] = useState<"us" | "them">("us")
-
   if (!game) {
     return (
       <div className="min-h-full bg-[#F5F7FB] pb-4">
@@ -81,19 +79,17 @@ export function LineupScreen() {
 
   const opp = TEAMS[game.opp]
 
-  const set = TODAY_LINEUP[side]
-
-  const teamName = side === "us" ? MY_TEAM.name : opp.name
+  const set = TODAY_LINEUP
 
   const sp = set.startingPitcher
 
   const rowOf = (p: LineupEntry) => {
-    const player = p.playerId ? PLAYER_BY_ID[p.playerId] : undefined
+    const player = PLAYER_BY_ID[p.playerId]
 
     return {
-      no: player ? String(player.no) : String(p.no ?? ""),
+      no: player ? String(player.no) : "",
 
-      avg: p.playerId ? (BATTER_STATS[p.playerId]?.avg ?? "-") : (p.avg ?? "-"),
+      avg: BATTER_STATS[p.playerId]?.avg ?? "-",
     }
   }
 
@@ -166,26 +162,6 @@ export function LineupScreen() {
         </div>
       </div>
 
-      {/* 삼성 / 상대 탭 */}
-      <div className="flex px-4 pt-2 gap-6 border-b border-[#DDE1EC]">
-        {([
-          ["us", MY_TEAM.short],
-          ["them", opp.short],
-        ] as const).map(([k, label]) => (
-          <button
-            key={k}
-            onClick={() => setSide(k)}
-            className={`pb-3 text-[14px] font-bold border-b-2 transition-colors ${
-              side === k
-                ? "border-[#1B5BF0] text-[#1B5BF0]"
-                : "border-transparent text-[#9CA3AF]"
-            }`}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-
       {/* Starting pitcher */}
       <div className="px-4 pt-4 pb-4">
         <div className="flex items-center gap-2 mb-3">
@@ -231,7 +207,7 @@ export function LineupScreen() {
       {/* Batting order */}
       <div className="px-4 mb-6">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-xs text-[#64748B]">{teamName} 타순</p>
+          <p className="text-xs text-[#64748B]">{MY_TEAM.name} 타순</p>
           {announced && (
             <div className="flex gap-4 pr-2">
               <span className="text-[10px] text-[#9CA3AF] w-10 text-right">

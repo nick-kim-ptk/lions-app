@@ -32,6 +32,7 @@ import {
   MY_TEAM,
   TEAMS,
   TODAY_LINEUP,
+  OPP_STARTING_PITCHER,
   fmtKoTime,
   fmtSlashMDW,
   nextGame,
@@ -350,13 +351,13 @@ export function HomeScreen() {
                     <TeamBadge name={opp.short} />
                   </div>
                   <p className="text-center text-[11px] text-[#9CA3AF] -mt-2 mb-4">
-                    선발 {TODAY_LINEUP.us.startingPitcher.name} vs{" "}
-                    {TODAY_LINEUP.them.startingPitcher.name} ·{" "}
+                    선발 {TODAY_LINEUP.startingPitcher.name} vs{" "}
+                    {OPP_STARTING_PITCHER.name} ·{" "}
                     <button
                       onClick={() => navigate("/game/lineup")}
                       className="font-semibold text-[#1B5BF0]"
                     >
-                      라인업 {TODAY_LINEUP.us.announcedAt}경 발표
+                      라인업 {TODAY_LINEUP.announcedAt}경 발표
                     </button>
                   </p>
                   <SeatRow onTicket={() => navigate("/my/ticket-qr")} />

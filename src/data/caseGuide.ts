@@ -707,6 +707,12 @@ export const DECISIONS: { topic: string; decision: string }[] = [
     decision:
       "구역·블록·열·번호 표기, 양도·변경은 티켓링크 데이터를 그대로 따름",
   },
+
+  {
+    topic: "오늘의 라인업 범위",
+    decision:
+      "라인업 화면은 삼성 라인업(선발 투수·타순)만 제공. 상대팀 라인업과 삼성/상대 탭은 두지 않음",
+  },
 ]
 
 export const GLOSSARY: { term: string; desc: string }[] = [

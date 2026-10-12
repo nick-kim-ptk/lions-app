@@ -433,15 +433,9 @@ export interface LineupEntry {
 
   pos: string
 
-  /** 삼성 선수는 PLAYERS의 id, 상대 선수는 생략 */
+  /** PLAYERS의 id */
 
-  playerId?: string
-
-  /** 상대 선수 표시용 (등번호/타율) */
-
-  no?: number
-
-  avg?: string
+  playerId: string
 }
 
 export interface LineupSet {
@@ -462,71 +456,41 @@ export interface LineupSet {
   batting: LineupEntry[]
 }
 
-export const TODAY_LINEUP: { us: LineupSet; them: LineupSet } = {
-  us: {
-    announcedAt: "16:00",
+/** 상대 팀 예고 선발 투수 — 홈 오늘의 경기 카드의 "선발 A vs B" 표기용 (상대 라인업은 앱에서 제공하지 않음) */
 
-    startingPitcher: {
-      name: "원태인",
-      playerId: "won-tae-in",
-      no: 29,
-      handed: "우투우타",
-      era: "2.31",
-      w: 11,
-      k: 134,
-    },
+export const OPP_STARTING_PITCHER = { name: "구창모" }
 
-    batting: [
-      { order: 1, name: "김지찬", pos: "CF", playerId: "kim-ji-chan" },
+export const TODAY_LINEUP: LineupSet = {
+  announcedAt: "16:00",
 
-      { order: 2, name: "구자욱", pos: "LF", playerId: "koo-ja-wook" },
-
-      { order: 3, name: "이재현", pos: "SS", playerId: "lee-jae-hyun" },
-
-      { order: 4, name: "디아즈", pos: "1B", playerId: "diaz" },
-
-      { order: 5, name: "박병호", pos: "DH", playerId: "park-byung-ho" },
-
-      { order: 6, name: "강민호", pos: "C", playerId: "kang-min-ho" },
-
-      { order: 7, name: "김헌곤", pos: "RF", playerId: "kim-heon-gon" },
-
-      { order: 8, name: "김영웅", pos: "3B", playerId: "kim-young-woong" },
-
-      { order: 9, name: "류지혁", pos: "2B", playerId: "ryu-ji-hyuk" },
-    ],
+  startingPitcher: {
+    name: "원태인",
+    playerId: "won-tae-in",
+    no: 29,
+    handed: "우투우타",
+    era: "2.31",
+    w: 11,
+    k: 134,
   },
 
-  them: {
-    announcedAt: "16:00",
+  batting: [
+    { order: 1, name: "김지찬", pos: "CF", playerId: "kim-ji-chan" },
 
-    startingPitcher: {
-      name: "구창모",
-      no: 17,
-      handed: "좌투좌타",
-      era: "3.02",
-      w: 9,
-      k: 121,
-    },
+    { order: 2, name: "구자욱", pos: "LF", playerId: "koo-ja-wook" },
 
-    batting: [
-      { order: 1, name: "김휘집", pos: "2B", no: 1, avg: ".322" },
+    { order: 3, name: "이재현", pos: "SS", playerId: "lee-jae-hyun" },
 
-      { order: 2, name: "김주원", pos: "SS", no: 7, avg: ".281" },
+    { order: 4, name: "디아즈", pos: "1B", playerId: "diaz" },
 
-      { order: 3, name: "박건우", pos: "RF", no: 37, avg: ".309" },
+    { order: 5, name: "박병호", pos: "DH", playerId: "park-byung-ho" },
 
-      { order: 4, name: "데이비슨", pos: "1B", no: 30, avg: ".274" },
+    { order: 6, name: "강민호", pos: "C", playerId: "kang-min-ho" },
 
-      { order: 5, name: "권희동", pos: "LF", no: 31, avg: ".288" },
+    { order: 7, name: "김헌곤", pos: "RF", playerId: "kim-heon-gon" },
 
-      { order: 6, name: "서호철", pos: "3B", no: 6, avg: ".265" },
+    { order: 8, name: "김영웅", pos: "3B", playerId: "kim-young-woong" },
 
-      { order: 7, name: "김형준", pos: "C", no: 22, avg: ".251" },
+    { order: 9, name: "류지혁", pos: "2B", playerId: "ryu-ji-hyuk" },
+  ],
 
-      { order: 8, name: "천재환", pos: "CF", no: 8, avg: ".243" },
-
-      { order: 9, name: "한석현", pos: "DH", no: 35, avg: ".238" },
-    ],
-  },
 }

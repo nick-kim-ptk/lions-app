@@ -506,7 +506,7 @@ export function GameDashboardScreen() {
             className="w-full text-left"
           >
             <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] flex items-center gap-3 p-3 lg:flex-col lg:items-stretch lg:gap-0 lg:p-0 lg:border-0 lg:rounded-none lg:bg-transparent">
-              <PH className="shrink-0 w-16 h-16 rounded-xl lg:w-full lg:h-auto lg:aspect-[2/1] lg:rounded-lg" />
+              <PH className="shrink-0 w-16 h-16 rounded-xl lg:w-full lg:h-auto lg:aspect-[3/1] lg:rounded-lg" />
               <div className="flex-1 min-w-0 lg:mt-4">
                 <span className="text-[10px] text-[#1B5BF0] font-semibold lg:hidden">
                   오늘의 프리뷰

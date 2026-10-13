@@ -28,6 +28,8 @@ export { HistoryMomentsScreen } from "./HistoryMomentsScreen"
 
 export { ClubNewsListScreen } from "./ClubNewsListScreen"
 
+export { ClubNewsDetailScreen } from "./ClubNewsDetailScreen"
+
 export { AuditReportScreen } from "./AuditReportScreen"
 
 export { PartnersScreen } from "./PartnersScreen"

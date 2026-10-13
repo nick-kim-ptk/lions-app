@@ -124,6 +124,7 @@ import {
   Lions21Screen,
   HistoryMomentsScreen,
   ClubNewsListScreen,
+  ClubNewsDetailScreen,
   AuditReportScreen,
   PartnersScreen,
   NoticeListScreen,
@@ -273,6 +274,10 @@ export default function App() {
             element={<HistoryMomentsScreen />}
           />
           <Route path="/all/club-news" element={<ClubNewsListScreen />} />
+          <Route
+            path="/all/club-news-detail"
+            element={<ClubNewsDetailScreen />}
+          />
           <Route path="/all/audit-report" element={<AuditReportScreen />} />
           <Route path="/all/partners" element={<PartnersScreen />} />
           <Route path="/all/notice-list" element={<NoticeListScreen />} />

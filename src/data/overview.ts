@@ -655,6 +655,14 @@ export const SCREENS: ScreenMeta[] = [
   },
 
   {
+    id: "109-SL-AL-32",
+    name: "구단 소식 상세",
+    path: "/all/club-news-detail",
+    group: "전체메뉴",
+    layout: "detail",
+  },
+
+  {
     id: "073-SL-AL-17",
     name: "외부감사 보고서",
     path: "/all/audit-report",
@@ -1195,7 +1203,18 @@ export const IA_TREE: { group: Group; screens: IATreeNode[] }[] = [
             path: "/all/history-moments",
           },
 
-          { id: "072-SL-AL-16", name: "구단 소식", path: "/all/club-news" },
+          {
+            id: "072-SL-AL-16",
+            name: "구단 소식",
+            path: "/all/club-news",
+            children: [
+              {
+                id: "109-SL-AL-32",
+                name: "구단 소식 상세",
+                path: "/all/club-news-detail",
+              },
+            ],
+          },
 
           {
             id: "073-SL-AL-17",

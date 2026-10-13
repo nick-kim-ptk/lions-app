@@ -35,7 +35,7 @@ export function ClubNewsListScreen() {
   }) {
     return (
       <button
-        onClick={() => navigate("/all/club-news")}
+        onClick={() => navigate(`/all/club-news-detail?id=${news.id}`)}
         className={`w-full flex flex-col py-4 border-b border-[#DDE1EC] text-left gap-1.5 ${
           isPinned
             ? "bg-[#F0F4FF] px-4 -mx-4 border-l-[3px] border-l-[#1B5BF0]"

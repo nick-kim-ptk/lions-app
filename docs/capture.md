@@ -109,3 +109,7 @@ main에 푸시할 때마다 Actions가 캡처를 모아 아래 주소에 올립�
 - 이전 배포의 `views.json` 과 sha 가 같으면 `capturedAt` 을 유지한다(못 읽으면 새로 기록).
 - 탭 글자가 화면과 다르면 그 탭만 건너뛰고 로그에 `↷ 건너뜀` 으로 남는다. 목록 필터·앵커 이동 탭 화면(010·015·072·077·079·082·103·104)은 제외.
 - 로컬: `node shots-views.mjs --dist ../dist --out ../dist/shots [--only 011]`
+
+## 언제 캡처가 새로 찍히나
+- **수동 실행일 때만**: GitHub > Actions > Deploy to GitHub Pages > Run workflow. 전체 화면·구역·탭 캡처를 모두 새로 찍어 `/shots/`에 올린다(약 5분).
+- **일반 푸시**: 캡처는 다시 찍지 않는다. 배포 때 지금 공개된 `/shots/`의 zip(`lions-app-shots.zip`)을 받아 그대로 유지하므로 `/shots/`가 사라지지 않고, 배포는 약 1분 안에 끝난다.

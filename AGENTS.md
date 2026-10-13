@@ -19,3 +19,4 @@ React 19 + Vite + Tailwind CSS v4 + react-router-dom(HashRouter). 모든 데이�
 - PC 뷰(1024px~, 기준 1440): 규칙과 숨김 항목은 `docs/pc-view.md`. 모바일 컴포넌트는 그대로 두고 `lg:` 클래스로 칸 수·여백만 바꾼다. 메뉴 데이터는 `src/data/allMenu.ts`(모바일 전체 메뉴와 PC 상단 메뉴 공용).
 - 구역·케이스 캡처: 화면설계서용 구역 이미지는 `data-cap`(구역 요소) + `CaseSelect`의 `group`(한글 그룹명) + 루트 `capture-cases.json`으로 정의하고 Actions가 `/shots/cases/`에 만든다. 새 구역·케이스를 만들면 셋을 함께 갱신(방법은 `docs/capture.md`). 케이스를 코드로 바꾸는 창구는 `window.__wfCase`(`src/lib/wfCase.ts`).
 
+- 캡처는 요청할 때만 일괄 반영한다. 일반 수정·푸시에서는 캡처를 다시 찍지 않는다(배포 Actions도 기존 `/shots/`를 그대로 유지). 새로 찍으려면 Actions 탭 > Deploy to GitHub Pages > Run workflow(수동 실행). 화면·구역·탭 캡처 설정 파일(`capture-cases.json`, `scripts/view-tabs.json`)은 수정 때 필요하면 함께 갱신해 둔다.

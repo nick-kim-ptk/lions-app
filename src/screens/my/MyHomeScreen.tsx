@@ -167,7 +167,7 @@ export function MyHomeScreen() {
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-8">
       {/* Player theme hero banner — GNB 포함 */}
-      <div className="relative w-full h-[270px] bg-gradient-to-br from-[#1B5BF0] to-[#0E2F80] overflow-hidden mb-4 pc-bleed">
+      <div className="relative w-full h-[270px] lg:h-[180px] bg-gradient-to-br from-[#1B5BF0] to-[#0E2F80] overflow-hidden mb-4 pc-bleed">
         {/* 케이스 전환 (와이어프레임 전용) — KV 좌측 상단 */}
         <div className="absolute top-0 left-4 z-20 h-14 flex items-center gap-1.5 pc-kv-left">
           <CaseSelect
@@ -219,10 +219,10 @@ export function MyHomeScreen() {
             </svg>
           </button>
         </div>
-        <div className="absolute right-0 bottom-0 w-40 h-48">
+        <div className="absolute right-0 bottom-0 w-40 h-48 lg:hidden">
           <PH className="w-full h-full rounded-none bg-[#FFFFFF]/10" />
         </div>
-        <div className="absolute left-4 top-4 opacity-10 pc-kv-left">
+        <div className="absolute left-4 top-4 opacity-10 pc-kv-left lg:hidden">
           <span className="text-[80px] font-black text-white leading-none">
             13
           </span>
@@ -532,7 +532,7 @@ export function MyHomeScreen() {
       <div className="px-4 mb-6">
         <div className="bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] px-4">
           {[
-            { label: "테마 변경", path: "/my/theme" },
+            { label: "테마 변경", path: "/my/theme", mobileOnly: true },
 
             { label: "티켓 선물하기", path: "/my/ticket-gift" },
 
@@ -549,7 +549,7 @@ export function MyHomeScreen() {
             <button
               key={item.label}
               onClick={() => navigate(item.path)}
-              className="w-full"
+              className={`w-full ${item.mobileOnly ? "lg:hidden" : ""}`}
             >
               <div
                 className={`flex items-center py-4 ${

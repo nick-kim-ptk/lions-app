@@ -167,9 +167,9 @@ export function MyHomeScreen() {
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-8">
       {/* Player theme hero banner — GNB 포함 */}
-      <div className="relative w-full h-[270px] lg:h-[180px] bg-gradient-to-br from-[#1B5BF0] to-[#0E2F80] overflow-hidden mb-4 pc-bleed">
+      <div className="relative w-full h-[270px] bg-gradient-to-br from-[#1B5BF0] to-[#0E2F80] overflow-hidden mb-4 lg:h-auto lg:bg-none lg:overflow-visible lg:px-4 lg:pt-4 lg:mb-4">
         {/* 케이스 전환 (와이어프레임 전용) — KV 좌측 상단 */}
-        <div className="absolute top-0 left-4 z-20 h-14 flex items-center gap-1.5 pc-kv-left">
+        <div className="absolute top-0 left-4 z-20 h-14 flex items-center gap-1.5 lg:static lg:h-auto lg:mb-4 lg:[&_button]:bg-[#E8EBF4]! lg:[&_button]:text-[#0E1A40]!">
           <CaseSelect
             variant="dark"
             value={"로그인 상태" as "로그인 상태" | "비로그인"}
@@ -191,7 +191,7 @@ export function MyHomeScreen() {
           />
         </div>
         {/* Floating GNB */}
-        <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-end px-4 h-14 gap-1">
+        <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-end px-4 h-14 gap-1 lg:hidden">
           <button
             onClick={() => navigate("/notifications")}
             className="w-8 h-8 flex items-center justify-center lg:hidden"
@@ -227,31 +227,31 @@ export function MyHomeScreen() {
             13
           </span>
         </div>
-        <div className="absolute inset-0 flex flex-col justify-end p-4 pc-kv-pad">
+        <div className="absolute inset-0 flex flex-col justify-end p-4 lg:static lg:p-0">
           <div className="flex items-end gap-4">
             <div className="relative">
               <PHCircle className="w-16 h-16 border-2 border-white" />
             </div>
             <div className="flex flex-col gap-1 pb-1">
               <div className="flex items-center gap-2">
-                <p className="text-white font-bold text-[16px] leading-tight">
+                <p className="text-white font-bold text-[16px] leading-tight lg:text-[#111827]">
                   블루블러드
                 </p>
                 <button
                   onClick={() => navigate("/my/edit-profile")}
-                  className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center"
+                  className="w-6 h-6 rounded-full bg-white/20 text-white lg:bg-[#E8EBF4] lg:text-[#374151] flex items-center justify-center"
                 >
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
                     <path
                       d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"
-                      stroke="white"
+                      stroke="currentColor"
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                     <path
                       d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"
-                      stroke="white"
+                      stroke="currentColor"
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"

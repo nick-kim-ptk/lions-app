@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { Fragment, useState } from "react"
 
 import iconSocial from "@/assets/images/social-login-icons.png"
 
@@ -115,6 +115,10 @@ export function SettingsScreen() {
 
     "마케팅 알림": false,
 
+    "구단 알림": true,
+
+    "일반 알림": true,
+
     "엘도라도 ZONE 알림": true,
 
     "블루 시그널 알림": true,
@@ -203,9 +207,16 @@ export function SettingsScreen() {
 
           {/* 개별 알림 리스트 */}
           {(Object.keys(notifs) as (keyof typeof notifs)[]).map((n) => (
+            <Fragment key={n}>
+              {n === "엘도라도 ZONE 알림" && (
+                <p className="text-xs font-bold text-[#4A5570] pt-4 pb-2 border-t border-[#DDE1EC]">
+                  라운지 알림
+                </p>
+              )}
             <div
-              key={n}
-              className="flex items-center justify-between py-3 border-t border-[#DDE1EC]"
+              className={`flex items-center justify-between py-3 ${
+                n === "엘도라도 ZONE 알림" ? "" : "border-t border-[#DDE1EC]"
+              }`}
             >
               <div className="min-w-0 pr-3">
                 <span
@@ -256,6 +267,7 @@ export function SettingsScreen() {
                 <div className="w-5 h-5 rounded-full bg-white shadow-sm" />
               </button>
             </div>
+            </Fragment>
           ))}
         </div>
 

@@ -1,24 +1,54 @@
+import { useNavigate, useLocation } from "react-router-dom"
+
 import { PH } from "@/components/Placeholder"
 
 import { Header } from "@/components/Layout"
 
-// 076(078)-SL-AL-22 라이온즈 소식 상세보기
+import { PrevNextNav } from "@/components/PrevNextNav"
+
+import { LABEL_STYLE, NOTICES } from "@/data/menu"
+
+// 076(078)-SL-AL-22 라이온즈 소식 상세보기 (목록 075에서 진입, `?id=` 로 글 선택)
+
+// 목록 노출 순서와 동일: 중요 글 상단 고정 → 일반 글(최신순)
+const NOTICE_LIST = [
+  ...NOTICES.filter((n) => n.important),
+  ...NOTICES.filter((n) => !n.important),
+]
 
 export function NoticeDetailScreen() {
+  const navigate = useNavigate()
+
+  const location = useLocation()
+
+  const id = Number(new URLSearchParams(location.search).get("id") ?? "1")
+
+  const notice = NOTICES.find((n) => n.id === id) ?? NOTICES[0]
+
+  // 첨부·상세 본문은 1번(앱 업데이트 안내) 글만 더미로 제공, 나머지는 공통 문구
+  const isFull = notice.id === 1
+
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-4">
       <Header title="라이온즈 소식" />
       <div className="px-4 pt-5 flex flex-col gap-4">
         {/* 뱃지 + 날짜 */}
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-[#F0FDF4] text-[#16A34A]">
-            앱 공지
+          {notice.important && (
+            <span className="text-[10px] font-bold text-white bg-[#EF4444] rounded px-1.5 py-0.5 leading-tight">
+              중요
+            </span>
+          )}
+          <span
+            className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${LABEL_STYLE[notice.label]}`}
+          >
+            {notice.label}
           </span>
-          <span className="text-[12px] text-[#9CA3AF]">2026.09.13</span>
+          <span className="text-[12px] text-[#9CA3AF]">{notice.date}</span>
         </div>
         {/* 제목 */}
         <h2 className="text-[17px] font-bold text-[#111827] leading-snug">
-          앱 업데이트 및 이용 안내
+          {notice.title}
         </h2>
         <div className="h-px bg-[#DDE1EC]" />
         {/* 참조 이미지 — 본문 상단 */}
@@ -28,6 +58,19 @@ export function NoticeDetailScreen() {
         {/* 본문 */}
         <div className="flex flex-col gap-3 text-[14px] text-[#374151] leading-relaxed">
           <p>안녕하세요, 삼성 라이온즈입니다.</p>
+          {!isFull && (
+            <>
+              <p>
+                {notice.title} 관련하여 안내드립니다. 자세한 내용은 구단 및 앱 공식 채널을 통해 확인하실 수 있습니다.
+              </p>
+              <p>
+                이용 중 불편한 점이 있으시면 고객센터(1588-0000)로 문의해 주시기
+                바랍니다. 감사합니다.
+              </p>
+            </>
+          )}
+          {isFull && (
+            <>
           <p>
             더 나은 서비스 제공을 위해 앱이 업데이트되었습니다. 주요 변경 사항을
             안내드립니다.
@@ -52,9 +95,12 @@ export function NoticeDetailScreen() {
             바랍니다.
           </p>
           <p>앞으로도 더 나은 서비스로 찾아뵙겠습니다. 감사합니다.</p>
+            </>
+          )}
         </div>
 
         {/* 첨부 파일 */}
+        {isFull && (
         <div className="flex flex-col gap-2">
           <span className="text-[12px] font-bold text-[#111827]">
             첨부 파일
@@ -102,10 +148,18 @@ export function NoticeDetailScreen() {
             ),
           )}
         </div>
+        )}
+
+        {/* 이전 글 / 다음 글 */}
+        <PrevNextNav
+          list={NOTICE_LIST}
+          currentId={notice.id}
+          onGo={(n) => navigate(`/all/notice-detail?id=${n.id}`)}
+        />
 
         <div className="h-px bg-[#DDE1EC]" />
         <button
-          onClick={() => window.history.back()}
+          onClick={() => navigate("/all/notice-list")}
           className="w-full h-12 rounded-2xl bg-[#111827] text-white text-[14px] font-bold active:opacity-90 transition-opacity"
         >
           목록

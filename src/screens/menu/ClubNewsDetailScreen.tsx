@@ -4,6 +4,8 @@ import { PH } from "@/components/Placeholder"
 
 import { Header } from "@/components/Layout"
 
+import { PrevNextNav } from "@/components/PrevNextNav"
+
 import {
   CLUB_NEWS_DATA,
   CLUB_NEWS_CATEGORY_STYLE,
@@ -62,10 +64,6 @@ export function ClubNewsDetailScreen() {
 
   const news = list[idx]
 
-  const prev = list[idx + 1] // 이전 글 = 더 오래된 글
-
-  const next = list[idx - 1] // 다음 글 = 더 최신 글
-
   const goto = (n: ClubNews) => navigate(`/all/club-news-detail?id=${n.id}`)
 
   return (
@@ -107,33 +105,7 @@ export function ClubNewsDetailScreen() {
         </div>
 
         {/* 이전 글 / 다음 글 */}
-        <div className="bg-white border border-[#DDE1EC] rounded-2xl overflow-hidden">
-          {[
-            { label: "다음 글", item: next },
-            { label: "이전 글", item: prev },
-          ].map(({ label, item }, i) => (
-            <button
-              key={label}
-              disabled={!item}
-              onClick={() => item && goto(item)}
-              className={`w-full flex items-center gap-3 px-4 py-3 text-left disabled:opacity-40 ${
-                i === 0 ? "border-b border-[#DDE1EC]" : ""
-              }`}
-            >
-              <span className="shrink-0 w-12 text-[11px] font-bold text-[#6B7280]">
-                {label}
-              </span>
-              <span className="flex-1 min-w-0 text-[13px] text-[#111827] truncate">
-                {item ? item.title : "글이 없습니다."}
-              </span>
-              {item && (
-                <span className="shrink-0 text-[11px] text-[#9CA3AF]">
-                  {item.date}
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
+        <PrevNextNav list={list} currentId={news.id} onGo={goto} />
 
         <div className="h-px bg-[#DDE1EC]" />
         <button

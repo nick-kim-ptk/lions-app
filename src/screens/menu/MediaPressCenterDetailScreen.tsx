@@ -4,6 +4,8 @@ import { PH } from "@/components/Placeholder"
 
 import { Header } from "@/components/Layout"
 
+import { PrevNextNav } from "@/components/PrevNextNav"
+
 import { MEDIA_PRESS_POSTS } from "@/data/menu"
 
 // 103-SL-AL-36 언론사 전용 PRESS 센터 상세
@@ -73,6 +75,12 @@ export function MediaPressCenterDetailScreen() {
             </div>
           </button>
         </div>
+
+        <PrevNextNav
+          list={MEDIA_PRESS_POSTS}
+          currentId={post.id}
+          onGo={(n) => navigate(`/all/media-press-center-detail?id=${n.id}`)}
+        />
 
         <button
           type="button"

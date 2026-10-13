@@ -4,6 +4,8 @@ import { PH } from "@/components/Placeholder"
 
 import { Header } from "@/components/Layout"
 
+import { PrevNextNav } from "@/components/PrevNextNav"
+
 import { PRESS_POSTS } from "@/data/menu"
 
 // 101-SL-AL-34 이슈와 팩트 상세
@@ -49,6 +51,12 @@ export function PressCenterDetailScreen() {
           ))}
           <p>감사합니다.</p>
         </div>
+
+        <PrevNextNav
+          list={PRESS_POSTS}
+          currentId={post.id}
+          onGo={(n) => navigate(`/all/press-center-detail?id=${n.id}`)}
+        />
 
         <button
           type="button"

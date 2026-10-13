@@ -8,6 +8,8 @@ import { PH, PHCircle, PHSection } from "@/components/Placeholder"
 
 import { Header } from "@/components/Layout"
 
+import { ParkingReserveBanner } from "@/components/ParkingReserveBanner"
+
 import { GameStateNotice } from "@/components/GameCaseBar"
 
 import { withCaseGames, useCaseState, isSeasonEndPhase } from "@/data/caseStore"
@@ -559,6 +561,13 @@ export function TicketScreen() {
             </button>
           </div>
         )}
+      </div>
+
+      {/* 주차장 사전 예약 배너 (013 주차 탭과 동일) */}
+      <div className="px-4 mb-6">
+        <ParkingReserveBanner
+          onClick={() => navigate("/game/stadium", { state: { tab: 5 } })}
+        />
       </div>
 
       {/* Authentic Shop preview */}

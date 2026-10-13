@@ -14,6 +14,8 @@ import { useNavigate } from "react-router-dom"
 
 import { Header } from "@/components/Layout"
 
+import { ParkingReserveBanner } from "@/components/ParkingReserveBanner"
+
 import {
   CANCELLED_BOOKINGS,
   LEAGUE_LABEL,
@@ -193,6 +195,12 @@ export function BookingHistoryScreen() {
     )
   }
 
+  const ParkingBanner = () => (
+    <ParkingReserveBanner
+      onClick={() => navigate("/game/stadium", { state: { tab: 5 } })}
+    />
+  )
+
   const PeriodFilter = () => (
     <div className="rounded-2xl border border-[#DDE1EC] bg-white p-4">
       <p className="mb-3 text-[12px] font-semibold text-[#374151]">
@@ -301,6 +309,7 @@ export function BookingHistoryScreen() {
       </div>
 
       <div className="px-4 pt-4 flex flex-col gap-3">
+        {tab === "예매 취소" && <ParkingBanner />}
         {tab === "예매 취소" && <PeriodFilter />}
 
         {tab === "예매 확인" && (
@@ -313,6 +322,7 @@ export function BookingHistoryScreen() {
             </p>
           </div>
         )}
+        {tab === "예매 확인" && <ParkingBanner />}
         {tab === "예매 확인" && <PeriodFilter />}
         {tab === "예매 확인" &&
           (listCase === "목록 없음" || UPCOMING.length === 0 ? (

@@ -4,6 +4,7 @@ import dalgubeol from "@/assets/parking-dalgubeol.jpg"
 import jeonseolro from "@/assets/parking-jeonseolro.jpg"
 import shuttle from "@/assets/parking-shuttle.jpg"
 import { PARKING_LOTS } from "@/data/parking"
+import { ParkingReserveBanner } from "@/components/ParkingReserveBanner"
 
 const MAPS: Record<string, string> = {
   jeonseolro,
@@ -56,19 +57,7 @@ export function ParkingTab() {
         <div className="flex flex-col gap-3">
           {/* 배너: 지도 바로 아래, 상세 안내보다 먼저 */}
           {lot.banner && (
-            <button className="flex items-center justify-between gap-3 rounded-2xl bg-[#1B5BF0] px-4 py-3.5 text-left text-white">
-              <span>
-                <span className="block text-[14px] font-bold">
-                  {lot.banner.title}
-                </span>
-                <span className="block text-[11px] text-white/80">
-                  {lot.banner.desc}
-                </span>
-              </span>
-              <span className="shrink-0 rounded-full bg-white px-3 py-1.5 text-[12px] font-bold text-[#1B5BF0]">
-                {lot.banner.cta} ›
-              </span>
-            </button>
+            <ParkingReserveBanner banner={lot.banner} />
           )}
 
           <div className="flex flex-col gap-3 rounded-2xl border border-[#DDE1EC] bg-white p-4">

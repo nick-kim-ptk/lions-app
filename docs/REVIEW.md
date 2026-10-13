@@ -289,3 +289,6 @@ KV 좌측 상단 드롭다운(멤버십 모집 전 / 멤버십 모집 중 / 가�
 
 ### 탭 화면 캡처(views.json) 추가
 - 설계서 편집기 요청: 탭이 있는 13개 화면(011·013·026·042·043·046·047·048·051·065·067·070·071)을 탭별로 캡처. 설정은 `scripts/view-tabs.json`, 스크립트는 `scripts/shots-views.mjs`, 배포 워크플로에 "Capture tab views" 단계 추가. 결과 `/shots/views.json`, `/shots/views/{화면ID}__{순번}.png`(첫 탭은 default 표시만).
+
+### 주차장 사전 예약 배너 확장 (017 · 043)
+- 013-SL-GM-08 주차 탭의 "전설로 주차장 사전 예약" 배너를 공용 컴포넌트(`components/ParkingReserveBanner.tsx`)로 빼서 017-SL-TK-01 티켓(어센틱 샵 위)과 043-SL-MY-14 예매 내역(기간별 조회 위, 예매 확인·예매 취소 두 탭 모두)에 같은 모양으로 추가. 누르면 구장 안내 > 주차 탭으로 이동(더미). 문구는 `data/parking.ts` 한 곳에서 관리.

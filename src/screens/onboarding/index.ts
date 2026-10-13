@@ -18,3 +18,4 @@ export { FindAccountScreen } from "./FindAccountScreen"
 export { SetNewPasswordScreen } from "./SetNewPasswordScreen"
 
 export { FindCompleteScreen } from "./FindCompleteScreen"
+export { MaintenanceScreen } from "./MaintenanceScreen"

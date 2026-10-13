@@ -112,6 +112,14 @@ export const SCREENS: ScreenMeta[] = [
     layout: "form",
   },
 
+  {
+    id: "108-SL-CM-13",
+    name: "서비스 점검",
+    path: "/maintenance",
+    group: "공통",
+    layout: "splash",
+  },
+
   // 홈
 
   {
@@ -817,6 +825,8 @@ export const IA_TREE: { group: Group; screens: IATreeNode[] }[] = [
       { id: "002-SL-CM-02", name: "권한 요청", path: "/permissions" },
 
       { id: "003-SL-CM-03", name: "팝업(공지)", path: "/home?popup=notice" },
+
+      { id: "108-SL-CM-13", name: "서비스 점검", path: "/maintenance" },
 
       {
         id: "089-SL-CM-04",

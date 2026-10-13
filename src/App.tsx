@@ -34,6 +34,7 @@ import {
   WelcomeScreen,
   FindAccountScreen,
   FindCompleteScreen,
+  MaintenanceScreen,
   SetNewPasswordScreen,
 } from "./screens/onboarding"
 
@@ -160,6 +161,7 @@ export default function App() {
         <Route path="/signup/welcome" element={<WelcomeScreen />} />
         <Route path="/find-account" element={<FindAccountScreen />} />
         <Route path="/find-complete" element={<FindCompleteScreen />} />
+        <Route path="/maintenance" element={<MaintenanceScreen />} />
         <Route path="/set-new-password" element={<SetNewPasswordScreen />} />
         <Route
           path="/my/withdraw-complete"

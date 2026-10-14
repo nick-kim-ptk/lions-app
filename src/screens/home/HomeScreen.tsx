@@ -812,7 +812,7 @@ export function HomeScreen() {
                     </span>
                   </div>
                 </div>
-                <div className="shrink-0 w-7 h-7 rounded-full bg-[#F5F7FB] border border-[#DDE1EC] flex items-center justify-center">
+                <div className="shrink-0 w-7 h-7 rounded-full bg-[#F5F7FB] border border-[#DDE1EC] hidden lg:flex items-center justify-center">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
                     <path
                       d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"

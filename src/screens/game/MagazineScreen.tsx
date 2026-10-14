@@ -60,7 +60,7 @@ export function MagazineScreen() {
                 </p>
                 <div className="flex items-center justify-between mt-0.5">
                   <p className="text-[10px] text-[#9CA3AF]">{item.date}</p>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                  <svg className="hidden lg:block" width="14" height="14" viewBox="0 0 24 24" fill="none">
                     <path
                       d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"
                       stroke="#9CA3AF"

@@ -264,7 +264,12 @@ const NAV_ITEMS = [
   },
 ]
 
+// 전체메뉴 경로지만 게임 탭에서 진입하는 화면 → 바텀바는 게임으로 표시
+const GAME_TAB_PATHS = ["/all/preview-list", "/all/preview-detail"]
+
 function getActiveTab(pathname: string) {
+  if (GAME_TAB_PATHS.includes(pathname)) return "/game"
+
   for (const item of NAV_ITEMS) {
     if (pathname.startsWith(item.path)) return item.path
   }

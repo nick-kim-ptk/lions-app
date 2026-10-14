@@ -101,7 +101,7 @@ export function LionsNewsScreen() {
                         {group.items[0].time}
                       </span>
                       {/* 아웃링크 표시 */}
-                      <div className="ml-auto flex items-center gap-1 bg-white/20 rounded-full px-2 py-0.5">
+                      <div className="ml-auto hidden lg:flex items-center gap-1 bg-white/20 rounded-full px-2 py-0.5">
                         <svg
                           width="10"
                           height="10"
@@ -155,7 +155,7 @@ export function LionsNewsScreen() {
                       </div>
                     </div>
                     {/* 아웃링크 아이콘 */}
-                    <div className="shrink-0 w-7 h-7 rounded-full bg-[#F5F7FB] border border-[#DDE1EC] flex items-center justify-center">
+                    <div className="shrink-0 w-7 h-7 rounded-full bg-[#F5F7FB] border border-[#DDE1EC] hidden lg:flex items-center justify-center">
                       <svg
                         width="12"
                         height="12"

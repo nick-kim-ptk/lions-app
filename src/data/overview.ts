@@ -120,6 +120,14 @@ export const SCREENS: ScreenMeta[] = [
     layout: "splash",
   },
 
+  {
+    id: "110-SL-CM-14",
+    name: "게이트 페이지",
+    path: "/gate",
+    group: "공통",
+    layout: "splash",
+  },
+
   // 홈
 
   {
@@ -835,6 +843,8 @@ export const IA_TREE: { group: Group; screens: IATreeNode[] }[] = [
       { id: "003-SL-CM-03", name: "팝업(공지)", path: "/home?popup=notice" },
 
       { id: "108-SL-CM-13", name: "서비스 점검", path: "/maintenance" },
+
+      { id: "110-SL-CM-14", name: "게이트 페이지", path: "/gate" },
 
       {
         id: "089-SL-CM-04",

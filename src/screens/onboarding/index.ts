@@ -19,3 +19,5 @@ export { SetNewPasswordScreen } from "./SetNewPasswordScreen"
 
 export { FindCompleteScreen } from "./FindCompleteScreen"
 export { MaintenanceScreen } from "./MaintenanceScreen"
+
+export { GateScreen } from "./GateScreen"

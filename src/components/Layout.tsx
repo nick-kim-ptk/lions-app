@@ -64,7 +64,10 @@ export function ScreenIdBadge() {
   }
 
   return (
-    <div className="fixed top-0 left-1/2 -translate-x-1/2 z-[9999]">
+    <div
+      className="fixed top-0 left-1/2 -translate-x-1/2 z-[9999]"
+      data-id-badge
+    >
       <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm rounded-b-lg px-2.5 py-0.5">
         <span className="text-white/70 text-[9px] font-mono tracking-widest">
           {id}

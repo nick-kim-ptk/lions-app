@@ -177,6 +177,18 @@ export async function snap(page, file) {
 
 // 컨텍스트 공통 고정: 시계(멈춤) + Math.random 시드 + crypto.randomUUID 대체
 export async function freeze(context) {
+  // 화면 ID 배지(상단 중앙)는 캡처에 나오지 않게 숨긴다
+  await context.addInitScript(() => {
+    const css = "[data-id-badge],[data-screen-id]{display:none !important}"
+    const add = () => {
+      const st = document.createElement("style")
+      st.textContent = css
+      document.head.appendChild(st)
+    }
+    if (document.head) add()
+    else document.addEventListener("DOMContentLoaded", add)
+  })
+
   await context.clock.install({ time: NOW })
 
   await context.clock.pauseAt(new Date(NOW.getTime() + 1000))

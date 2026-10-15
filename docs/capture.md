@@ -113,3 +113,6 @@ main에 푸시할 때마다 Actions가 캡처를 모아 아래 주소에 올립�
 ## 언제 캡처가 새로 찍히나
 - **수동 실행일 때만**: GitHub > Actions > Deploy to GitHub Pages > Run workflow. 전체 화면·구역·탭 캡처를 모두 새로 찍어 `/shots/`에 올린다(약 5분).
 - **일반 푸시**: 캡처는 다시 찍지 않는다. 배포 때 지금 공개된 `/shots/`의 zip(`lions-app-shots.zip`)을 받아 그대로 유지하므로 `/shots/`가 사라지지 않고, 배포는 약 1분 안에 끝난다.
+
+## 화면 ID 배지 제외
+상단 중앙의 화면 ID 배지(`data-id-badge`)는 캡처 스크립트가 자동으로 숨깁니다(`scripts/shots.mjs`의 `freeze`, `scripts/capture.mjs`). 화면에서는 그대로 보이고 캡처 이미지에만 빠집니다.

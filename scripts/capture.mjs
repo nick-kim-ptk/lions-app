@@ -162,6 +162,17 @@ async function openPage(browser, url) {
     locale: "ko-KR",
   })
 
+  await context.addInitScript(() => {
+    const css = "[data-id-badge],[data-screen-id]{display:none !important}"
+    const add = () => {
+      const st = document.createElement("style")
+      st.textContent = css
+      document.head.appendChild(st)
+    }
+    if (document.head) add()
+    else document.addEventListener("DOMContentLoaded", add)
+  })
+
   const page = await context.newPage()
 
   await page.goto(url, { waitUntil: "networkidle" })

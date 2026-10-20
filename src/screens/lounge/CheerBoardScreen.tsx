@@ -308,7 +308,7 @@ export function CheerBoardScreen() {
       </div>
 
       {/* 하단 플로팅 CTA */}
-      <div className="sticky bottom-0 lg:static bg-white border-t border-[#DDE1EC] px-4 pt-3 pb-8 lg:border-t-0 lg:bg-transparent lg:pb-10">
+      <div className="sticky bottom-0 bg-white border-t border-[#DDE1EC] px-4 pt-3 pb-8">
         <button
           onClick={() => setFullscreen(true)}
           className="w-full h-13 rounded-2xl bg-[#1B5BF0] text-white font-semibold text-[14px] h-12"

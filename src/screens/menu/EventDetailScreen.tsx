@@ -28,7 +28,7 @@ export function EventDetailScreen() {
       <div className="w-full bg-[#DDE1EC]" style={{ minHeight: 600 }} />
 
       {/* 하단 고정 참여 조건 + 버튼 */}
-      <div className="sticky bottom-0 bg-white border-t border-[#DDE1EC] px-4 pt-4 pb-6">
+      <div className="sticky bottom-0 lg:static bg-white border-t border-[#DDE1EC] px-4 pt-4 pb-6">
         {/* 앰블럼 / 일반참여 토글 */}
         <div className="flex items-center justify-end mb-4">
           <CaseSelect

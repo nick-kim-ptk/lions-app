@@ -478,7 +478,7 @@ export function DiaryScreen() {
     : false
 
   return (
-    <div className="min-h-full bg-[#F5F7FB] pb-44">
+    <div className="min-h-full bg-[#F5F7FB] pb-44 lg:pb-0">
       <Header title="함께 만드는 V9" />
 
       {/* 상단 배너 — 030 마이페이지의 함께 만드는 V9 배너와 같은 내용(그래프 포함) */}
@@ -546,7 +546,7 @@ export function DiaryScreen() {
 
       {/* 플로팅 펜 버튼 + 툴팁 (작성 가능할 때만 말풍선) */}
       <div
-        className="fixed z-40 flex items-center gap-[5px]"
+        className="fixed z-40 flex items-center gap-[5px] lg:static lg:justify-end lg:px-4 lg:pb-10 lg:pt-2"
         style={{ bottom: "calc(68px + 16px)", right: 16 }}
       >
         {canWrite && (

@@ -91,7 +91,7 @@ export function BookingCancelScreen() {
   ]
 
   return (
-    <div className="min-h-full bg-[#F5F7FB] pb-32">
+    <div className="min-h-full bg-[#F5F7FB] pb-32 lg:pb-0">
       <Header
         title="예매 취소"
         rightSlot={
@@ -297,7 +297,7 @@ export function BookingCancelScreen() {
       </div>
 
       {/* 하단 플로팅 CTA */}
-      <div className="fixed bottom-0 left-0 right-0 lg:right-auto lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-[1200px] bg-white border-t border-[#DDE1EC] px-4 pt-3 pb-8">
+      <div className="fixed bottom-0 left-0 right-0 lg:static bg-white border-t border-[#DDE1EC] px-4 pt-3 pb-8 lg:border-t-0 lg:bg-transparent lg:pb-10 lg:pt-6">
         <button
           disabled={!agreed || isClosed}
           onClick={() => navigate(-1)}

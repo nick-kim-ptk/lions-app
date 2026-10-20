@@ -52,7 +52,7 @@ export function ChildRegisterScreen() {
         </div>
       </div>
 
-      <div className="sticky bottom-0 bg-white border-t border-[#DDE1EC] px-4 pt-4 pb-10 mt-6">
+      <div className="sticky bottom-0 lg:static bg-white border-t border-[#DDE1EC] px-4 pt-4 pb-10 mt-6 lg:border-t-0 lg:bg-transparent lg:pb-10">
         <button
           className={`w-full h-14 rounded-2xl font-bold text-[16px] transition-colors ${
             code.length > 0

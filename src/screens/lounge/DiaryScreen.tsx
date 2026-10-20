@@ -6,6 +6,8 @@ import { EmptyState } from "@/components/EmptyState"
 
 import { CaseSelect } from "@/components/CaseSelect"
 
+import { V9Banner } from "@/components/V9Banner"
+
 import {
   useCaseState,
   withCaseGames,
@@ -315,10 +317,6 @@ export function DiaryScreen() {
     setWriteCase(deriveCase())
   }, [phase, match]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const [watchFilter, setWatchFilter] = useState<"전체" | WatchMode>("전체")
-
-  const [venueFilter, setVenueFilter] = useState<"전체" | "홈" | "원정">("전체")
-
   const [listEmpty, setListEmpty] = useState(false)
 
   const [posts, setPosts] = useState<Post[]>(INITIAL_POSTS)
@@ -364,14 +362,6 @@ export function DiaryScreen() {
   }
 
   const visible = (listEmpty ? [] : posts)
-
-    .filter((p) => watchFilter === "전체" || p.watchMode === watchFilter)
-
-    .filter(
-      (p) =>
-        venueFilter === "전체" ||
-        (venueFilter === "홈") === gameOf(p.gameId).home,
-    )
 
     .sort((a, b) => {
       const da = gameOf(a.gameId).date
@@ -487,56 +477,20 @@ export function DiaryScreen() {
     ? isConfirmedAttendance(writeGameId)
     : false
 
-  const chip = (active: boolean) =>
-    `px-3 py-1 rounded-lg text-[12px] font-bold transition-all flex items-center gap-1 ${
-      active ? "bg-[#1B5BF0] text-white" : "text-[#9CA3AF]"
-    }`
-
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-44">
       <Header title="함께 만드는 V9" />
 
-      {/* 필터 — 플로팅 (관람 방식 / 경기장) */}
-      <div className="fixed top-14 left-0 right-0 z-30 flex justify-center pt-3 pb-2 pointer-events-none">
-        <div className="flex flex-col gap-1 bg-white/80 backdrop-blur-md rounded-2xl px-3 py-2 shadow-lg border border-[#DDE1EC]/60 pointer-events-auto">
-          <div className="flex items-center gap-1">
-            <span className="w-10 text-[10px] font-semibold text-[#9CA3AF]">
-              관람
-            </span>
-            {(["전체", "직관", "집관"] as const).map((m) => (
-              <button
-                key={m}
-                onClick={() => setWatchFilter(m)}
-                className={chip(watchFilter === m)}
-              >
-                {m !== "전체" && (
-                  <span className="text-[11px]">
-                    {m === "직관" ? "🏟️" : "📺"}
-                  </span>
-                )}
-                <span>{m}</span>
-              </button>
-            ))}
-          </div>
-          <div className="flex items-center gap-1">
-            <span className="w-10 text-[10px] font-semibold text-[#9CA3AF]">
-              경기장
-            </span>
-            {(["전체", "홈", "원정"] as const).map((v) => (
-              <button
-                key={v}
-                onClick={() => setVenueFilter(v)}
-                className={chip(venueFilter === v)}
-              >
-                <span>{v}</span>
-              </button>
-            ))}
-          </div>
-        </div>
+      {/* 상단 배너 — 030 마이페이지의 함께 만드는 V9 배너와 같은 내용(그래프 포함) */}
+      <div className="px-4 pt-4">
+        <V9Banner
+          title="2027 시즌, 직관·집관 경기를 기록해요"
+          sub={"경기 당일 24시까지 작성할 수 있어요.\n작성한 기록은 이후에도 수정·삭제할 수 있어요."}
+        />
       </div>
 
       {/* 케이스 전환 (와이어프레임 전용) */}
-      <div className="mt-28 flex justify-end gap-2 px-4 pt-3">
+      <div className="flex justify-end gap-2 px-4 pt-3">
         <CaseSelect
           value={writeCase}
           options={WRITE_CASES}
@@ -549,28 +503,13 @@ export function DiaryScreen() {
         />
       </div>
 
-      {/* 작성 안내 */}
-      <div className="px-4 pt-3">
-        <div className="bg-[#EBF0FF] border border-[#1B5BF0]/20 rounded-2xl px-4 py-3">
-          <p className="text-[12px] font-bold text-[#1B5BF0]">
-            2027 시즌, 직관·집관 경기를 기록해요
-          </p>
-          <p className="mt-0.5 text-[11px] text-[#1B5BF0]/80 leading-relaxed">
-            경기 당일 24시까지 작성할 수 있어요. 작성한 기록은 이후에도
-            수정·삭제할 수 있어요.
-          </p>
-        </div>
-      </div>
-
       {/* 게시물 */}
       <div className="px-4 flex flex-col gap-4 mb-4 mt-3">
         {visible.length === 0 && (
           <EmptyState
             icon="📝"
             title={
-              watchFilter === "전체" && venueFilter === "전체"
-                ? "아직 2027 시즌 기록이 없어요"
-                : "조건에 맞는 기록이 없어요"
+              "아직 2027 시즌 기록이 없어요"
             }
             desc={
               canWrite
@@ -578,9 +517,7 @@ export function DiaryScreen() {
                 : "경기 당일에 직관·집관 기록을 남길 수 있어요."
             }
             actionLabel={
-              canWrite && watchFilter === "전체" && venueFilter === "전체"
-                ? "첫 기록 남기기"
-                : undefined
+              canWrite ? "첫 기록 남기기" : undefined
             }
             onAction={openWriteModal}
           />

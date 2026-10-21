@@ -200,8 +200,6 @@ export function LoungeDashboardScreen() {
 
   const [predScore, setPredScore] = useState<[number, number]>([3, 1])
 
-  const [menuExpanded, setMenuExpanded] = useState(false)
-
   const [eldoradoMatch, setEldoradoMatch] =
     useState<"경기 전" | "경기 중" | "미 운영">("경기 중")
 
@@ -227,81 +225,6 @@ export function LoungeDashboardScreen() {
       <KvCarousel slides={LOUNGE_KV_SLIDES} />
 
       <div className="h-5" />
-
-      {/* Menu grid */}
-      <div className="px-4 mb-6">
-        <div className="relative">
-          <div
-            className="grid grid-cols-3 gap-2 overflow-hidden transition-all duration-300"
-            style={{ maxHeight: menuExpanded ? "1000px" : "168px" }}
-          >
-            {[
-              { label: "독점 콘텐츠", path: "/lounge/exclusive", emoji: "🎬" },
-
-              { label: "엘도라도 ZONE", path: "/lounge/eldorado", emoji: "⚡" },
-
-              {
-                label: "디지털 피켓",
-                path: "/lounge/cheer-board",
-                emoji: "📣",
-              },
-
-              { label: "승리 운세", path: "/lounge/fortune", emoji: "🔮" },
-
-              {
-                label: "디지털 굿즈",
-                path: "/lounge/digital-goods",
-                emoji: "🎁",
-              },
-
-              { label: "블루 메이트", path: "/lounge/sns", emoji: "📸" },
-
-              {
-                label: "블루 시그널",
-                path: "/lounge/blue-signal",
-                emoji: "📍",
-              },
-            ].map((item) => (
-              <button
-                key={item.label}
-                onClick={() => navigate(item.path)}
-                className="flex flex-col items-center gap-2 bg-[#FFFFFF] rounded-2xl border border-[#DDE1EC] py-4"
-              >
-                <span className="text-2xl">{item.emoji}</span>
-                <span className="text-[10px] text-[#64748B] text-center leading-tight">
-                  {item.label}
-                </span>
-              </button>
-            ))}
-          </div>
-          {/* 그라데이션 + 더보기 버튼 */}
-          {!menuExpanded && (
-            <div
-              className="absolute bottom-0 left-0 right-0 flex flex-col items-center pt-10"
-              style={{
-                background:
-                  "linear-gradient(to bottom, transparent, #F5F7FB 70%)",
-              }}
-            >
-              <button
-                onClick={() => setMenuExpanded(true)}
-                className="mb-1 flex items-center gap-1 bg-white border border-[#DDE1EC] rounded-full px-4 py-1.5 text-[12px] font-semibold text-[#1B5BF0] shadow-sm"
-              >
-                더보기
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M6 9l6 6 6-6"
-                    stroke="#1B5BF0"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
 
       {/* ── 엘도라도 ZONE preview ── */}
       <div className="px-4 mb-5">

@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom"
-
 import { PHImage } from "@/components/Placeholder"
 
 import { Header } from "@/components/Layout"
@@ -9,7 +7,6 @@ import {
   ABOUT_ORG,
   ABOUT_RETIRED,
   ABOUT_SECTIONS,
-  ABOUT_SHORTCUTS,
   ABOUT_TITLES,
   ABOUT_VISION,
 } from "@/data/club"
@@ -17,8 +14,6 @@ import {
 // 058-SL-AL-02 구단 소개
 
 export function AboutClubScreen() {
-  const navigate = useNavigate()
-
   return (
     <div className="min-h-full bg-[#F5F7FB] pb-6">
       <Header title="구단 소개" />
@@ -32,6 +27,24 @@ export function AboutClubScreen() {
       />
 
       <div className="px-4 pt-5 flex flex-col gap-6">
+        {ABOUT_SECTIONS.filter((sec) => sec.title === "창단 배경").map((sec) => (
+          <div key={sec.title}>
+            <p className="text-[15px] font-bold text-[#111827] mb-2">
+              {sec.title}
+            </p>
+            <div className="flex flex-col gap-2">
+              {sec.paragraphs.map((t, i) => (
+                <p
+                  key={i}
+                  className="text-[13px] text-[#374151] leading-relaxed"
+                >
+                  {t}
+                </p>
+              ))}
+            </div>
+          </div>
+        ))}
+
         <div className="flex flex-col gap-2">
           <p className="text-[15px] font-bold text-[#0E1A40]">
             숫자로 보는 라이온즈
@@ -169,7 +182,7 @@ export function AboutClubScreen() {
           </div>
         </div>
 
-        {ABOUT_SECTIONS.map((sec) => (
+        {ABOUT_SECTIONS.filter((sec) => sec.title !== "창단 배경").map((sec) => (
           <div key={sec.title}>
             <p className="text-[15px] font-bold text-[#111827] mb-2">
               {sec.title}
@@ -186,26 +199,6 @@ export function AboutClubScreen() {
             </div>
           </div>
         ))}
-
-        <div className="flex flex-col gap-2">
-          <p className="text-[15px] font-bold text-[#0E1A40]">
-            라이온즈 더 알아보기
-          </p>
-          <div className="grid grid-cols-4 gap-2">
-            {ABOUT_SHORTCUTS.map((s) => (
-              <button
-                key={s.path}
-                onClick={() => navigate(s.path)}
-                className="bg-white rounded-2xl border border-[#DDE1EC] py-3 flex flex-col items-center gap-1.5"
-              >
-                <span className="text-[22px]">{s.icon}</span>
-                <span className="text-[11px] font-semibold text-[#374151] text-center leading-tight">
-                  {s.label}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   )

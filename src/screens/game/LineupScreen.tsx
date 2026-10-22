@@ -28,13 +28,15 @@ export function LineupScreen() {
 
   const { match, phase } = useCaseState()
 
-  const [announcedLocal, setAnnounced] = useState(true)
+  const [lineupView, setLineupView] = useState<"발표 후" | "발표 전" | "경기 취소">(
+    "발표 후",
+  )
 
   // 경기 전에는 발표 전/후 토글로 확인하고, 그 외 상태는 전역 케이스를 따른다
 
   const announced =
     match === "경기 전"
-      ? announcedLocal
+      ? lineupView === "발표 후"
       : match !== "우천 취소" && match !== "경기 연기"
 
   if (!game) {
@@ -79,6 +81,47 @@ export function LineupScreen() {
 
   const opp = TEAMS[game.opp]
 
+  const dateBanner = (
+      <div className="px-4 pt-4 pb-2 flex items-center gap-2">
+        <span className="text-[11px] font-semibold text-white bg-[#1B5BF0] rounded-full px-2.5 py-0.5">
+          TODAY
+        </span>
+        <span className="text-[13px] font-semibold text-[#111827]">
+          {MOCK_TODAY.slice(0, 4)}년 {fmtMDW(MOCK_TODAY)}
+        </span>
+        <span className="text-[12px] text-[#64748B]">
+          {MY_TEAM.short} vs {opp.short} · {game.time}
+        </span>
+        {/* 상태 토글 — 케이스 베리에이션용 */}
+        {match === "경기 전" && (
+          <CaseSelect
+            className="ml-auto"
+            value={lineupView}
+            options={["발표 후", "발표 전", "경기 취소"] as const}
+            onChange={setLineupView}
+          />
+        )}
+      </div>
+  )
+
+  // 경기 취소 버전 — 경기 전 상태에서 드롭다운으로 확인 (라인업 없이 안내만)
+  if (match === "경기 전" && lineupView === "경기 취소") {
+    return (
+      <div className="min-h-full bg-[#F5F7FB] pb-4">
+        <Header title="오늘의 라인업" />
+        {dateBanner}
+        <div className="px-4 pt-16 text-center">
+          <p className="text-[15px] font-semibold text-[#111827]">
+            금일 경기는 취소되어 추후 재편성됩니다.
+          </p>
+          <p className="mt-1.5 text-[12px] text-[#9CA3AF]">
+            재편성 경기가 확정되면 라인업이 다시 발표돼요.
+          </p>
+        </div>
+      </div>
+    )
+  }
+
   const set = TODAY_LINEUP
 
   const sp = set.startingPitcher
@@ -97,27 +140,7 @@ export function LineupScreen() {
     <div className="min-h-full bg-[#F5F7FB] pb-4">
       <Header title="오늘의 라인업" />
 
-      {/* Today date banner */}
-      <div className="px-4 pt-4 pb-2 flex items-center gap-2">
-        <span className="text-[11px] font-semibold text-white bg-[#1B5BF0] rounded-full px-2.5 py-0.5">
-          TODAY
-        </span>
-        <span className="text-[13px] font-semibold text-[#111827]">
-          {MOCK_TODAY.slice(0, 4)}년 {fmtMDW(MOCK_TODAY)}
-        </span>
-        <span className="text-[12px] text-[#64748B]">
-          {MY_TEAM.short} vs {opp.short} · {game.time}
-        </span>
-        {/* 상태 토글 — 케이스 베리에이션용 */}
-        {match === "경기 전" && (
-          <CaseSelect
-            className="ml-auto"
-            value={announced ? "발표 후" : "발표 전"}
-            options={["발표 후", "발표 전"] as const}
-            onChange={(v) => setAnnounced(v === "발표 후")}
-          />
-        )}
-      </div>
+      {dateBanner}
 
       <GameStateNotice context="lineup" />
 

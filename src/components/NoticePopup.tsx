@@ -107,9 +107,6 @@ export function NoticePopup({ onClose }: { onClose: () => void }) {
             </div>
             {/* 하단 텍스트 */}
             <div className="flex-1 px-5 pt-4 pb-0 flex flex-col gap-1.5">
-              <div className="flex items-center gap-2 mb-0.5">
-                <span className="text-[11px] text-[#9CA3AF]">2026.09.19</span>
-              </div>
               <p className="text-[14px] font-bold text-[#111827] leading-snug">
                 9월 27일 키즈런 이벤트 접수 안내
               </p>
@@ -135,21 +132,11 @@ export function NoticePopup({ onClose }: { onClose: () => void }) {
             {/* 풀 배경 이미지 */}
             <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A2E] via-[#16213E] to-[#0F3460]" />
             <div className="absolute bottom-0 left-0 right-0 h-56 bg-gradient-to-t from-black/80 to-transparent" />
-            {/* 콘텐츠 */}
-            <div className="relative flex-1 flex flex-col justify-between p-5">
-              <div />
-              <div className="flex flex-col gap-1.5">
-                <p className="text-white text-[20px] font-black leading-snug drop-shadow-lg">
-                  9월 27일
-                  <br />
-                  키즈런 이벤트
-                  <br />
-                  접수 안내
-                </p>
-                <p className="text-white/60 text-[12px]">
-                  2026.09.27 (일) 라이온즈 파크
-                </p>
-              </div>
+            {/* 콘텐츠 없음 — 이미지만 사용 (와이어프레임 안내 문구) */}
+            <div className="relative flex-1 flex items-center justify-center p-5">
+              <p className="text-white/30 text-[14px] font-medium">
+                배경에 풀 이미지 사용
+              </p>
             </div>
             {/* 점 + 액션 — 반투명 */}
             <div className="relative">
@@ -183,10 +170,6 @@ export function NoticePopup({ onClose }: { onClose: () => void }) {
         >
           <div className="w-full h-full bg-[#FFFFFF] rounded-3xl overflow-hidden border border-[#DDE1EC] flex flex-col">
             <div className="flex-1 px-6 pt-7 pb-0 flex flex-col gap-3 overflow-hidden">
-              {/* 태그 + 날짜 */}
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] text-[#9CA3AF]">2026.09.19</span>
-              </div>
               {/* 제목 */}
               <p className="text-[17px] font-black text-[#111827] leading-snug">
                 9월 27일 키즈런

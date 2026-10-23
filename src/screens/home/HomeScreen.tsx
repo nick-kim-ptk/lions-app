@@ -34,6 +34,7 @@ import {
   TODAY_LINEUP,
   OPP_STARTING_PITCHER,
   fmtKoTime,
+  fmtRelative,
   fmtSlashMDW,
   nextGame,
   ticketStateOf,
@@ -752,7 +753,7 @@ export function HomeScreen() {
                 {item.title}
               </span>
               <span className="text-[10px] text-[#9CA3AF] mt-0.5">
-                {item.date}
+                {fmtRelative(item.date)}
               </span>
             </div>
           ))}

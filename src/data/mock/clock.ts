@@ -60,6 +60,36 @@ export const NOW_MINUTES = toMinutes(MOCK_TODAY, MOCK_TIME)
 const parts = (date: string) =>
   date.split("-").map(Number) as [number, number, number]
 
+/**
+ * 상대 시간 표기 — 목업 기준 시각(MOCK_TODAY·MOCK_TIME) 대비 "3분 전", "10일 전".
+ * date: 'YYYY-MM-DD' 또는 'YYYY.MM.DD', time 'HH:mm'(없으면 날짜만으로 계산: 같은 날은 "오늘").
+ * 1시간 미만 N분 전 · 24시간 미만 N시간 전 · 30일 미만 N일 전 · 12개월 미만 N개월 전 · 그 이후 N년 전.
+ */
+
+export function fmtRelative(date: string, time?: string): string {
+  const d = date.replace(/\./g, "-")
+
+  if (time) {
+    const diff = NOW_MINUTES - toMinutes(d, time)
+
+    if (diff < 1) return "방금 전"
+
+    if (diff < 60) return `${diff}분 전`
+
+    if (diff < 1440) return `${Math.floor(diff / 60)}시간 전`
+  }
+
+  const days = diffDays(d, MOCK_TODAY)
+
+  if (days < 1) return "오늘"
+
+  if (days < 30) return `${days}일 전`
+
+  if (days < 365) return `${Math.floor(days / 30)}개월 전`
+
+  return `${Math.floor(days / 365)}년 전`
+}
+
 /** 9월 19일 */
 
 export const fmtMD = (date: string) => {

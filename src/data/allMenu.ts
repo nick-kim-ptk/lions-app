@@ -230,4 +230,15 @@ export const ALL_MENU_SECTIONS: MenuSection[] = [
       },
     ],
   },
+
+  // 모바일 전체 메뉴 전용 — PC 상단 메뉴(PcGnb)는 이 섹션을 쓰지 않는다
+  {
+    title: "SHOP",
+
+    items: [
+      { label: "어센틱샵", path: "/all/authentic-shop" },
+
+      { label: "베리즈샵", path: "/all/berriz-shop" },
+    ],
+  },
 ]

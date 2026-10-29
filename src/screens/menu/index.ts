@@ -57,3 +57,7 @@ export { PreviewListScreen } from "./PreviewListScreen"
 export { PreviewDetailScreen } from "./PreviewDetailScreen"
 
 export { FAQScreen } from "./FAQScreen"
+
+export { AuthenticShopScreen } from "./AuthenticShopScreen"
+
+export { BerrizShopScreen } from "./BerrizShopScreen"

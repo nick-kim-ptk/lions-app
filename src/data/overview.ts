@@ -781,6 +781,22 @@ export const SCREENS: ScreenMeta[] = [
     group: "전체메뉴",
     layout: "list",
   },
+
+  {
+    id: "111-SL-AL-33",
+    name: "어센틱샵",
+    path: "/all/authentic-shop",
+    group: "전체메뉴",
+    layout: "list",
+  },
+
+  {
+    id: "112-SL-AL-34",
+    name: "베리즈샵",
+    path: "/all/berriz-shop",
+    group: "전체메뉴",
+    layout: "list",
+  },
 ]
 
 // ─── Group metadata ─────────────────────────────────────────────────────────
@@ -1299,6 +1315,10 @@ export const IA_TREE: { group: Group; screens: IATreeNode[] }[] = [
           },
 
           { id: "085-SL-AL-31", name: "FAQ", path: "/all/faq" },
+
+          { id: "111-SL-AL-33", name: "어센틱샵", path: "/all/authentic-shop" },
+
+          { id: "112-SL-AL-34", name: "베리즈샵", path: "/all/berriz-shop" },
         ],
       },
     ],

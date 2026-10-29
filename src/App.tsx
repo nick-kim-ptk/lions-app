@@ -140,6 +140,8 @@ import {
   PreviewListScreen,
   PreviewDetailScreen,
   FAQScreen,
+  AuthenticShopScreen,
+  BerrizShopScreen,
 } from "./screens/menu"
 
 // Overview
@@ -304,6 +306,11 @@ export default function App() {
           <Route path="/all/preview-list" element={<PreviewListScreen />} />
           <Route path="/all/preview-detail" element={<PreviewDetailScreen />} />
           <Route path="/all/faq" element={<FAQScreen />} />
+          <Route
+            path="/all/authentic-shop"
+            element={<AuthenticShopScreen />}
+          />
+          <Route path="/all/berriz-shop" element={<BerrizShopScreen />} />
         </Route>
 
         {/* Default redirect */}

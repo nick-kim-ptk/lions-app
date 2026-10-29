@@ -15,7 +15,24 @@ import { ALL_MENU_SECTIONS, type MenuLink } from "@/data/allMenu"
 
 export const PC_CONTAINER = "w-full max-w-[1200px] mx-auto px-4"
 
-const NAV: { label: string; path: string; section?: string }[] = [
+// 이벤트는 모바일 전체 메뉴에 없는 PC 전용 묶음이라 allMenu 대신 여기서 직접 하위 메뉴를 정의한다
+const EVENT_GROUPS: { title: string; items: MenuLink[] }[] = [
+  {
+    title: "이벤트",
+    items: [
+      { label: "이벤트", path: "/all/event-list", groups: EVENT_GROUPS },
+
+      { label: "참여 내역", path: "/all/event-history" },
+    ],
+  },
+]
+
+const NAV: {
+  label: string
+  path: string
+  section?: string
+  groups?: { title: string; items: MenuLink[] }[]
+}[] = [
   { label: "경기", path: "/game", section: "경기" },
 
   { label: "티켓+", path: "/ticket", section: "티켓+" },
@@ -39,6 +56,14 @@ const linksOf = (title: string) => {
     : [{ title: s.title, items: s.items as MenuLink[] }]
 
   return groups
+}
+
+/** 대메뉴(label)의 하위 메뉴 묶음 — allMenu 연동(section) 또는 PC 전용(groups) */
+
+const panelGroups = (label: string) => {
+  const n = NAV.find((x) => x.label === label)
+
+  return n?.groups ?? linksOf(n?.section ?? "")
 }
 
 /** 현재 경로가 속한 대메뉴 */
@@ -133,10 +158,10 @@ export function PcGnb() {
             return (
               <button
                 key={n.label}
-                onMouseEnter={() => setOpen(n.section ? n.label : null)}
-                onFocus={() => setOpen(n.section ? n.label : null)}
+                onMouseEnter={() => setOpen(n.section || n.groups ? n.label : null)}
+                onFocus={() => setOpen(n.section || n.groups ? n.label : null)}
                 onClick={() => {
-                  if (n.section && !hoverable()) {
+                  if ((n.section || n.groups) && !hoverable()) {
                     setOpen(opened ? null : n.label)
 
                     return
@@ -199,7 +224,7 @@ export function PcGnb() {
         <div className="absolute left-0 right-0 top-full bg-white border-b border-[#DDE1EC] shadow-[0_12px_24px_rgba(17,24,39,0.08)]">
           <div className={`${PC_CONTAINER} py-8`}>
             <div className="flex justify-center gap-12">
-              {linksOf(NAV.find((n) => n.label === open)?.section ?? "").map(
+              {panelGroups(open).map(
                 (g) => (
                   <div key={g.title} className="min-w-[160px] text-center">
                     <p className="text-[13px] font-bold text-[#111827] pb-3 mb-3 border-b border-[#DDE1EC]">

@@ -361,6 +361,8 @@ export function Header({
   bare = false,
 
   rightSlot,
+
+  rightSlotMobileOnly,
 }: {
   title?: string
 
@@ -377,14 +379,19 @@ export function Header({
   bare?: boolean
 
   rightSlot?: React.ReactNode
+
+  /** true면 rightSlot은 모바일에서만 쓰고, PC에서는 헤더 줄 자체를 숨긴다 */
+  rightSlotMobileOnly?: boolean
 }) {
   const navigate = useNavigate()
+
+  const pcSlot = rightSlot && !rightSlotMobileOnly
 
   if (bare) {
     return (
       <div
         className={`sticky top-0 z-20 flex items-center justify-end px-4 h-14 gap-1 bg-transparent ${
-          rightSlot ? "" : "lg:hidden"
+          pcSlot ? "" : "lg:hidden"
         }`}
       >
         {showNotif && (
@@ -425,7 +432,7 @@ export function Header({
   return (
     <div
       className={`sticky top-0 z-20 flex items-center px-4 h-14 gap-3 ${
-        rightSlot ? "lg:bg-transparent lg:border-0 lg:backdrop-blur-none" : "lg:hidden"
+        pcSlot ? "lg:bg-transparent lg:border-0 lg:backdrop-blur-none" : "lg:hidden"
       } ${
         dark
           ? "bg-[#0E1A40]/95 backdrop-blur-sm border-b border-white/10"

@@ -43,6 +43,7 @@ export function EventListScreen() {
     <div className="min-h-full bg-[#F5F7FB] pb-4">
       <Header
         title="이벤트"
+        rightSlotMobileOnly
         rightSlot={
           <button
             onClick={() => navigate("/all/event-history")}

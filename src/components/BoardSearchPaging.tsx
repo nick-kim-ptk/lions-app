@@ -70,37 +70,49 @@ export function BoardSearchBar({
 }) {
   return (
     <form
-      className="flex items-center gap-2 px-4 pt-3"
+      className="px-4 pt-3 pb-1"
       onSubmit={(e) => {
         e.preventDefault()
 
         onSubmit()
       }}
     >
-      <div className="relative flex-1">
+      <div className="relative">
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className="w-full h-10 rounded-xl border border-[#DDE1EC] bg-white pl-3 pr-9 text-[13px] text-[#111827] placeholder:text-[#9CA3AF] outline-none focus:border-[#1B5BF0]"
+          className="w-full h-9 rounded-lg border border-[#DDE1EC] bg-white pl-3 pr-16 text-[12px] text-[#111827] placeholder:text-[#9CA3AF] outline-none focus:border-[#1B5BF0]"
         />
         {value && (
           <button
             type="button"
             onClick={onClear}
             aria-label="검색어 지우기"
-            className="absolute right-2 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#DDE1EC] text-white text-[11px] leading-none flex items-center justify-center"
+            className="absolute right-9 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#C4CAD8] text-white text-[9px] leading-none flex items-center justify-center"
           >
             ✕
           </button>
         )}
+        <button
+          type="submit"
+          aria-label="검색"
+          className="absolute right-0 top-0 h-9 w-9 flex items-center justify-center text-[#64748B]"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path d="M20 20l-3.5-3.5" />
+          </svg>
+        </button>
       </div>
-      <button
-        type="submit"
-        className="h-10 px-4 rounded-xl bg-[#111827] text-white text-[13px] font-semibold"
-      >
-        검색
-      </button>
     </form>
   )
 }

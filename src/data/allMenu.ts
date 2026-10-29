@@ -45,8 +45,6 @@ export const ALL_MENU_SECTIONS: MenuSection[] = [
         title: "구장",
 
         items: [
-          { label: "라팍 정보", path: "/game/stadium" },
-
           { label: "라이온즈 VR", path: "/game/vr" },
 
           { label: "라이온즈 원정대", path: "/game/away" },

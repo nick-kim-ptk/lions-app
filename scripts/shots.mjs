@@ -144,7 +144,28 @@ export async function snap(page, file) {
 
   await page.waitForTimeout(WAIT)
 
-  const h = await page.evaluate((vh) => {
+  // 팝업·모달(화면 전체를 덮는 fixed 오버레이)이 떠 있으면 뒤 화면 높이를 따르지 않고
+  // 기본 뷰포트 높이(HEIGHT)로 고정해서 찍는다 (홈 팝업이 홈 전체 높이로 찍히는 문제 방지)
+  const overlay = await page.evaluate(() => {
+    for (const el of document.querySelectorAll("*")) {
+      const cs = getComputedStyle(el)
+
+      if (cs.position !== "fixed") continue
+
+      const r = el.getBoundingClientRect()
+
+      if (
+        r.width >= window.innerWidth - 1 &&
+        r.height >= window.innerHeight - 1 &&
+        Number(cs.zIndex) >= 40
+      )
+        return true
+    }
+
+    return false
+  })
+
+  const h = overlay ? 0 : await page.evaluate((vh) => {
     let max = document.documentElement.scrollHeight
 
     for (const el of document.querySelectorAll("*")) {

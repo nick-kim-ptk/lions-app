@@ -20,7 +20,7 @@ const EVENT_GROUPS: { title: string; items: MenuLink[] }[] = [
   {
     title: "이벤트",
     items: [
-      { label: "이벤트", path: "/all/event-list", groups: EVENT_GROUPS },
+      { label: "이벤트", path: "/all/event-list" },
 
       { label: "참여 내역", path: "/all/event-history" },
     ],
@@ -41,7 +41,7 @@ const NAV: {
 
   { label: "소식/안내", path: "/all/notice-list", section: "소식/안내" },
 
-  { label: "이벤트", path: "/all/event-list" },
+  { label: "이벤트", path: "/all/event-list", groups: EVENT_GROUPS },
 
   { label: "MY", path: "/my" },
 ]

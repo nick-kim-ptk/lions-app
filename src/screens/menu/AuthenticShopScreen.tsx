@@ -24,8 +24,8 @@ export function AuthenticShopScreen() {
     <div className="min-h-full bg-[#F5F7FB] pb-8">
       <Header title="어센틱샵" />
 
-      {/* 상단 타이틀 + 풀 이미지 배너(회색 더미 영역) */}
-      <p className="px-4 pt-4 pb-3 text-[18px] font-bold text-[#0E1A40]">
+      {/* 상단 타이틀(PC만 — 모바일은 상단 바와 중복) + 풀 이미지 배너(회색 더미 영역) */}
+      <p className="hidden px-4 pt-4 pb-3 text-[18px] font-bold text-[#0E1A40] lg:block">
         어센틱샵
       </p>
 

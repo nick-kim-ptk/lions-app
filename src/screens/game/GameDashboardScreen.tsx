@@ -52,6 +52,11 @@ export function GameDashboardScreen() {
 
   const [awaySelected, setAwaySelected] = useState(0)
 
+  // 오늘의 라인업 케이스 — 선발 투수는 전날 예고, 타순은 경기 시작 전 당일 공개
+  const [lineupView, setLineupView] = useState<
+    "선발투수+라인업 발표" | "선발투수 발표"
+  >("선발투수+라인업 발표")
+
   const standingsData = [
     { rank: 1, name: "KT", w: 76, l: 46, pct: ".623", mine: false },
 
@@ -544,6 +549,14 @@ export function GameDashboardScreen() {
             <span className="text-sm font-bold text-[#111827] lg:text-[15px]">
               오늘의 라인업
             </span>
+            {/* 케이스 베리에이션용 토글 */}
+            <CaseSelect
+              className="ml-2 mr-auto"
+              group="라인업 발표"
+              value={lineupView}
+              options={["선발투수+라인업 발표", "선발투수 발표"] as const}
+              onChange={setLineupView}
+            />
             <button
               onClick={() => navigate("/game/lineup")}
               className="text-xs text-[#9CA3AF] lg:text-[#111827] lg:text-base"
@@ -583,7 +596,15 @@ export function GameDashboardScreen() {
                 </button>
               )
             })()}
-            {[
+            {lineupView === "선발투수 발표" && (
+              <div className="flex-1 min-w-[200px] flex items-center justify-center rounded-2xl border border-dashed border-[#DDE1EC] bg-[#FFFFFF] px-4 py-3.5">
+                <p className="text-[12px] font-semibold text-[#64748B] text-center leading-relaxed">
+                  라인업은 당일 4시, 공개됩니다.
+                </p>
+              </div>
+            )}
+            {(lineupView === "선발투수+라인업 발표"
+              ? [
               { order: "1번", name: "구자욱", pos: "LF" },
 
               { order: "2번", name: "이재현", pos: "2B" },
@@ -601,7 +622,9 @@ export function GameDashboardScreen() {
               { order: "8번", name: "박계범", pos: "3B" },
 
               { order: "9번", name: "원태인", pos: "P" },
-            ].map((p, i) => (
+                ]
+              : []
+            ).map((p, i) => (
               <button
                 key={i}
                 onClick={() => openPlayer(p.name)}

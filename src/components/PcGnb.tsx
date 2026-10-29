@@ -20,7 +20,7 @@ const EVENT_GROUPS: { title: string; items: MenuLink[] }[] = [
   {
     title: "이벤트",
     items: [
-      { label: "이벤트", path: "/all/event-list" },
+      { label: "진행중인 이벤트", path: "/all/event-list" },
 
       { label: "참여 내역", path: "/all/event-history" },
     ],

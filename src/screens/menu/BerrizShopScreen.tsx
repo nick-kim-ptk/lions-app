@@ -10,7 +10,7 @@ import {
   BerrizShopCategory,
 } from "@/data/shop"
 
-// 112-SL-AL-34 베리즈샵 — 상단 배너 + 분류 칩 + 상품 카드 목록
+// 112-SL-AL-34 베리즈샵 — 타이틀 + 풀 이미지 배너(더미) + 분류 칩 + 상품 카드 목록
 // 상품 카드는 017-SL-TK-01 티켓 페이지의 베리즈 샵 카드(이미지·선수명·상품명·가격)와 같은 구성
 
 export function BerrizShopScreen() {
@@ -24,33 +24,13 @@ export function BerrizShopScreen() {
     <div className="min-h-full bg-[#F5F7FB] pb-8">
       <Header title="베리즈샵" />
 
-      {/* 상단 배너 */}
-      <div className="px-4 pt-4">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0E1A40] to-[#1B5BF0]">
-          <div
-            className="absolute inset-0 opacity-10"
-            style={{
-              backgroundImage:
-                "repeating-linear-gradient(135deg,transparent,transparent 10px,rgba(255,255,255,0.3) 10px,rgba(255,255,255,0.3) 11px)",
-            }}
-          />
-          <div className="relative flex items-center gap-4 px-5 py-6">
-            <div className="flex-1">
-              <p className="mb-1 text-[10px] font-bold text-white/60">
-                BERRIZ SHOP
-              </p>
-              <p className="text-[18px] font-bold leading-snug text-white">
-                삼성라이온즈 베리즈샵
-              </p>
-              <p className="mt-1 text-[12px] text-white/80">
-                선수 포토카드부터 응원 굿즈까지 한곳에서 만나보세요.
-              </p>
-            </div>
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-white/15 text-3xl">
-              🛍️
-            </div>
-          </div>
-        </div>
+      {/* 상단 타이틀 + 풀 이미지 배너(회색 더미 영역) */}
+      <p className="px-4 pt-4 pb-3 text-[18px] font-bold text-[#0E1A40]">
+        베리즈샵
+      </p>
+
+      <div className="flex h-[180px] w-full items-center justify-center bg-[#E8EBF4] text-[12px] font-semibold text-[#9CA3AF] lg:h-[280px]">
+        배너 이미지 (풀 사이즈)
       </div>
 
       {/* 분류 칩 */}

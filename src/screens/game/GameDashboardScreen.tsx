@@ -575,10 +575,15 @@ export function GameDashboardScreen() {
                   ? { name: "원태인", era: "2.87" }
                   : { name: "스트레일리", era: "3.44" }
 
+              // 선발투수만 발표된 케이스는 카드를 크게(정사각형에 가깝게) 보여준다
+              const big = lineupView === "선발투수 발표"
+
               return (
                 <button
                   onClick={() => openPlayer(starter.name)}
-                  className="shrink-0 flex flex-col items-center gap-2 bg-[#1B5BF0] rounded-2xl px-4 py-3.5 w-[82px] relative overflow-hidden"
+                  className={`shrink-0 flex flex-col items-center gap-2 bg-[#1B5BF0] rounded-2xl relative overflow-hidden ${
+                    big ? "px-6 py-5 w-[160px]" : "px-4 py-3.5 w-[82px]"
+                  }`}
                 >
                   <div className="absolute inset-0 opacity-10 text-[60px] leading-none flex items-end justify-center pointer-events-none select-none">
                     ⚾
@@ -586,23 +591,26 @@ export function GameDashboardScreen() {
                   <span className="text-white/70 text-[11px] font-bold relative">
                     선발
                   </span>
-                  <PHCircle className="w-12 h-12 opacity-80" />
-                  <span className="text-[12px] font-semibold text-white text-center leading-tight relative">
+                  <PHCircle
+                    className={`opacity-80 ${big ? "w-20 h-20" : "w-12 h-12"}`}
+                  />
+                  <span
+                    className={`font-semibold text-white text-center leading-tight relative ${
+                      big ? "text-[16px]" : "text-[12px]"
+                    }`}
+                  >
                     {starter.name}
                   </span>
-                  <span className="text-[11px] text-white/60 relative">
+                  <span
+                    className={`text-white/60 relative ${
+                      big ? "text-[13px]" : "text-[11px]"
+                    }`}
+                  >
                     ERA {starter.era}
                   </span>
                 </button>
               )
             })()}
-            {lineupView === "선발투수 발표" && (
-              <div className="flex-1 min-w-[200px] flex items-center justify-center rounded-2xl border border-dashed border-[#DDE1EC] bg-[#FFFFFF] px-4 py-3.5">
-                <p className="text-[12px] font-semibold text-[#64748B] text-center leading-relaxed">
-                  라인업은 당일 4시, 공개됩니다.
-                </p>
-              </div>
-            )}
             {(lineupView === "선발투수+라인업 발표"
               ? [
               { order: "1번", name: "구자욱", pos: "LF" },
@@ -641,6 +649,11 @@ export function GameDashboardScreen() {
               </button>
             ))}
           </div>
+          {lineupView === "선발투수 발표" && (
+            <p className="px-4 pt-1 text-[12px] font-semibold text-[#64748B] lg:px-0">
+              라인업은 당일 4시, 공개됩니다.
+            </p>
+          )}
         </div>
 
       {/* Cheerleader preview */}

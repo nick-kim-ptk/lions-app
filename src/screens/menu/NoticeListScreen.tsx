@@ -4,6 +4,14 @@ import { useNavigate } from "react-router-dom"
 
 import { Header } from "@/components/Layout"
 
+import {
+  BoardPagination,
+  BoardSearchBar,
+  useBoardSearch,
+} from "@/components/BoardSearchPaging"
+
+import { EmptyState } from "@/components/EmptyState"
+
 import { LABEL_STYLE, Notice, NOTICES } from "@/data/menu"
 
 type NoticeTab = "전체" | "구단 공지" | "앱 공지"
@@ -19,9 +27,20 @@ export function NoticeListScreen() {
 
   const filtered = NOTICES.filter((n) => tab === "전체" || n.label === tab)
 
-  const pinned = filtered.filter((n) => n.important)
+  const pinnedAll = filtered.filter((n) => n.important)
 
-  const normal = filtered.filter((n) => !n.important)
+  const normalAll = filtered.filter((n) => !n.important)
+
+  // 검색 + 페이징 — 중요 공지는 항상 상단에 두고, 일반 글만 10건씩 나눈다
+  const bs = useBoardSearch(normalAll, (n) => n.title, tab)
+
+  const q = bs.query.trim().toLowerCase()
+
+  const pinned = q
+    ? pinnedAll.filter((n) => n.title.toLowerCase().includes(q))
+    : pinnedAll
+
+  const normal = bs.pageItems
 
   function NoticeRow({
     notice,
@@ -84,6 +103,15 @@ export function NoticeListScreen() {
         ))}
       </div>
 
+
+      {/* 검색 */}
+      <BoardSearchBar
+        value={bs.input}
+        onChange={bs.setInput}
+        onSubmit={bs.submit}
+        onClear={bs.clear}
+      />
+
       {/* 목록 */}
       <div className="px-4">
         {pinned.length > 0 && (
@@ -96,6 +124,19 @@ export function NoticeListScreen() {
         {normal.map((n) => (
           <NoticeRow key={n.id} notice={n} isPinned={false} />
         ))}
+        {pinned.length === 0 && normal.length === 0 && (
+          <EmptyState
+            icon="🔍"
+            title="검색 결과가 없습니다"
+            desc="다른 검색어로 다시 검색해 주세요."
+            className="py-16"
+          />
+        )}
+        <BoardPagination
+          page={bs.page}
+          totalPages={bs.totalPages}
+          onChange={bs.setPage}
+        />
       </div>
     </div>
   )

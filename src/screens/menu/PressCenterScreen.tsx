@@ -4,6 +4,14 @@ import { useNavigate } from "react-router-dom"
 
 import { Header } from "@/components/Layout"
 
+import {
+  BoardPagination,
+  BoardSearchBar,
+  useBoardSearch,
+} from "@/components/BoardSearchPaging"
+
+import { EmptyState } from "@/components/EmptyState"
+
 import { PRESS_POSTS } from "@/data/menu"
 
 // 100-SL-AL-33 이슈와 팩트
@@ -17,6 +25,13 @@ export function PressCenterScreen() {
 
   const filteredPosts = PRESS_POSTS.filter(
     (post) => category === "전체" || post.category === category,
+  )
+
+  // 검색(제목·요약) + 페이징
+  const bs = useBoardSearch(
+    filteredPosts,
+    (post) => `${post.title} ${post.summary}`,
+    category,
   )
 
   return (
@@ -62,8 +77,17 @@ export function PressCenterScreen() {
         ))}
       </div>
 
+
+      {/* 검색 */}
+      <BoardSearchBar
+        value={bs.input}
+        onChange={bs.setInput}
+        onSubmit={bs.submit}
+        onClear={bs.clear}
+      />
+
       <div className="px-4">
-        {filteredPosts.map((post) => (
+        {bs.pageItems.map((post) => (
           <button
             type="button"
             key={post.id}
@@ -99,6 +123,19 @@ export function PressCenterScreen() {
             </p>
           </button>
         ))}
+        {bs.matched.length === 0 && (
+          <EmptyState
+            icon="🔍"
+            title="검색 결과가 없습니다"
+            desc="다른 검색어로 다시 검색해 주세요."
+            className="py-16"
+          />
+        )}
+        <BoardPagination
+          page={bs.page}
+          totalPages={bs.totalPages}
+          onChange={bs.setPage}
+        />
       </div>
     </div>
   )

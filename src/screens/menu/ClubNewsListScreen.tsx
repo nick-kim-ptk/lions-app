@@ -5,6 +5,14 @@ import { useNavigate } from "react-router-dom"
 import { Header } from "@/components/Layout"
 
 import {
+  BoardPagination,
+  BoardSearchBar,
+  useBoardSearch,
+} from "@/components/BoardSearchPaging"
+
+import { EmptyState } from "@/components/EmptyState"
+
+import {
   ClubNewsCategory,
   ClubNews,
   CLUB_NEWS_DATA,
@@ -22,9 +30,20 @@ export function ClubNewsListScreen() {
     (n) => tab === "전체" || n.category === tab,
   )
 
-  const pinned = filtered.filter((n) => n.important)
+  const pinnedAll = filtered.filter((n) => n.important)
 
-  const normal = filtered.filter((n) => !n.important)
+  const normalAll = filtered.filter((n) => !n.important)
+
+  // 검색 + 페이징 — 중요 소식은 항상 상단에 두고, 일반 글만 10건씩 나눈다
+  const bs = useBoardSearch(normalAll, (n) => n.title, tab)
+
+  const q = bs.query.trim().toLowerCase()
+
+  const pinned = q
+    ? pinnedAll.filter((n) => n.title.toLowerCase().includes(q))
+    : pinnedAll
+
+  const normal = bs.pageItems
 
   function NewsRow({
     news,
@@ -88,6 +107,15 @@ export function ClubNewsListScreen() {
         ))}
       </div>
 
+
+      {/* 검색 */}
+      <BoardSearchBar
+        value={bs.input}
+        onChange={bs.setInput}
+        onSubmit={bs.submit}
+        onClear={bs.clear}
+      />
+
       {/* 목록 */}
       <div className="px-4">
         {/* 중요 공지 — 상단 고정 영역 */}
@@ -103,6 +131,19 @@ export function ClubNewsListScreen() {
         {normal.map((news) => (
           <NewsRow key={news.id} news={news} pinned={false} />
         ))}
+        {pinned.length === 0 && normal.length === 0 && (
+          <EmptyState
+            icon="🔍"
+            title="검색 결과가 없습니다"
+            desc="다른 검색어로 다시 검색해 주세요."
+            className="py-16"
+          />
+        )}
+        <BoardPagination
+          page={bs.page}
+          totalPages={bs.totalPages}
+          onChange={bs.setPage}
+        />
       </div>
     </div>
   )

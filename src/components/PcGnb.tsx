@@ -16,13 +16,15 @@ import { ALL_MENU_SECTIONS, type MenuLink } from "@/data/allMenu"
 export const PC_CONTAINER = "w-full max-w-[1200px] mx-auto px-4"
 
 const NAV: { label: string; path: string; section?: string }[] = [
-  { label: "게임", path: "/game", section: "게임" },
+  { label: "경기", path: "/game", section: "경기" },
 
   { label: "티켓+", path: "/ticket", section: "티켓+" },
 
   { label: "라이온즈", path: "/all/about", section: "라이온즈" },
 
   { label: "소식/안내", path: "/all/notice-list", section: "소식/안내" },
+
+  { label: "이벤트", path: "/all/event-list" },
 
   { label: "MY", path: "/my" },
 ]
@@ -45,6 +47,9 @@ function activeLabel(pathname: string) {
   if (pathname.startsWith("/my/booking") || pathname.startsWith("/my/ticket"))
     return "티켓+"
 
+  // 이벤트는 상단 메뉴에 단독 항목으로 있다 (소식/안내 하위에도 같은 링크가 있지만 이쪽을 우선)
+  if (pathname.startsWith("/all/event")) return "이벤트"
+
   for (const n of NAV) {
     if (!n.section) continue
 
@@ -55,7 +60,7 @@ function activeLabel(pathname: string) {
     if (hit) return n.label
   }
 
-  if (pathname.startsWith("/game")) return "게임"
+  if (pathname.startsWith("/game")) return "경기"
 
   if (pathname.startsWith("/ticket")) return "티켓+"
 

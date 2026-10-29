@@ -137,7 +137,7 @@ const NAV_ITEMS = [
   },
 
   {
-    label: "게임",
+    label: "경기",
 
     path: "/game",
 
@@ -267,7 +267,7 @@ const NAV_ITEMS = [
   },
 ]
 
-// 전체메뉴 경로지만 게임 탭에서 진입하는 화면 → 바텀바는 게임으로 표시
+// 전체메뉴 경로지만 게임 탭에서 진입하는 화면 → 바텀바는 경기로 표시
 const GAME_TAB_PATHS = ["/all/preview-list", "/all/preview-detail"]
 
 function getActiveTab(pathname: string) {

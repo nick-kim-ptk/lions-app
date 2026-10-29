@@ -24,7 +24,7 @@ export interface MenuSection {
 
 export const ALL_MENU_SECTIONS: MenuSection[] = [
   {
-    title: "게임",
+    title: "경기",
 
     items: [],
 
